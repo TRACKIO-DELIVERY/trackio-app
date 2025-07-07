@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 export default function Index() {
   return (
-    <View>
+    <View style={{ backgroundColor: "rgb(255, 255, 255)", flex: 1 }}>
       <House />
     </View>
   );
