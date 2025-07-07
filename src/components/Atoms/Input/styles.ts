@@ -4,11 +4,14 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 6,
     backgroundColor: THEME.grey[400],
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
   inputContainer: {
     flex: 1,
