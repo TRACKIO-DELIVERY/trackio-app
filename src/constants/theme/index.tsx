@@ -9,7 +9,7 @@ export const THEME = {
     600: "#A9A7A7",
     500: "#D9D9D9",
     400: "#F1EFF3",
-    100: "#FFFFF",
+    100: "#FFFFFF",
   },
   blue: {
     600: "#4285F4",

@@ -1,16 +1,18 @@
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { styles } from "./styles";
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormType, LoginSchema } from "./schema";
 
-import { Input } from "@/components/Atoms/Input";
+import { useAuth } from "@/hooks/useAuth";
 
 import EmailIcon from "@/assets/icons/email.svg";
 import LockIcon from "@/assets/icons/lock.svg";
+
+import { Input } from "@/components/Atoms/Input";
+import { Button } from "@/components/Atoms/Button";
 import { TYPOGRAPHY } from "@/constants/typography";
-import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
   const { signIn } = useAuth();
