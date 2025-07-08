@@ -1,6 +1,6 @@
 import * as SplashScreen from "expo-splash-screen";
 
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 
 import { useFonts } from "expo-font";
 import {
@@ -13,6 +13,7 @@ import {
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { ActivityIndicator, StatusBar, View } from "react-native";
+import { AuthProvider } from "@/hooks/useAuth";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -52,11 +53,9 @@ function Loading() {
 
 export function RootLayoutNav() {
   return (
-    <>
+    <AuthProvider>
       <StatusBar barStyle="default" />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </>
+      <Slot />
+    </AuthProvider>
   );
 }

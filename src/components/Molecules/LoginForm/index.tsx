@@ -10,8 +10,11 @@ import { Input } from "@/components/Atoms/Input";
 import EmailIcon from "@/assets/icons/email.svg";
 import LockIcon from "@/assets/icons/lock.svg";
 import { TYPOGRAPHY } from "@/constants/typography";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
+  const { signIn } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -20,8 +23,8 @@ export function LoginForm() {
     resolver: zodResolver(LoginSchema),
   });
 
-  function handleLogin(data: LoginFormType) {
-    console.log(data);
+  async function handleLogin(data: LoginFormType) {
+    await signIn();
   }
   return (
     <View style={styles.form}>
