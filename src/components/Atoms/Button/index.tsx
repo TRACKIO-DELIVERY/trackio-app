@@ -22,7 +22,7 @@ export function Button({
       {...rest}
       testID="Button"
     >
-      {Icon && <Icon width={20} height={20} color={THEME.grey[100]} />}
+      {Icon && <Icon width={25} height={25} color={THEME.grey[100]} />}
       {title && (
         <Text style={[styles.textBase, styles[`${variant}Text`]]}>{title}</Text>
       )}

@@ -5,4 +5,10 @@ export const styles = StyleSheet.create({
     paddingTop: 98,
     gap: 16,
   },
+  inputsContainer: {
+    paddingBottom: 50,
+  },
+  linkToRegister: {
+    alignSelf: "center",
+  },
 });
