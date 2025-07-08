@@ -22,4 +22,9 @@ export const TYPOGRAPHY = StyleSheet.create({
     fontSize: 13,
     color: THEME.purple[700],
   },
+  errorText: {
+    fontFamily: "Sen_400Regular",
+    fontSize: 13,
+    color: THEME.red[500],
+  },
 });

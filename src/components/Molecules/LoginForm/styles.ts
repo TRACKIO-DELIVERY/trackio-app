@@ -11,4 +11,8 @@ export const styles = StyleSheet.create({
   linkToRegister: {
     alignSelf: "center",
   },
+  inputView: {
+    gap: 5,
+    marginBottom: 2,
+  },
 });

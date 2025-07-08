@@ -37,7 +37,7 @@ export function LoginForm() {
   return (
     <View style={styles.form}>
       <View style={styles.inputsContainer}>
-        <View>
+        <View style={styles.inputView}>
           <Controller
             control={control}
             name="email"
@@ -50,10 +50,12 @@ export function LoginForm() {
               />
             )}
           />
-          <Text>{errors && errors.email?.message}</Text>
+          <Text style={TYPOGRAPHY.errorText}>
+            {errors && errors.email?.message}
+          </Text>
         </View>
 
-        <View>
+        <View style={styles.inputView}>
           <Controller
             control={control}
             name="password"
@@ -62,11 +64,14 @@ export function LoginForm() {
                 icon={LockIcon}
                 placeholder="Senha"
                 onChangeText={onChange}
+                isPasswordInput
                 value={value}
               />
             )}
           />
-          <Text>{errors && errors.password?.message}</Text>
+          <Text style={TYPOGRAPHY.errorText}>
+            {errors && errors.password?.message}
+          </Text>
         </View>
 
         <Text style={TYPOGRAPHY.alertText}>Esqueceu a senha?</Text>
