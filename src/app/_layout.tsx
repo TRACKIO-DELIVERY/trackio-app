@@ -13,7 +13,7 @@ import {
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { ActivityIndicator, StatusBar, View } from "react-native";
-import { AuthProvider } from "@/hooks/useAuth";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
 
