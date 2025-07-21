@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormType, LoginSchema } from "./schema";
 
-import { useAuth } from "@/hooks/useAuth";
 
 import EmailIcon from "@/assets/icons/email.svg";
 import LockIcon from "@/assets/icons/lock.svg";
@@ -15,9 +14,10 @@ import { Input } from "@/components/Atoms/Input";
 import { Button } from "@/components/Atoms/Button";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { router } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
-  const { signIn } = useAuth();
+ const {signIn} = useAuth()
 
   const {
     control,
