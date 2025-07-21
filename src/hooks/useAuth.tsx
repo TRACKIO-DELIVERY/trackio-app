@@ -20,7 +20,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,16 +55,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    if (isLoading) return;
-    const routeIsPrivate = rootSegment === "(tabs)";
+  // useEffect(() => {
+  //   if (isLoading) return;
+  //   const routeIsPrivate = rootSegment === "(tabs)";
 
-    if (!isAuth && routeIsPrivate) {
-      router.replace("/login");
-    } else if (isAuth && !routeIsPrivate) {
-      router.replace("/");
-    }
-  }, [isLoading, rootSegment, isAuth]);
+  //   if (!isAuth && routeIsPrivate) {
+  //     router.replace("/login");
+  //   } else if (isAuth && !routeIsPrivate) {
+  //     router.replace("/");
+  //   }
+  // }, [isLoading, rootSegment, isAuth]);
   return (
     <AuthContext.Provider
       value={{

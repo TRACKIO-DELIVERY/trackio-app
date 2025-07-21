@@ -1,6 +1,6 @@
 import * as SplashScreen from "expo-splash-screen";
 
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 
 import { useFonts } from "expo-font";
 import {
@@ -14,12 +14,15 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { ActivityIndicator, StatusBar, View } from "react-native";
 import { AuthProvider } from "@/hooks/useAuth";
+import { LocationProvider } from "@/contexts/LocationContext";
+
 
 export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
   const [loaded, error] = useFonts({
     Sen_400Regular,
     Sen_500Medium,
@@ -54,8 +57,10 @@ function Loading() {
 export function RootLayoutNav() {
   return (
     <AuthProvider>
-      <StatusBar barStyle="default" />
-      <Slot />
+      <LocationProvider>
+        <StatusBar barStyle="default" />
+        <Slot />
+      </LocationProvider>
     </AuthProvider>
   );
 }
