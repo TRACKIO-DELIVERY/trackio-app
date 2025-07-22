@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormType, LoginSchema } from "./schema";
 
-
 import EmailIcon from "@/assets/icons/email.svg";
 import LockIcon from "@/assets/icons/lock.svg";
 import GoogleIcon from "@/assets/icons/google.svg";
@@ -17,7 +16,7 @@ import { router } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm() {
- const {signIn} = useAuth()
+  const { signIn } = useAuth();
 
   const {
     control,
