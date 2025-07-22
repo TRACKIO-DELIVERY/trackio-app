@@ -20,7 +20,7 @@
       "modified": "2025-07-21T12:00:00Z"
     }
   ],
-  "deliveryPersons": [
+  "deliveryPerson": [
     {
       "id": 5,
       "name": "João das Entregas",
