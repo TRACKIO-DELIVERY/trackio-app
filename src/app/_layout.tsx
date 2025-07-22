@@ -17,7 +17,7 @@ import { StatusBar } from "react-native";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -27,7 +27,6 @@ export { ErrorBoundary } from "expo-router";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
   const [loaded, error] = useFonts({
     Sen_400Regular,
     Sen_500Medium,
@@ -59,13 +58,13 @@ export function RootLayoutNav() {
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
-          <AuthProvider>
-            <LocationProvider>
-              <StatusBar barStyle="default" />
-              <Slot />
-            </LocationProvider>
-          </AuthProvider>
-        </SafeAreaProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <StatusBar barStyle="default" />
+            <Slot />
+          </LocationProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
     </QueryClientProvider>
   );
 }
