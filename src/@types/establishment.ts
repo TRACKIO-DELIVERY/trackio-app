@@ -1,6 +1,5 @@
 import { Address } from "./address";
 
-
 export interface Establishment {
   id: number;
   name: string;
@@ -8,6 +7,4 @@ export interface Establishment {
   email: string;
   active: boolean;
   address: Address; 
-  created: string; 
-  modified: string;
 }

@@ -16,10 +16,7 @@ export type Order = {
     delivery_fee: string; 
     order_value: string;
     closing_date?: string | null; 
-    app_origin: string;
     order_status: OrderStatus;
-    created: string;
-    modified: string;
 }
 
 export interface ComplementaryOrder {
