@@ -12,7 +12,7 @@ export type Order = {
     id: number;
     establishment: Establishment; 
     email: string;
-    delivery_person: DeliveryPerson; 
+    delivery_person: DeliveryPerson | null; 
     delivery_fee: string; 
     order_value: string;
     closing_date?: string | null; 

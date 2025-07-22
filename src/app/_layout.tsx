@@ -12,9 +12,14 @@ import {
 
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { ActivityIndicator, StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
+
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
+
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
+import { Loading } from "@/components/Atoms/Loading";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 
 export { ErrorBoundary } from "expo-router";
@@ -46,21 +51,21 @@ export default function RootLayout() {
 
   return <RootLayoutNav />;
 }
-function Loading() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator />
-    </View>
-  );
-}
+
 
 export function RootLayoutNav() {
+
+  const queryClient = new QueryClient()
   return (
-    <AuthProvider>
-      <LocationProvider>
-        <StatusBar barStyle="default" />
-        <Slot />
-      </LocationProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+          <AuthProvider>
+            <LocationProvider>
+              <StatusBar barStyle="default" />
+              <Slot />
+            </LocationProvider>
+          </AuthProvider>
+        </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }
