@@ -16,13 +16,11 @@ import { ActivityIndicator, StatusBar, View } from "react-native";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
-
 export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
   const [loaded, error] = useFonts({
     Sen_400Regular,
     Sen_500Medium,

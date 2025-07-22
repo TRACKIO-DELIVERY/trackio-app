@@ -1,10 +1,6 @@
 import { User } from "@/@types/user";
 import { useRouter, useSegments } from "expo-router";
-import {
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
 
 interface AuthContextType {
   isAuth: boolean;
@@ -39,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       fetchUser();
       setIsAuth(true);
-      router.replace('/')
+      router.replace("/");
     } catch (error) {
       console.log(error);
     } finally {
