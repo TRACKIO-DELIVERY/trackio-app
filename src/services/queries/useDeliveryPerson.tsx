@@ -2,16 +2,14 @@ import { DeliveryPersonDTO } from "@/dtos/deliveryPersonDTO";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../api";
 
-export function useDeliveryPerson() {
+export function useDeliveryPerson(accessToken: string) {
     return useQuery({
         queryKey: ['delivery-person'],
-
+        queryFn: () => getDeliveryPerson(accessToken)
     })
 }
 
-const accessToken = 'teste'
-
-async function getDeliveryPerson(): Promise<DeliveryPersonDTO> {
+async function getDeliveryPerson(accessToken: string): Promise<DeliveryPersonDTO> {
     const { data } = await api.get('/deliveryPerson', {
         params: accessToken
     })

@@ -2,10 +2,9 @@ import { Loading } from "@/components/Atoms/Loading";
 import { useOrders } from "@/services/queries/useOrders";
 import { FlatList, Text, View } from "react-native";
 
-export function OrdersList () {
+export function OrdersList() {
 
-    const {data, isFetching, error} = useOrders()
-
+    const { data, isFetching, error } = useOrders()
 
     if (error) {
         console.log(error)
@@ -16,24 +15,28 @@ export function OrdersList () {
         )
     }
 
-    if (isFetching){
+    if (isFetching) {
         return (
             <Loading />
         )
     }
 
-    console.log(data)
     return (
-   
-    <FlatList 
-        data={data}
-        renderItem={({item}) => (
-            <View>
-                <Text>{item.orderStatus}</Text>
-            </View>
-        )}
 
-    />
- 
+        <FlatList
+            data={data}
+            renderItem={({ item }) => (
+                <View>
+                    <Text>{item.deliveryFee}</Text>
+                    <Text>{item.deliveryPerson?.fullName || 'sem entregador'}</Text>
+                    <Text>{item.establishment.name}</Text>
+                </View>
+            )}
+            contentContainerStyle={{
+                gap: 12,
+            }}
+
+        />
+
     )
 }

@@ -1,23 +1,44 @@
 {
-  "establishments": [
+  "orders": [
     {
       "id": 1,
-      "name": "Padaria Central",
-      "cnpj": "12.345.678/0001-90",
-      "email": "contato@padariacentral.com",
-      "password": "12345678",
-      "active": true,
-      "address": {
-        "id": 101,
-        "street": "Rua das Flores",
-        "neighborhood": "Centro",
-        "number": "123",
-        "city": "São Paulo",
-        "state": "SP",
-        "country": "Brasil"
+      "email": "cliente1@example.com",
+      "deliveryFee": "5.00",
+      "orderValue": "45.90",
+      "closingDate": "2025-07-21T16:30:00Z",
+      "orderStatus": 2,
+      "establishment": {
+        "id": 1,
+        "name": "Padaria Central",
+        "email": "contato@padariacentral.com",
+        "cnpj": "12.345.678/0001-90",
+        "address": {
+          "street": "Rua das Flores",
+          "number": "123",
+          "city": "São Paulo",
+          "state": "SP"
+        }
       },
-      "created": "2025-07-20T14:00:00Z",
-      "modified": "2025-07-21T12:00:00Z"
+      "deliveryPerson": {
+        "id": 5,
+        "fullName": "João das Entregas",
+        "email": "joao.entregador@example.com",
+        "vehicleType": "bike"
+      }
+    },
+    {
+      "id": 2,
+      "email": "cliente2@example.com",
+      "deliveryFee": "0.00",
+      "orderValue": "29.99",
+      "closingDate": null,
+      "orderStatus": 0,
+      "establishment": {
+        "id": 1,
+        "name": "Padaria Central",
+        "email": "contato@padariacentral.com"
+      },
+      "deliveryPerson": null
     }
   ],
   "deliveryPerson": [
@@ -25,34 +46,7 @@
       "id": 5,
       "name": "João das Entregas",
       "email": "joao.entregador@example.com",
-      "phone": "11999999999",
-      "cpf": "123.456.789-00",
-      "vehicleType": "bike",
-      "active": true,
-      "created": "2025-07-10T10:00:00Z",
-      "modified": "2025-07-21T09:00:00Z"
-    }
-  ],
-  "orders": [
-    {
-      "id": 1,
-      "establishment": 1,
-      "email": "cliente1@example.com",
-      "deliveryPerson": 5,
-      "deliveryFee": "5.00",
-      "orderValue": "45.90",
-      "closingDate": "2025-07-21T16:30:00Z",
-      "orderStatus": 2
-    },
-    {
-      "id": 2,
-      "establishment": 1,
-      "email": "cliente2@example.com",
-      "deliveryPerson": null,
-      "deliveryFee": "0.00",
-      "orderValue": "29.99",
-      "closingDate": null,
-      "orderStatus": 0
+      "vehicleType": "bike"
     }
   ]
 }
