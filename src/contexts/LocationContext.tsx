@@ -1,11 +1,13 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
+import { socket } from "@/services/socket";
 
 interface LocationContextType {
   location: Location.LocationObject | null;
   permissionStatus: string | null;
   requestPermission: () => Promise<void>;
-  startGetPositions: () => Promise<void>;
+  startGetPositions: (orderId: string) => Promise<void>;
+  stopTracking: () => void;
 }
 export const LocationContext = createContext<LocationContextType>(
   {} as LocationContextType,
@@ -28,7 +30,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     subscriptionRef.current = null;
   }
 
-  async function startGetPositions() {
+  async function startGetPositions(orderId: string) {
     if (permissionStatus !== "granted") {
       await requestPermission();
     }
@@ -43,22 +45,19 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       },
       (newLocation) => {
         setLocation(newLocation);
+        const coords = {
+          latitude: newLocation?.coords.latitude,
+          longitude: newLocation?.coords.longitude
+        }
+        socket.emit("location_update", {
+          orderId,
+          coords
+
+        })
       },
     );
 
     subscriptionRef.current = subscription;
-
-    //emitir no socket aqui
-
-    // const coords = {
-    //     latitude: location?.coords.latitude,
-    //     longitude: location?.coords.longitude
-    // }
-    // socket.emit("location_update", {
-    //     orderId,
-    //     coords
-
-    // })
   }
 
   useEffect(() => {
@@ -74,6 +73,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         permissionStatus,
         requestPermission,
         startGetPositions,
+        stopTracking,
       }}
     >
       {children}
