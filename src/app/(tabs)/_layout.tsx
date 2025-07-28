@@ -1,7 +1,10 @@
 import { Tabs } from "expo-router";
 
-import Home from "@/assets/icons/home.svg";
 import { THEME } from "@/constants/theme";
+
+import Home from "@/assets/icons/home.svg";
+import Package from "@/assets/icons/package.svg";
+import Person from "@/assets/icons/person.svg";
 
 export default function TabsLayout() {
   return (
@@ -15,21 +18,21 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <Home color={color} />,
+          tabBarIcon: ({ color }) => <Home color={color} width={25} height={25} />,
         }}
       />
       <Tabs.Screen
         name="deliveries"
         options={{
           title: "Sua entregas",
-          tabBarIcon: ({ color }) => <Home color={color} />,
+          tabBarIcon: ({ color }) => <Package color={color} width={25} height={25} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",
-          tabBarIcon: ({ color }) => <Home color={color} />,
+          tabBarIcon: ({ color }) => <Person color={color} width={25} height={25} />,
         }}
       />
       <Tabs.Screen
