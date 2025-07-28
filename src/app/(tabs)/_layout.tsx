@@ -18,6 +18,29 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => <Home color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="deliveries"
+        options={{
+          title: "Sua entregas",
+          tabBarIcon: ({ color }) => <Home color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Perfil",
+          tabBarIcon: ({ color }) => <Home color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="order/[id]"
+        options={{
+          title: "Order",
+          href: null,
+          tabBarStyle: { display: 'none' }
+        }}
+
+      />
     </Tabs>
   );
 }
