@@ -1,8 +1,12 @@
 import { Loading } from "@/components/Atoms/Loading";
 import { useOrders } from "@/services/queries/useOrders";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { OrderCard } from "../OrderCard";
 
-export function OrdersList() {
+interface OrderListInterface {
+    handleOpenModal: (showModal: boolean) => void
+}
+export function OrdersList({ handleOpenModal }: OrderListInterface) {
 
     const { data, isFetching, error } = useOrders()
 
@@ -26,11 +30,16 @@ export function OrdersList() {
         <FlatList
             data={data}
             renderItem={({ item }) => (
-                <View>
-                    <Text>{item.deliveryFee}</Text>
-                    <Text>{item.deliveryPerson?.fullName || 'sem entregador'}</Text>
-                    <Text>{item.establishment.name}</Text>
-                </View>
+                <TouchableOpacity onPress={() => handleOpenModal(true)}>
+                    <OrderCard
+                        status={"disponivel"}
+                        title={`Pedido ${item.id}`}
+                        deliverer={item.deliveryPerson?.fullName || 'Sem entregador'}
+                        company={item.establishment.name}
+                        deliveryFee={item.deliveryFee}
+                    />
+
+                </TouchableOpacity>
             )}
             contentContainerStyle={{
                 gap: 12,

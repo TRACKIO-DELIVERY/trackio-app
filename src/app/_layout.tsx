@@ -12,7 +12,7 @@ import {
 
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { StatusBar } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
@@ -20,6 +20,7 @@ import { LocationProvider } from "@/contexts/LocationContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { THEME } from "@/constants/theme";
 
 
 export { ErrorBoundary } from "expo-router";
@@ -60,7 +61,7 @@ export function RootLayoutNav() {
       <SafeAreaProvider>
         <AuthProvider>
           <LocationProvider>
-            <StatusBar barStyle="default" />
+            <StatusBar translucent style="dark" />
             <Slot />
           </LocationProvider>
         </AuthProvider>

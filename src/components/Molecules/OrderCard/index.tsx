@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { styles } from "./styles";
 import { OrderIcon } from '@/components/Atoms/iconImage';
+import { TYPOGRAPHY } from '@/constants/typography';
 
-type OrderStatus = 'disponivel' | 'em rota';
+type OrderStatus = 'disponivel' | 'em rota' | 'finalizado';
 
 interface OrderCardProps {
   title: string;
   company: string;
   status: OrderStatus;
   deliverer?: string;
+  deliveryFee?: string
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({
@@ -17,16 +19,39 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   company,
   status,
   deliverer,
+  deliveryFee
 }) => {
   const isAvailable = status === 'disponivel';
+
+  function getStatusLabel(status: string) {
+    switch (status) {
+      case 'disponivel':
+        return 'Disponível';
+      case 'em rota':
+        return 'Em rota';
+      case 'finalizado':
+        return 'Finalizado';
+      default:
+        return 'Desconhecido';
+    }
+  }
 
   return (
     <View style={styles.card}>
       <OrderIcon />
 
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.company}>{company}</Text>
+
+        <View style={styles.infoRow}>
+          <View>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.company}>{company}</Text>
+          </View>
+
+          {deliveryFee && (
+            <Text style={TYPOGRAPHY.alertText}>Frete: {deliveryFee}</Text>
+          )}
+        </View>
 
         <View
           style={[
@@ -34,20 +59,11 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             isAvailable ? styles.available : styles.inRoute,
           ]}
         >
-          <Text style={styles.statusText}>
-            {isAvailable ? 'Disponível' : 'Em rota'}
-          </Text>
-        </View>
-
-        <View style={styles.delivererWrapper}>
-          {!isAvailable && deliverer ? (
-            <Text style={styles.delivererText}>
-              Sendo entregue por {deliverer}
-            </Text>
-          ) : null}
+          <Text style={styles.statusText}>{getStatusLabel(status)}</Text>
         </View>
       </View>
     </View>
+
   );
 };
 
