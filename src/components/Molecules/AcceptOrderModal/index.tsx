@@ -19,7 +19,7 @@ export function AcceptOrderModal({ visible, onConfirm, onCancel }: AcceptOrderMo
                 <View style={styles.modalContainer}>
                     <Text style={styles.title}>Aceitar pedido?</Text>
                     <Text style={styles.description}>
-                        Você deseja aceitar este pedido e iniciar a entrega?
+                        Você deseja escolher este pedido para inciar a entrega posteriormente?
                     </Text>
 
                     <View style={styles.buttonContainer}>

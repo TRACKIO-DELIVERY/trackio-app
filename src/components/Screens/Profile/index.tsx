@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { useAuth } from "@/hooks/useAuth";
+import { TYPOGRAPHY } from "@/constants/typography";
 
 export function Profile() {
     const { user, signOut } = useAuth()
@@ -18,9 +19,6 @@ export function Profile() {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Perfil</Text>
-            </View>
 
             <View style={styles.profileCard}>
                 {user?.avatar ? (

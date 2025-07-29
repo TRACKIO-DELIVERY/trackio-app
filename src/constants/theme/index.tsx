@@ -1,6 +1,5 @@
 export const THEME = {
 
-  primary: '#6C63FF',
   primaryLight: '#B3A7FF',
 
   success: '#4CAF50',
@@ -15,6 +14,7 @@ export const THEME = {
   textHeader2: "#E0E0FF",
   overlay: 'rgba(0, 0, 0, 0.5)',
   purple: {
+    800: "#3c3896ff",
     700: "#6C63FF",
   },
   grey: {
@@ -24,13 +24,13 @@ export const THEME = {
     600: "#A9A7A7",
     500: "#D9D9D9",
     400: "#F1EFF3",
-    100: "#8eee56ff",
+    100: "#ffffffff",
   },
   blue: {
     600: "#4285F4",
   },
   red: {
-    500: "#f02424",
+    500: "#eb3d3dff",
   },
   green: {
     600: "#91eb7aff"

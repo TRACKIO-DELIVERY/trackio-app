@@ -40,4 +40,10 @@ export const styles = StyleSheet.create({
     buttonGroup: {
         gap: 12,
     },
+    goBack: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
+        marginBottom: 12,
+    }
 })

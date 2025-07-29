@@ -9,6 +9,7 @@ import { socket } from "@/services/socket";
 import { OrderDTO } from "@/dtos/orderDTO";
 import { router } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
+import Arrow from "@/assets/icons/arrow.svg"
 
 interface OrderDetailProps {
     orderId: string
@@ -57,12 +58,13 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={router.back}>
+            <TouchableOpacity style={styles.goBack} onPress={router.back}>
+                <Arrow width={20} height={20} />
                 <Text style={TYPOGRAPHY.bodyText}> Voltar</Text>
             </TouchableOpacity>
 
             <View style={styles.headerCard}>
-                <Text style={TYPOGRAPHY.buttonText}>Pedido #{orderId}</Text>
+                <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
                 <Text style={TYPOGRAPHY.bodyText}>{order?.email || 'cliente'}</Text>
                 <Text style={TYPOGRAPHY.bodyText}>{order?.establishment.name || 'empresa'}</Text>
                 <Text style={TYPOGRAPHY.bodyText}>{order?.id || 'endereço'} ➔ {order?.id || 'endereço final'}</Text>
@@ -74,7 +76,11 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
 
             <View style={styles.buttonGroup}>
                 <Button title="Iniciar rota" onPress={startTrackingRoute} />
-                <Button title="Finalizar rota" onPress={finishRoute} />
+                <Button
+                    title="Finalizar rota"
+                    variant="danger"
+                    onPress={finishRoute}
+                />
             </View>
 
         </SafeAreaView >

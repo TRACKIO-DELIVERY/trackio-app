@@ -6,6 +6,10 @@ import { Header } from "@/components/Atoms/Header";
 import { useState } from "react";
 import { AcceptOrderModal } from "@/components/Molecules/AcceptOrderModal";
 import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
+import { OrdersList } from "@/components/Molecules/OrdersList";
+import { Text, View } from "react-native";
+import { TYPOGRAPHY } from "@/constants/typography";
+import { THEME } from "@/constants/theme";
 
 export function Home() {
     const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
@@ -29,17 +33,27 @@ export function Home() {
     return (
         <SafeAreaView style={styles.container}>
             <Header name="Fulano" />
-            <Button onPress={() => router.push('/(tabs)/order/34')} />
-            <Button
-                title="abarir"
-                onPress={() => setShowAceptOrderModal(true)} />
+            <View style={styles.orders}>
 
-            <AcceptOrderModal
-                visible={showAceptOrderModal}
-                onCancel={() => setShowAceptOrderModal(false)}
-                onConfirm={() => handleAcceptOrder("1")}
-            />
+                <View style={styles.heading}>
 
+                    <Text style={[TYPOGRAPHY.title]}>
+                        Pedidos
+                    </Text>
+                    <Text style={TYPOGRAPHY.subtitle}>
+                        Selecione um pedido para aceitar iniciar
+                        sua rota!
+                    </Text>
+                </View>
+                <OrdersList handleOpenModal={setShowAceptOrderModal} />
+
+                <AcceptOrderModal
+                    visible={showAceptOrderModal}
+                    onCancel={() => setShowAceptOrderModal(false)}
+                    onConfirm={() => handleAcceptOrder("1")}
+                />
+
+            </View>
         </SafeAreaView>
     )
 }

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     },
     profileCard: {
         alignItems: "center",
-        marginTop: 24,
+        marginTop: 40,
         paddingHorizontal: 20,
     },
     avatar: {
@@ -28,24 +28,24 @@ export const styles = StyleSheet.create({
         marginBottom: 12,
     },
     name: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: "600",
-        color: "#333",
+        color: THEME.purple[800]
     },
     email: {
         fontSize: 14,
-        color: "#666",
+        color: THEME.text,
         marginTop: 4,
     },
     section: {
         marginTop: 32,
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
     },
     sectionTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "600",
         marginBottom: 12,
-        color: "#444",
+        color: THEME.purple[800]
     },
     option: {
         flexDirection: "row",

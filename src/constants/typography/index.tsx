@@ -22,15 +22,18 @@ export const TYPOGRAPHY = StyleSheet.create({
     fontSize: 13,
     color: THEME.red[500],
   },
-
-  // Novos estilos
   title: {
     fontSize: 24,
+    color: THEME.purple[800],
+    fontWeight: "bold",
+  },
+  titleHeader: {
+    fontSize: 22,
     color: THEME.grey[900],
     fontWeight: "bold",
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 15,
     color: THEME.grey[800],
   },
   caption: {

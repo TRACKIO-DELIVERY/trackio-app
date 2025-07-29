@@ -1,3 +1,4 @@
+import { THEME } from "@/constants/theme";
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create({
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
         backgroundColor: "#f0f0f0",
     },
     confirmButton: {
-        backgroundColor: "#2E7D32",
+        backgroundColor: THEME.purple[700],
     },
     buttonText: {
         fontSize: 15,
