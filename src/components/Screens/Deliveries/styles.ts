@@ -3,29 +3,26 @@ import { StyleSheet } from "react-native-unistyles";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "rgb(255, 255, 255)",
     },
+    orders: {
+        paddingTop: 100,
+        paddingHorizontal: 12,
+    },
+
     title: {
         fontSize: 18,
         fontWeight: "600",
-        marginHorizontal: 20,
+        marginHorizontal: 8,
         marginBottom: 8,
         color: "#1A1A1A",
     },
-    list: {
-        paddingHorizontal: 20,
-        paddingBottom: 16,
+    heading: {
+        paddingLeft: 8,
+        paddingBottom: 12
     },
-    card: {
-        backgroundColor: "#F7F7F7",
-        borderRadius: 12,
-        padding: 16,
-        marginBottom: 12,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 4,
-        elevation: 2,
+    list: {
+        paddingBottom: 16,
     },
     client: {
         fontSize: 16,

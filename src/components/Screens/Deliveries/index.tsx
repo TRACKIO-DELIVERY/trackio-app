@@ -2,6 +2,8 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@/components/Atoms/Header";
 import { styles } from "./styles";
+import { OrderCard } from "@/components/Molecules/OrderCard";
+import { TYPOGRAPHY } from "@/constants/typography";
 
 interface DeliveredOrder {
     id: string;
@@ -39,22 +41,32 @@ export function Deliveries() {
     return (
         <SafeAreaView style={styles.container}>
             <Header name="Karen" />
+            <View style={styles.orders}>
+                <View style={styles.heading}>
 
-            <Text style={styles.title}>Pedidos entregues</Text>
+                    <Text style={[TYPOGRAPHY.title]}>
+                        Pedidos Entregues
+                    </Text>
+                    <Text style={TYPOGRAPHY.subtitle}>
+                        Veja todos os pedidos que você entregou!
+                    </Text>
+                </View>
+                <FlatList
+                    data={MOCK_ORDERS}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={{
+                        gap: 12,
+                    }}
+                    renderItem={({ item }) => (
+                        <OrderCard
+                            status={"finalizado"}
+                            title={`Pedido ${item.id}`}
+                            deliverer={'Sem entregador'}
+                            company={'Empresa'} />
+                    )}
+                />
 
-            <FlatList
-                data={MOCK_ORDERS}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.list}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Text style={styles.client}>{item.clientName}</Text>
-                        <Text style={styles.company}>{item.company}</Text>
-                        <Text style={styles.address}>{item.address}</Text>
-                        <Text style={styles.date}>Entregue em: {item.deliveredAt}</Text>
-                    </View>
-                )}
-            />
+            </View>
         </SafeAreaView>
     );
 }
