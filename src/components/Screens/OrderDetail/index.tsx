@@ -21,19 +21,18 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
     const { location, startGetPositions, stopTracking } = useLocation()
 
     useEffect(() => {
-        function onConnect() {
-            socket.emit("join_order", { orderId });
-        };
 
         if (!socket.connected) {
             socket.connect()
         }
         console.log("Conectado ao socket")
 
-        socket.on("connect", onConnect)
+        socket.emit("join_order", orderId);
+
+        socket.emit("route_ready", { orderId: "1", de: "2" })
 
         return () => {
-            socket.off("connect", onConnect);
+            socket.disconnect()
             console.log("desconectado")
         }
     }, [])
