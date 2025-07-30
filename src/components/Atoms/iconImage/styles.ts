@@ -1,3 +1,4 @@
+import { THEME } from "@/constants/theme";
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create({
@@ -10,6 +11,8 @@ export const styles = StyleSheet.create({
     width: 84,
     height: 84,
     borderRadius: 8,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: THEME.grey[500],
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });

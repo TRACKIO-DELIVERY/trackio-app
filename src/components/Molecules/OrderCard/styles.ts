@@ -1,19 +1,23 @@
+import { THEME } from "@/constants/theme";
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: THEME.grey[400],
     padding: 12,
     borderRadius: 12,
     marginVertical: 6,
-    elevation: 2,
   },
   content: {
     flex: 1,
   },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   title: {
-    color: '#9F5CE3',
+    color: THEME.purple[700],
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -22,10 +26,10 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   statusBadge: {
-    marginTop: 6,
+    marginTop: 16,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 10,
+    borderRadius: 6,
     alignSelf: 'flex-start',
   },
   available: {

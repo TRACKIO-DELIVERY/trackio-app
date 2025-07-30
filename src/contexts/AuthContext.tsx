@@ -22,8 +22,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const mockUser: User = {
-    name: "Ze da manga",
+    id: '1',
+    full_name: "Ze da manga",
     email: "mangaze@gmail.com",
+    avatar: '',
+    birth_date: '12/02/2001',
+    cpf: '123.123.122-21'
+
   };
 
   function fetchUser() {

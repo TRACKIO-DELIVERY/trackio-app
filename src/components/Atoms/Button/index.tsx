@@ -7,7 +7,7 @@ import { styles } from "./styles";
 interface ButtonProps extends TouchableOpacityProps {
   title?: string;
   icon?: ComponentType<SvgProps>;
-  variant?: "primary" | "secondary" | "google";
+  variant?: "primary" | "secondary" | "google" | "danger";
 }
 
 export function Button({
