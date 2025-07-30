@@ -1,0 +1,47 @@
+import { useMutation } from "@tanstack/react-query"
+import { api } from "../api"
+
+interface OrderQueueParams {
+    orderId: string
+    url: string
+    deliveryPersonId: string
+}
+
+async function acceptedOrder(params: OrderQueueParams) {
+    const { data } = await api.post('/track/queue/accepted', params)
+    return data
+}
+
+export function sendAcceptedOrderToQueue() {
+    return useMutation({
+        mutationKey: ['accepted_queue'],
+        mutationFn: acceptedOrder
+    })
+}
+
+async function inRouteOrder(params: OrderQueueParams) {
+    const { data } = await api.post('/track/queue/in-route', params)
+    return data
+}
+
+export function sendInRouteOrderQueue() {
+    return useMutation({
+        mutationKey: ['in_route_queue'],
+        mutationFn: inRouteOrder
+    })
+}
+
+
+async function deliveredOrder(params: OrderQueueParams) {
+    const { data } = await api.post('/track/queue/finished', params)
+    return data
+}
+
+export function sendDeliveredOrderQueue() {
+    return useMutation({
+        mutationKey: ['delivered_queue'],
+        mutationFn: deliveredOrder
+    })
+}
+
+
