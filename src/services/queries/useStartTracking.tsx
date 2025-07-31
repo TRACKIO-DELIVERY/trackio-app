@@ -7,7 +7,7 @@ interface StartRouteResponse {
 }
 
 async function startOrderTracking(orderId: string) {
-    const { data } = await apiNode.post('/api/track/start-route', { orderId })
+    const { data } = await apiNode.post('/track/start-route', { orderId })
     return data
 }
 export function useStartTracking() {

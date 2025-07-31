@@ -5,12 +5,17 @@ import { OrderCard } from "../OrderCard";
 import { AcceptOrderModal } from "../AcceptOrderModal";
 import { useState } from "react";
 import { router } from "expo-router";
+import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
+import { sendAcceptedOrderToQueue } from "@/services/queries/sendOrderToQueu";
+import { useAuth } from "@/hooks/useAuth";
 
 
 export function OrdersList() {
+    const { user } = useAuth()
 
     const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
-    const [orderId, setOrderId] = useState('')
+    const { mutateAsync: AceptOrder } = useAcceptOrder()
+    const { mutateAsync: sendAcceptedOrder } = sendAcceptedOrderToQueue()
     const { data, isFetching, error, refetch } = useOrders()
 
     if (error) {
@@ -28,21 +33,26 @@ export function OrdersList() {
         )
     }
 
-    function handleAcceptOrder(orderId: string) {
-        //const { mutate: AceptOrder, data } = useAcceptOrder(orderId)
+    async function handleAcceptOrder(orderId: string) {
 
-        // AceptOrder(undefined, {
-        //     onSuccess: (() => {
-        //         router.push(`/(tabs)/order/${orderId}`)
-        //         setShowAceptOrderModal(false)
-        //     }),
-        //     onError: ((error) => {
-        //         throw new Error('Unable to accept order')
-        //     })
-        // })
+        const orderToQueue = {
+            orderId,
+            deliveryPersonId: user?.user_id,
+            url: `http://localhost:3000/api/track/map/${orderId}`,
+        }
+        try {
 
-        //chamar rota q envia para fila
-        router.push(`/(tabs)/order/${orderId}`)
+            await AceptOrder(orderId)
+            await sendAcceptedOrder(orderToQueue)
+
+            router.push(`/(tabs)/order/${orderId}`)
+            setShowAceptOrderModal(false)
+
+        } catch (error) {
+            console.log('Erro ao aceitar pedido', error)
+            throw new Error('Unable to accept order')
+        }
+
     }
 
     return (
@@ -58,6 +68,11 @@ export function OrdersList() {
                             deliveryFee={item.deliveryFee}
                         />
 
+                        <AcceptOrderModal
+                            visible={showAceptOrderModal}
+                            onCancel={() => setShowAceptOrderModal(false)}
+                            onConfirm={() => handleAcceptOrder(String(item.id))}
+                        />
                     </TouchableOpacity>
                 )}
                 contentContainerStyle={{
@@ -72,11 +87,7 @@ export function OrdersList() {
 
 
             />
-            <AcceptOrderModal
-                visible={showAceptOrderModal}
-                onCancel={() => setShowAceptOrderModal(false)}
-                onConfirm={() => handleAcceptOrder("1")}
-            />
+
         </>
 
     )

@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query"
-import { api } from "../api"
+import { apiNode } from "../api"
 
 interface OrderQueueParams {
     orderId: string
-    url: string
-    deliveryPersonId: string
+    url?: string
+    deliveryPersonId?: string | undefined
 }
 
 async function acceptedOrder(params: OrderQueueParams) {
-    const { data } = await api.post('/track/queue/accepted', params)
+    const { data } = await apiNode.post('/track/queue/accepted', params)
     return data
 }
 
@@ -20,7 +20,7 @@ export function sendAcceptedOrderToQueue() {
 }
 
 async function inRouteOrder(params: OrderQueueParams) {
-    const { data } = await api.post('/track/queue/in-route', params)
+    const { data } = await apiNode.post('/track/queue/in-route', params)
     return data
 }
 
@@ -33,7 +33,7 @@ export function sendInRouteOrderQueue() {
 
 
 async function deliveredOrder(params: OrderQueueParams) {
-    const { data } = await api.post('/track/queue/finished', params)
+    const { data } = await apiNode.post('/track/queue/finished', params)
     return data
 }
 

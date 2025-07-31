@@ -1,14 +1,15 @@
-import { Establishment } from "@/@types/establishment";
 import { DeliveryPersonDTO } from "./deliveryPersonDTO";
 
 export interface OrderDTO {
   id: number;
   establishment: string;
   email: string;
-  deliveryPerson: DeliveryPersonDTO | null;
+  deliveryPerson?: DeliveryPersonDTO | null;
   deliveryFee: string;
-  orderValue: string;
+  orderValue?: string;
   orderStatus: number;
+  complementary: ComplementaryDTO
+  coords?: TrackingDTO
 }
 
 export interface ComplementaryDTO {
@@ -21,8 +22,6 @@ export interface ComplementaryDTO {
 }
 
 export interface TrackingDTO {
-  id: number;
-  order: OrderDTO;
   startLatitude: string;
   startLongitude: string;
   endLatitude: string;

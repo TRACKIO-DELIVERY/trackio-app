@@ -1,4 +1,3 @@
-import { Order } from "@/@types/orders";
 import { OrderDTO } from "@/dtos/orderDTO";
 import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +8,7 @@ async function getOrders(): Promise<OrderDTO[]> {
 
     const orders: OrderDTO[] = data.map((order: any) => ({
         id: order.id,
+        OrderStatus: order.order_status,
         deliveryFee: order.delivery_fee,
         establishment: order.establishment,
         orderStatus: order.order_status,
