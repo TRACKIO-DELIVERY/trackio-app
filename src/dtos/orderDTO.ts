@@ -3,12 +3,28 @@ import { DeliveryPersonDTO } from "./deliveryPersonDTO";
 
 export interface OrderDTO {
   id: number;
-  establishment: Establishment;
+  establishment: string;
   email: string;
   deliveryPerson: DeliveryPersonDTO | null;
   deliveryFee: string;
   orderValue: string;
-  closingDate?: string | null;
   orderStatus: number;
 }
 
+export interface ComplementaryDTO {
+  deliveryStreet: string;
+  deliveryNeighborhood?: string;
+  deliveryNumber: string;
+  deliveryCity: string;
+  deliveryState: string;
+  deliveryCountry: string;
+}
+
+export interface TrackingDTO {
+  id: number;
+  order: OrderDTO;
+  startLatitude: string;
+  startLongitude: string;
+  endLatitude: string;
+  endLongitude: string;
+}

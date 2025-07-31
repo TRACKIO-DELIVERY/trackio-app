@@ -9,19 +9,17 @@ export enum OrderStatus {
 }
 
 export type Order = {
-    id: number;
-    establishment: Establishment; 
-    email: string;
-    delivery_person: DeliveryPerson | null; 
-    delivery_fee: string; 
-    order_value: string;
-    closing_date?: string | null; 
-    order_status: OrderStatus;
+  id: number;
+  establishment: Establishment;
+  email: string;
+  delivery_person: DeliveryPerson | null;
+  delivery_fee: string;
+  order_value: string;
+  order_status: OrderStatus;
+  complementary_order: ComplementaryOrder
 }
 
 export interface ComplementaryOrder {
-  id: number;
-  order: Order,
   delivery_street: string;
   delivery_neighborhood?: string;
   delivery_number: string;
@@ -37,5 +35,4 @@ export interface OrderTracking {
   start_longitude: string;
   end_latitude: string;
   end_longitude: string;
-  timestamp: string;
 }
