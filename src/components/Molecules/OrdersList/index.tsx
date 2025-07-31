@@ -1,14 +1,17 @@
 import { Loading } from "@/components/Atoms/Loading";
 import { useOrders } from "@/services/queries/useOrders";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { OrderCard } from "../OrderCard";
+import { AcceptOrderModal } from "../AcceptOrderModal";
+import { useState } from "react";
+import { router } from "expo-router";
 
-interface OrderListInterface {
-    handleOpenModal: (showModal: boolean) => void
-}
-export function OrdersList({ handleOpenModal }: OrderListInterface) {
 
-    const { data, isFetching, error } = useOrders()
+export function OrdersList() {
+
+    const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
+    const [orderId, setOrderId] = useState('')
+    const { data, isFetching, error, refetch } = useOrders()
 
     if (error) {
         console.log(error)
@@ -25,27 +28,56 @@ export function OrdersList({ handleOpenModal }: OrderListInterface) {
         )
     }
 
+    function handleAcceptOrder(orderId: string) {
+        //const { mutate: AceptOrder, data } = useAcceptOrder(orderId)
+
+        // AceptOrder(undefined, {
+        //     onSuccess: (() => {
+        //         router.push(`/(tabs)/order/${orderId}`)
+        //         setShowAceptOrderModal(false)
+        //     }),
+        //     onError: ((error) => {
+        //         throw new Error('Unable to accept order')
+        //     })
+        // })
+
+        //chamar rota q envia para fila
+        router.push(`/(tabs)/order/${orderId}`)
+    }
+
     return (
+        <>
+            <FlatList
+                data={data}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => setShowAceptOrderModal(true)}>
+                        <OrderCard
+                            status={item.orderStatus}
+                            title={`Pedido #${item.id}`}
+                            company={item.establishment}
+                            deliveryFee={item.deliveryFee}
+                        />
 
-        <FlatList
-            data={data}
-            renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleOpenModal(true)}>
-                    <OrderCard
-                        status={"disponivel"}
-                        title={`Pedido ${item.id}`}
-                        deliverer={item.deliveryPerson?.fullName || 'Sem entregador'}
-                        company={item.establishment.name}
-                        deliveryFee={item.deliveryFee}
+                    </TouchableOpacity>
+                )}
+                contentContainerStyle={{
+                    gap: 12,
+                }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isFetching}
+                        onRefresh={refetch}
                     />
+                }
 
-                </TouchableOpacity>
-            )}
-            contentContainerStyle={{
-                gap: 12,
-            }}
 
-        />
+            />
+            <AcceptOrderModal
+                visible={showAceptOrderModal}
+                onCancel={() => setShowAceptOrderModal(false)}
+                onConfirm={() => handleAcceptOrder("1")}
+            />
+        </>
 
     )
 }

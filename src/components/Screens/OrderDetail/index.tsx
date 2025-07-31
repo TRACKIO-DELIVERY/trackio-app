@@ -10,15 +10,18 @@ import { OrderDTO } from "@/dtos/orderDTO";
 import { router } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
 import Arrow from "@/assets/icons/arrow.svg"
+import { useOrderDetail } from "@/services/queries/useOrderDetail";
+import { Loading } from "@/components/Atoms/Loading";
 
 interface OrderDetailProps {
     orderId: string
-    order?: OrderDTO
 }
-export function OrderDetail({ orderId, order }: OrderDetailProps) {
+export function OrderDetail({ orderId }: OrderDetailProps) {
 
-    const { mutate: startRoute } = useStartTracking(orderId)
+    const { data, isFetching, error } = useOrderDetail(orderId)
+    const { mutate: startRoute } = useStartTracking()
     const { location, startGetPositions, stopTracking } = useLocation()
+
 
     useEffect(() => {
 
@@ -37,12 +40,26 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
         }
     }, [])
 
+    if (error) {
+        console.log(error)
+        return (
+            <View>
+                <Text> Não foi possível carregar pedidos, desculpe!</Text>
+            </View>
+        )
+    }
+
+    if (isFetching) {
+        return (
+            <Loading />
+        )
+    }
     function startTrackingRoute() {
-        startRoute(undefined, {
+        startRoute(orderId, {
             onSuccess: (data) => {
                 console.log(data.canStartSendingLocation)
                 if (data.canStartSendingLocation) {
-                    startGetPositions("1")
+                    startGetPositions(orderId)
                 }
             },
             onError: (error) => {
@@ -64,9 +81,9 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
 
             <View style={styles.headerCard}>
                 <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.email || 'cliente'}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.establishment.name || 'empresa'}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.id || 'endereço'} ➔ {order?.id || 'endereço final'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.email || 'cliente'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.establishment || 'empresa'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.id || 'endereço'} ➔ {data?.id || 'endereço final'}</Text>
             </View>
 
             <View style={styles.mapArea}>
