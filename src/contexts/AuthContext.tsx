@@ -4,7 +4,7 @@ import { RegisterParams, useRegister } from "@/services/queries/useRegister";
 import { useRouter, useSegments } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
-import { getTokenStorage, removeTokenStorage, setTokenStorage } from "@/storage";
+import { getTokensStorage, removeTokensStorage, setTokensStorage } from "@/storage";
 import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
 import { getUserIdFromToken } from "@/utils/jwtDecode";
 
@@ -55,18 +55,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function userIsAuthenticated() {
     try {
       setIsLoading(true)
-      const access = await getTokenStorage()
-      if (!access) {
-        delete api.defaults.headers.common['Authorization']
+      const tokens = await getTokensStorage()
+      if (!tokens?.access && !tokens?.refresh) {
         setIsAuth(false)
         setIsLoading(false)
         return
       }
 
       setIsAuth(true)
-      api.defaults.headers.common['Authorization'] = `Bearer ${access}`
-
-      fetchUser(access)
+      fetchUser(tokens?.access)
 
     } catch (error) {
       console.log('Error checking user authenticated', error)
@@ -97,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     signInMutation(params, {
       onSuccess: (async (data) => {
-        await setTokenStorage(data.access)
+        await setTokensStorage(data.access, data.refresh)
 
         fetchUser(data.access)
         setIsAuth(true)
@@ -121,7 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loginGoogleMutation(params, {
       onSuccess: (async (data) => {
 
-        await setTokenStorage(data.token)
+        await setTokensStorage(data.token, data.refresh)
         setIsAuth(true)
         router.push('/(tabs)')
 
@@ -138,7 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setUser(null);
     setIsAuth(false)
-    await removeTokenStorage()
+    await removeTokensStorage()
 
     router.replace("/login");
     setIsLoading(false);
@@ -155,7 +152,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isAuth && routeIsPrivate) {
       router.replace("/login");
     } else if (isAuth && !routeIsPrivate) {
-      router.replace("/(tabs)");
+      router.replace("/");
     }
   }, [isLoading, rootSegment, user, isAuth]);
   return (

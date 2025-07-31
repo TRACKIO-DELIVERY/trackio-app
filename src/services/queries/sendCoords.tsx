@@ -10,6 +10,6 @@ export function useSendCoords(coords: { lat: number, lng: number }) {
 }
 
 async function sendAcceptedOrder(coords: { lat: number, lng: number }) {
-    const { data } = await apiNode.post('/api/track/send-coords', { coords })
+    const { data } = await apiNode.post('/track/send-coords', { coords })
     return data
 }
