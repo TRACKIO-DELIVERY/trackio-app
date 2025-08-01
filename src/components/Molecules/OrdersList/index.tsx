@@ -14,6 +14,8 @@ export function OrdersList() {
     const { user } = useAuth()
 
     const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
+    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
+
     const { mutateAsync: AceptOrder } = useAcceptOrder()
     const { mutateAsync: sendAcceptedOrder } = sendAcceptedOrderToQueue()
     const { data, isFetching, error, refetch } = useOrders()
@@ -32,6 +34,15 @@ export function OrdersList() {
             <Loading />
         )
     }
+    function openModal(orderId: string) {
+        setSelectedOrderId(orderId)
+        setShowAceptOrderModal(true)
+    }
+
+    function closeModal() {
+        setSelectedOrderId(null)
+        setShowAceptOrderModal(false)
+    }
 
     async function handleAcceptOrder(orderId: string) {
 
@@ -46,21 +57,20 @@ export function OrdersList() {
             await sendAcceptedOrder(orderToQueue)
 
             router.push(`/(tabs)/order/${orderId}`)
+
             setShowAceptOrderModal(false)
 
         } catch (error) {
-            console.log('Erro ao aceitar pedido', error)
             throw new Error('Unable to accept order')
         }
 
     }
-
     return (
         <>
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => setShowAceptOrderModal(true)}>
+                    <TouchableOpacity onPress={() => openModal(String(item.id))}>
                         <OrderCard
                             status={item.orderStatus}
                             title={`Pedido #${item.id}`}
@@ -68,11 +78,7 @@ export function OrdersList() {
                             deliveryFee={item.deliveryFee}
                         />
 
-                        <AcceptOrderModal
-                            visible={showAceptOrderModal}
-                            onCancel={() => setShowAceptOrderModal(false)}
-                            onConfirm={() => handleAcceptOrder(String(item.id))}
-                        />
+
                     </TouchableOpacity>
                 )}
                 contentContainerStyle={{
@@ -84,8 +90,16 @@ export function OrdersList() {
                         onRefresh={refetch}
                     />
                 }
+            />
 
-
+            <AcceptOrderModal
+                visible={showAceptOrderModal}
+                onCancel={closeModal}
+                onConfirm={() => {
+                    if (selectedOrderId) {
+                        handleAcceptOrder(selectedOrderId)
+                    }
+                }}
             />
 
         </>

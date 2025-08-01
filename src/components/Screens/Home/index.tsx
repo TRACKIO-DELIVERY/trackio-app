@@ -6,17 +6,20 @@ import { Text, View } from "react-native";
 import { TYPOGRAPHY } from "@/constants/typography";
 
 import { useAuth } from "@/hooks/useAuth";
+import { Loading } from "@/components/Atoms/Loading";
 
 export function Home() {
-    const { user } = useAuth()
+    const { user, isLoading } = useAuth()
 
+    if (isLoading) {
+        return <Loading />
+    }
     return (
         <SafeAreaView style={styles.container}>
             <Header name={user?.name || 'Entregador(a)'} />
             <View style={styles.orders}>
 
                 <View style={styles.heading}>
-
                     <Text style={[TYPOGRAPHY.title]}>
                         Pedidos
                     </Text>

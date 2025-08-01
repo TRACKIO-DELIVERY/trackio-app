@@ -1,9 +1,11 @@
-import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import { useEffect } from 'react';
 import { Button } from '@/components/Atoms/Button';
 import { useAuth } from '@/hooks/useAuth';
 
+import {
+    GoogleSignin,
+    isSuccessResponse,
+} from '@react-native-google-signin/google-signin'
 import GoogleIcon from "@/assets/icons/google.svg";
 
 
@@ -12,29 +14,35 @@ WebBrowser.maybeCompleteAuthSession();
 export function GoogleLoginButton() {
     const { googleLogin } = useAuth();
 
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: '963229888713-flsidg1c2o1i76tn0v3s0ivdccbkdc0k.apps.googleusercontent.com',
-        redirectUri: 'https://auth.expo.io/@karendantas/trackio-app',
+    GoogleSignin.configure({
+        webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENTID,
+        offlineAccess: true,
         scopes: ['profile', 'email'],
-    });
+        forceCodeForRefreshToken: true,
+    })
 
-    useEffect(() => {
-        if (response?.type === 'success') {
-            const { authentication } = response;
-            const accessToken = authentication?.accessToken;
-            if (accessToken) {
-                googleLogin(accessToken);
+    async function handleGoogleAutheticate() {
+        try {
+            await GoogleSignin.hasPlayServices()
+
+            const response = await GoogleSignin.signIn()
+            const tokens = await GoogleSignin.getTokens()
+            if (isSuccessResponse(response)) {
+                //googleLogin(tokens.accessToken)
+                console.log(response.data)
+                console.log('TOKEN', tokens.accessToken)
             }
+        } catch (error) {
+            console.log(error)
         }
-    }, [response]);
-
+    }
     return (
         <Button
             title="Entrar com Google"
             variant="google"
-            onPress={() => promptAsync()}
+            onPress={handleGoogleAutheticate}
             icon={GoogleIcon}
-            disabled={!request}
+
         />
     );
 }
