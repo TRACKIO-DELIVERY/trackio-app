@@ -20,7 +20,7 @@ import { LocationProvider } from "@/contexts/LocationContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { THEME } from "@/constants/theme";
+
 
 
 export { ErrorBoundary } from "expo-router";

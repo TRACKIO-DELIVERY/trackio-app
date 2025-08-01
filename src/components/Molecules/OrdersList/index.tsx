@@ -65,9 +65,6 @@ export function OrdersList() {
         }
 
     }
-
-    console.log(selectedOrderId)
-
     return (
         <>
             <FlatList
@@ -93,8 +90,6 @@ export function OrdersList() {
                         onRefresh={refetch}
                     />
                 }
-
-
             />
 
             <AcceptOrderModal
