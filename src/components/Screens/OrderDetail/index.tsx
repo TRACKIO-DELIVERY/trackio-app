@@ -11,6 +11,7 @@ import { TYPOGRAPHY } from "@/constants/typography";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { sendDeliveredOrderQueue, sendInRouteOrderQueue } from "@/services/queries/sendOrderToQueu";
+import MapScreen from "@/components/Molecules/Map";
 
 interface OrderDetailProps {
     orderId: string
@@ -110,7 +111,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             </View>
 
             <View style={styles.mapArea}>
-                <Text style={styles.mapText}>[ Mapa será renderizado aqui ]</Text>
+                <MapScreen />
             </View>
 
             <View style={styles.buttonGroup}>

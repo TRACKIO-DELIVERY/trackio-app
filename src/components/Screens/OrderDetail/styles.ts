@@ -28,9 +28,6 @@ export const styles = StyleSheet.create({
     mapArea: {
         flex: 1,
         borderRadius: 12,
-        backgroundColor: "#EEE",
-        justifyContent: "center",
-        alignItems: "center",
         marginBottom: 16,
     },
     mapText: {
