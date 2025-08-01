@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "trackio-app",
+    "name": "Trackio",
     "slug": "trackio-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -31,7 +31,12 @@
       "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      [
+        "expo-router"
+      ],
+      [
+        "@react-native-google-signin/google-signin"
+      ]
     ],
     "experiments": {
       "typedRoutes": true

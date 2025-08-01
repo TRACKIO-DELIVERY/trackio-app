@@ -1,16 +1,19 @@
 import { User } from "@/@types/user";
+import { LoginParams, useLogin } from "@/services/queries/useLogin";
+import { RegisterParams, useRegister } from "@/services/queries/useRegister";
 import { useRouter, useSegments } from "expo-router";
-import {
-  createContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useEffect, useState } from "react";
+import { api } from "@/services/api";
+import { getTokensStorage, removeTokensStorage, setTokensStorage } from "@/storage";
+import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
+import { getUserIdFromToken } from "@/utils/jwtDecode";
 
 interface AuthContextType {
-  isAuth: boolean;
   user: User | null;
   setUser: (user: User) => void;
-  signIn: () => void;
+  login: (params: LoginParams) => void;
+  register: (params: RegisterParams) => void;
+  googleLogin: (params: string) => void;
   signOut: () => void;
   isLoading: boolean;
 }
@@ -18,42 +21,128 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuth, setIsAuth] = useState(true);
+
+  const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate: signUpMutation } = useRegister()
+  const { mutate: signInMutation } = useLogin()
+  const { mutate: loginGoogleMutation } = useGoogleAuth()
 
   const rootSegment = useSegments()[0];
   const router = useRouter();
 
-  const mockUser: User = {
-    name: "Ze da manga",
-    email: "mangaze@gmail.com",
-  };
+  async function fetchUser(token: string) {
+    const userId = getUserIdFromToken(token);
+    if (!userId) {
+      setIsAuth(false);
+      setIsLoading(false);
+      return;
+    }
 
-  function fetchUser() {
-    setUser(mockUser);
+    const { data } = await api.get(`/api/users/${userId}/`);
+    setUser({
+      user_id: data.id,
+      avatar: data.avatar ?? '',
+      name: data.name,
+      birth_date: data.birth_date,
+      email: data.email,
+    });
   }
 
-  function signIn() {
+  async function userIsAuthenticated() {
     try {
-      setIsLoading(true);
-      fetchUser();
-      setIsAuth(true);
-      router.replace('/')
+      setIsLoading(true)
+      const tokens = await getTokensStorage()
+      if (!tokens?.access && !tokens?.refresh) {
+        setIsAuth(false)
+        setIsLoading(false)
+        return
+      }
+
+      setIsAuth(true)
+      fetchUser(tokens?.access)
+
     } catch (error) {
-      console.log(error);
+      console.log('Error checking user authenticated', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
-  function signOut() {
+
+  function register(params: RegisterParams) {
+    setIsLoading(true)
+
+    signUpMutation(params, {
+      onSuccess: (() => {
+        setIsLoading(false)
+        router.push('/login')
+      }),
+      onError: ((error) => {
+        setIsLoading(false)
+
+        console.log(error)
+        alert("Erro no registro")
+      })
+    })
+  }
+
+  function login(params: LoginParams) {
+    setIsLoading(true)
+    signInMutation(params, {
+      onSuccess: (async (data) => {
+        await setTokensStorage(data.access, data.refresh)
+
+        fetchUser(data.access)
+        setIsAuth(true)
+        setIsLoading(false)
+
+        router.push('/(tabs)')
+      }),
+      onError: ((error) => {
+        setIsLoading(false)
+        setIsAuth(false)
+
+        console.log(error)
+        alert("Não foi possível realizar o login")
+      })
+    })
+  }
+
+  async function googleLogin(params: string) {
+    setIsLoading(true)
+
+    loginGoogleMutation(params, {
+      onSuccess: (async (data) => {
+
+        await setTokensStorage(data.token, data.refresh)
+        setIsAuth(true)
+        router.push('/(tabs)')
+
+        setIsLoading(false)
+      }),
+      onError: ((error) => {
+        console.error(error);
+        alert('Falha no login com Google');
+      })
+    })
+
+  }
+  async function signOut() {
     setIsLoading(true);
     setUser(null);
-    setIsAuth(false);
+    setIsAuth(false)
+    await removeTokensStorage()
+
     router.replace("/login");
     setIsLoading(false);
   }
+
+  useEffect(() => {
+    userIsAuthenticated()
+  }, [])
 
   useEffect(() => {
     if (isLoading) return;
@@ -64,16 +153,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } else if (isAuth && !routeIsPrivate) {
       router.replace("/");
     }
-  }, [isLoading, rootSegment, isAuth]);
+  }, [isLoading, rootSegment, user, isAuth]);
   return (
     <AuthContext.Provider
       value={{
-        isAuth,
         isLoading,
         user,
         setUser,
-        signIn,
+        login,
+        register,
         signOut,
+        googleLogin
       }}
     >
       {isLoading ? null : children}

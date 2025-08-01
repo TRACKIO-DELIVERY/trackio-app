@@ -5,19 +5,18 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormType, LoginSchema } from "./schema";
 
-
 import EmailIcon from "@/assets/icons/email.svg";
 import LockIcon from "@/assets/icons/lock.svg";
-import GoogleIcon from "@/assets/icons/google.svg";
 
 import { Input } from "@/components/Atoms/Input";
 import { Button } from "@/components/Atoms/Button";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { router } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
+import { GoogleLoginButton } from "../GoogleButton";
 
 export function LoginForm() {
- const {signIn} = useAuth()
+  const { login } = useAuth();
 
   const {
     control,
@@ -28,7 +27,7 @@ export function LoginForm() {
   });
 
   async function handleLogin(data: LoginFormType) {
-    await signIn();
+    await login(data);
   }
 
   function goToRegister() {
@@ -78,7 +77,7 @@ export function LoginForm() {
       </View>
 
       <Button title="Enviar" onPress={handleSubmit(handleLogin)} />
-      <Button title="Entrar com Google" variant="google" icon={GoogleIcon} />
+      <GoogleLoginButton />
 
       <TouchableOpacity style={styles.linkToRegister} onPress={goToRegister}>
         <Text style={TYPOGRAPHY.alertText}>
