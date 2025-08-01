@@ -1,14 +1,24 @@
 import { Loading } from "@/components/Atoms/Loading";
 import { useOrders } from "@/services/queries/useOrders";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { OrderCard } from "../OrderCard";
+import { AcceptOrderModal } from "../AcceptOrderModal";
+import { useState } from "react";
+import { router } from "expo-router";
+import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
+import { sendAcceptedOrderToQueue } from "@/services/queries/sendOrderToQueu";
+import { useAuth } from "@/hooks/useAuth";
 
-interface OrderListInterface {
-    handleOpenModal: (showModal: boolean) => void
-}
-export function OrdersList({ handleOpenModal }: OrderListInterface) {
 
-    const { data, isFetching, error } = useOrders()
+export function OrdersList() {
+    const { user } = useAuth()
+
+    const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
+    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
+
+    const { mutateAsync: AceptOrder } = useAcceptOrder()
+    const { mutateAsync: sendAcceptedOrder } = sendAcceptedOrderToQueue()
+    const { data, isFetching, error, refetch } = useOrders()
 
     if (error) {
         console.log(error)
@@ -24,28 +34,75 @@ export function OrdersList({ handleOpenModal }: OrderListInterface) {
             <Loading />
         )
     }
+    function openModal(orderId: string) {
+        setSelectedOrderId(orderId)
+        setShowAceptOrderModal(true)
+    }
 
+    function closeModal() {
+        setSelectedOrderId(null)
+        setShowAceptOrderModal(false)
+    }
+
+    async function handleAcceptOrder(orderId: string) {
+
+        const orderToQueue = {
+            orderId,
+            deliveryPersonId: user?.user_id,
+            url: `http://localhost:3000/api/track/map/${orderId}`,
+        }
+        try {
+
+            await AceptOrder(orderId)
+            await sendAcceptedOrder(orderToQueue)
+
+            router.push(`/(tabs)/order/${orderId}`)
+
+            setShowAceptOrderModal(false)
+
+        } catch (error) {
+            throw new Error('Unable to accept order')
+        }
+
+    }
     return (
+        <>
+            <FlatList
+                data={data}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => openModal(String(item.id))}>
+                        <OrderCard
+                            status={item.orderStatus}
+                            title={`Pedido #${item.id}`}
+                            company={item.establishment}
+                            deliveryFee={item.deliveryFee}
+                        />
 
-        <FlatList
-            data={data}
-            renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleOpenModal(true)}>
-                    <OrderCard
-                        status={"disponivel"}
-                        title={`Pedido ${item.id}`}
-                        deliverer={item.deliveryPerson?.fullName || 'Sem entregador'}
-                        company={item.establishment.name}
-                        deliveryFee={item.deliveryFee}
+
+                    </TouchableOpacity>
+                )}
+                contentContainerStyle={{
+                    gap: 12,
+                }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isFetching}
+                        onRefresh={refetch}
                     />
+                }
+            />
 
-                </TouchableOpacity>
-            )}
-            contentContainerStyle={{
-                gap: 12,
-            }}
+            <AcceptOrderModal
+                visible={showAceptOrderModal}
+                onCancel={closeModal}
+                onConfirm={() => {
+                    if (selectedOrderId) {
+                        handleAcceptOrder(selectedOrderId)
+                    }
+                }}
+            />
 
-        />
+        </>
 
     )
 }

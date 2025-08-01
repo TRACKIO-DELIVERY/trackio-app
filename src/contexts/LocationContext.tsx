@@ -8,12 +8,15 @@ interface LocationContextType {
   requestPermission: () => Promise<void>;
   startGetPositions: (orderId: string) => Promise<void>;
   stopTracking: () => void;
+  isTracking: boolean
 }
 export const LocationContext = createContext<LocationContextType>(
   {} as LocationContextType,
 );
 
 export function LocationProvider({ children }: { children: ReactNode }) {
+
+  const [isTracking, setIsTraking] = useState(false)
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null,
   );
@@ -28,6 +31,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   function stopTracking() {
     subscriptionRef.current?.remove();
     subscriptionRef.current = null;
+    setIsTraking(false)
   }
 
   async function startGetPositions(orderId: string) {
@@ -36,7 +40,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     }
 
     stopTracking(); //verifica se já tem outra instancia da ref
-
+    setIsTraking(true)
     const subscription = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Highest,
@@ -64,6 +68,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     requestPermission();
     return () => {
       stopTracking(); // Evita GPS ativo se sair da tela sem finalizar
+      setIsTraking(false)
     };
   }, []);
   return (
@@ -74,6 +79,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         requestPermission,
         startGetPositions,
         stopTracking,
+        isTracking
       }}
     >
       {children}

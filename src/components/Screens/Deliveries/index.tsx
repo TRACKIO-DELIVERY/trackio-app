@@ -4,6 +4,7 @@ import { Header } from "@/components/Atoms/Header";
 import { styles } from "./styles";
 import { OrderCard } from "@/components/Molecules/OrderCard";
 import { TYPOGRAPHY } from "@/constants/typography";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DeliveredOrder {
     id: string;
@@ -38,9 +39,11 @@ const MOCK_ORDERS: DeliveredOrder[] = [
 ];
 
 export function Deliveries() {
+
+    const { user } = useAuth()
     return (
         <SafeAreaView style={styles.container}>
-            <Header name="Karen" />
+            <Header name={user?.name || 'Entregador(a)'} />
             <View style={styles.orders}>
                 <View style={styles.heading}>
 
@@ -59,9 +62,8 @@ export function Deliveries() {
                     }}
                     renderItem={({ item }) => (
                         <OrderCard
-                            status={"finalizado"}
-                            title={`Pedido ${item.id}`}
-                            deliverer={'Sem entregador'}
+                            status={3}
+                            title={`Pedido #${item.id}`}
                             company={'Empresa'} />
                     )}
                 />

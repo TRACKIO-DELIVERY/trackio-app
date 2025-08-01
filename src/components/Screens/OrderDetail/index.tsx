@@ -1,49 +1,87 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, BackHandler, Text, View } from "react-native";
 import { Button } from "@/components/Atoms/Button";
 import { useStartTracking } from "@/services/queries/useStartTracking";
 import { useLocation } from "@/hooks/useLocation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { socket } from "@/services/socket";
-import { OrderDTO } from "@/dtos/orderDTO";
-import { router } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
-import Arrow from "@/assets/icons/arrow.svg"
+import { useOrderDetail } from "@/services/queries/useOrderDetail";
+import { Loading } from "@/components/Atoms/Loading";
+import { sendDeliveredOrderQueue, sendInRouteOrderQueue } from "@/services/queries/sendOrderToQueu";
 
 interface OrderDetailProps {
     orderId: string
-    order?: OrderDTO
 }
-export function OrderDetail({ orderId, order }: OrderDetailProps) {
+export function OrderDetail({ orderId }: OrderDetailProps) {
 
-    const { mutate: startRoute } = useStartTracking(orderId)
-    const { location, startGetPositions, stopTracking } = useLocation()
+    const { data, isFetching, error } = useOrderDetail(orderId)
+
+    const { mutate: sendInRouteOrder } = sendInRouteOrderQueue()
+    const { mutate: sendDeliveredOrder } = sendDeliveredOrderQueue()
+
+    const { mutate: startRoute } = useStartTracking()
+    const { location, startGetPositions, stopTracking, isTracking } = useLocation()
+
 
     useEffect(() => {
-        function onConnect() {
-            socket.emit("join_order", { orderId });
-        };
 
         if (!socket.connected) {
             socket.connect()
         }
         console.log("Conectado ao socket")
 
-        socket.on("connect", onConnect)
+        socket.emit("join_order", orderId);
 
         return () => {
-            socket.off("connect", onConnect);
+            socket.disconnect()
             console.log("desconectado")
         }
     }, [])
 
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                if (isTracking) {
+                    Alert.alert(
+                        "Rota em andamento",
+                        "Você precisa finalizar a rota antes de sair.",
+                        [{ text: "OK", style: "cancel" }]
+                    );
+                    return true;
+                }
+                return false
+            }
+
+
+            const backHandler = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+            return () => backHandler.remove()
+        }, [isTracking])
+    )
+
+    if (error) {
+        console.log(error)
+        return (
+            <View>
+                <Text> Não foi possível carregar pedidos, desculpe!</Text>
+            </View>
+        )
+    }
+
+    if (isFetching) {
+        return (
+            <Loading />
+        )
+    }
     function startTrackingRoute() {
-        startRoute(undefined, {
+        startRoute(orderId, {
             onSuccess: (data) => {
-                console.log(data.canStartSendingLocation)
+
                 if (data.canStartSendingLocation) {
-                    startGetPositions("1")
+                    sendInRouteOrder({ orderId })
+                    startGetPositions(orderId)
                 }
             },
             onError: (error) => {
@@ -54,20 +92,21 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
 
     function finishRoute() {
         stopTracking()
+        sendDeliveredOrder({ orderId })
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.goBack} onPress={router.back}>
+            {/* <TouchableOpacity style={styles.goBack} onPress={router.back}>
                 <Arrow width={20} height={20} />
                 <Text style={TYPOGRAPHY.bodyText}> Voltar</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <View style={styles.headerCard}>
                 <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.email || 'cliente'}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.establishment.name || 'empresa'}</Text>
-                <Text style={TYPOGRAPHY.bodyText}>{order?.id || 'endereço'} ➔ {order?.id || 'endereço final'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.email || 'cliente'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.establishment || 'empresa'}</Text>
+                <Text style={TYPOGRAPHY.bodyText}>{data?.id || 'endereço'} ➔ {data?.id || 'endereço final'}</Text>
             </View>
 
             <View style={styles.mapArea}>
@@ -75,12 +114,18 @@ export function OrderDetail({ orderId, order }: OrderDetailProps) {
             </View>
 
             <View style={styles.buttonGroup}>
-                <Button title="Iniciar rota" onPress={startTrackingRoute} />
-                <Button
-                    title="Finalizar rota"
-                    variant="danger"
-                    onPress={finishRoute}
-                />
+
+                {isTracking ? (
+                    <Button
+                        title="Finalizar rota"
+                        variant="danger"
+                        onPress={finishRoute}
+                    />
+
+                ) : (
+                    <Button title="Iniciar rota" onPress={startTrackingRoute} />
+
+                )}
             </View>
 
         </SafeAreaView >

@@ -9,8 +9,7 @@ type OrderStatus = 'disponivel' | 'em rota' | 'finalizado';
 interface OrderCardProps {
   title: string;
   company: string;
-  status: OrderStatus;
-  deliverer?: string;
+  status: number;
   deliveryFee?: string
 }
 
@@ -18,18 +17,17 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   title,
   company,
   status,
-  deliverer,
   deliveryFee
 }) => {
-  const isAvailable = status === 'disponivel';
+  const isAvailable = status === 1;
 
-  function getStatusLabel(status: string) {
+  function getStatusLabel(status: number) {
     switch (status) {
-      case 'disponivel':
+      case 1:
         return 'Disponível';
-      case 'em rota':
+      case 2:
         return 'Em rota';
-      case 'finalizado':
+      case 3:
         return 'Finalizado';
       default:
         return 'Desconhecido';
