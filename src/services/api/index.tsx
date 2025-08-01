@@ -12,9 +12,9 @@ api.interceptors.request.use(
         const tokens = await getTokensStorage()
 
         if (!tokens?.access && !tokens?.refresh) {
-            delete api.defaults.headers.common['Authorization']
+            delete config.headers['Authorization']
         }
-        api.defaults.headers.common['Authorization'] = `Bearer ${tokens?.access}`
+        config.headers['Authorization'] = `Bearer ${tokens?.access}`
         return config
     },
     (error) => {
