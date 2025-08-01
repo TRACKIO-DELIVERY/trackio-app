@@ -1,15 +1,35 @@
-import { SafeAreaView } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView, ScrollView, TouchableWithoutFeedback, Image
+} from "react-native";
 
 import { styles } from "./styles";
 import { RegisterForm } from "@/components/Molecules/RegisterForm";
 
 
-import Icon from "@/assets/icons/icon.svg";
+
 export function Register() {
   return (
     <SafeAreaView style={styles.container}>
-      <Icon style={{ alignSelf: "center" }} />
-      <RegisterForm />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView contentContainerStyle={styles.scroll}>
+            <Image
+              source={require('@/assets/logo/logo.png')}
+              style={{ width: 130, height: 130, alignSelf: "center" }} />
+
+
+            <RegisterForm />
+
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

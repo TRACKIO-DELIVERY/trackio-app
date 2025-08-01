@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "../api";
 
 export interface RegisterParams {
-    name: string,
+    fullname: string,
     email: string,
     password: string,
-    bithDate: string,
-    cpf: string,
+    bithDate?: string,
+    cpf?: string,
     userType: number //3
 }
 

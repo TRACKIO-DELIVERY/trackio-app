@@ -5,6 +5,10 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 12,
     backgroundColor: "rgb(255, 255, 255)",
-    paddingTop: 84,
   },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignContent: "center",
+  }
 });

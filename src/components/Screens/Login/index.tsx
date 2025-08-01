@@ -14,7 +14,7 @@ export function Login() {
 
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <ScrollView contentContainerStyle={styles.scroll}>
             <Image
               source={require('@/assets/logo/logo.png')}
               style={{ width: 130, height: 130, alignSelf: "center" }} />

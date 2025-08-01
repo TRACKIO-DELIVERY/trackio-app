@@ -16,9 +16,10 @@ import { Input } from "@/components/Atoms/Input";
 import { Button } from "@/components/Atoms/Button";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { router } from "expo-router";
+import { RegisterParams } from "@/services/queries/useRegister";
 
 export function RegisterForm() {
-  const { signIn } = useAuth();
+  const { register } = useAuth();
 
   const {
     control,
@@ -31,7 +32,14 @@ export function RegisterForm() {
   console.log(errors)
 
   async function handleRegister(data: RegisterFormType) {
-    await signIn();
+
+    const user: RegisterParams = {
+      fullname: data.fullname,
+      email: data.email,
+      password: data.password,
+      userType: 3
+    }
+    await register(user);
   }
 
   function goToLogin() {
