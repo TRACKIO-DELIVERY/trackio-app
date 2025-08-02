@@ -1,13 +1,13 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   form: {
     gap: 16,
   },
   inputsContainer: {
-    paddingBottom: 50,
+    paddingBottom: 10,
   },
-  linkToRegister: {
+  linkToLogin: {
     alignSelf: "center",
   },
   inputView: {

@@ -1,13 +1,18 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView, ScrollView, TouchableWithoutFeedback, Image
+} from "react-native";
 
 import { styles } from "./styles";
-import { LoginForm } from "@/components/Molecules/LoginForm";
+import { RegisterForm } from "@/components/Molecules/RegisterForm";
 
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, View } from "react-native";
-export function Login() {
+
+
+export function Register() {
   return (
     <SafeAreaView style={styles.container}>
-
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -19,7 +24,8 @@ export function Login() {
               source={require('@/assets/logo/logo.png')}
               style={{ width: 130, height: 130, alignSelf: "center" }} />
 
-            <LoginForm />
+
+            <RegisterForm />
 
           </ScrollView>
         </TouchableWithoutFeedback>

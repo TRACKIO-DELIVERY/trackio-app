@@ -61,6 +61,7 @@ export function OrdersList() {
             setShowAceptOrderModal(false)
 
         } catch (error) {
+            console.log(error)
             throw new Error('Unable to accept order')
         }
 

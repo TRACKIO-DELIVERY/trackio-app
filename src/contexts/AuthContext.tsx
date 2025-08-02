@@ -77,14 +77,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     signUpMutation(params, {
       onSuccess: (() => {
+        setIsAuth(false)
         setIsLoading(false)
-        router.push('/login')
       }),
-      onError: ((error) => {
+      onError: ((error: any) => {
         setIsLoading(false)
 
-        console.log(error)
-        alert("Erro no registro")
+        console.log(error.message)
+        alert("Erro: " + error.response?.data?.detail || error.message)
       })
     })
   }
@@ -148,6 +148,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isLoading) return;
     const routeIsPrivate = rootSegment === "(tabs)";
 
+    console.log(isAuth)
     if (!isAuth && routeIsPrivate) {
       router.replace("/login");
     } else if (isAuth && !routeIsPrivate) {
