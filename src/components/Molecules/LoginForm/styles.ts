@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create({
   form: {
-    paddingTop: 98,
     gap: 16,
   },
   inputsContainer: {

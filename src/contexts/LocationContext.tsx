@@ -1,17 +1,22 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
+import { socket } from "@/services/socket";
 
 interface LocationContextType {
   location: Location.LocationObject | null;
   permissionStatus: string | null;
   requestPermission: () => Promise<void>;
-  startGetPositions: () => Promise<void>;
+  startGetPositions: (orderId: string) => Promise<void>;
+  stopTracking: () => void;
+  isTracking: boolean
 }
 export const LocationContext = createContext<LocationContextType>(
   {} as LocationContextType,
 );
 
 export function LocationProvider({ children }: { children: ReactNode }) {
+
+  const [isTracking, setIsTraking] = useState(false)
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null,
   );
@@ -26,15 +31,16 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   function stopTracking() {
     subscriptionRef.current?.remove();
     subscriptionRef.current = null;
+    setIsTraking(false)
   }
 
-  async function startGetPositions() {
+  async function startGetPositions(orderId: string) {
     if (permissionStatus !== "granted") {
       await requestPermission();
     }
 
     stopTracking(); //verifica se já tem outra instancia da ref
-
+    setIsTraking(true)
     const subscription = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Highest,
@@ -43,28 +49,26 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       },
       (newLocation) => {
         setLocation(newLocation);
+        const coords = {
+          latitude: newLocation?.coords.latitude,
+          longitude: newLocation?.coords.longitude
+        }
+        socket.emit("location_update", {
+          orderId,
+          coords
+
+        })
       },
     );
 
     subscriptionRef.current = subscription;
-
-    //emitir no socket aqui
-
-    // const coords = {
-    //     latitude: location?.coords.latitude,
-    //     longitude: location?.coords.longitude
-    // }
-    // socket.emit("location_update", {
-    //     orderId,
-    //     coords
-
-    // })
   }
 
   useEffect(() => {
     requestPermission();
     return () => {
       stopTracking(); // Evita GPS ativo se sair da tela sem finalizar
+      setIsTraking(false)
     };
   }, []);
   return (
@@ -74,6 +78,8 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         permissionStatus,
         requestPermission,
         startGetPositions,
+        stopTracking,
+        isTracking
       }}
     >
       {children}
