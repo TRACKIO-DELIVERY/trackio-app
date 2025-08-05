@@ -8,8 +8,8 @@ export interface OrderDTO {
   deliveryFee: string;
   orderValue?: string;
   orderStatus: number;
-  complementary: ComplementaryDTO
-  coords?: TrackingDTO
+  fullDeliveryAddress: string;
+  fullPickUpAdrress: string
 }
 
 export interface ComplementaryDTO {

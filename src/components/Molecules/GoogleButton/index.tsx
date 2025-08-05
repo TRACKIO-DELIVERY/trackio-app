@@ -33,8 +33,6 @@ export function GoogleLoginButton() {
                     user_type: 3,
                     device_type: "mobile"
                 })
-                console.log(response.data.idToken)
-                console.log(response.data)
             }
         } catch (error) {
             console.log(error)

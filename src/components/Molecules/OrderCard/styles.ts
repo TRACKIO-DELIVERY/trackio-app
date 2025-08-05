@@ -51,4 +51,8 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
   },
+  address: {
+    fontSize: 12,
+    color: THEME.grey[700]
+  }
 });

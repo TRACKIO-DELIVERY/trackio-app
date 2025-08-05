@@ -49,7 +49,7 @@ export function OrdersList() {
             order_id: orderId,
             order_status: 1,
             delivery_person: user?.user_id,
-            url: `https://trackio.amisahdev.com.br/track/map/${orderId}`,
+            url: `https://trackio.amisahdev.com.br/track/map/${orderId}`
         }
         try {
 
@@ -75,6 +75,7 @@ export function OrdersList() {
                         <OrderCard
                             status={item.orderStatus}
                             title={`Pedido #${item.id}`}
+                            deliveryAddress={item.fullDeliveryAddress}
                             company={item.establishment}
                             deliveryFee={item.deliveryFee}
                         />
