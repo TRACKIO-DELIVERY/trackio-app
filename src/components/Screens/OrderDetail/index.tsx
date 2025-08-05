@@ -6,7 +6,7 @@ import { useStartTracking } from "@/services/queries/useStartTracking";
 import { useLocation } from "@/hooks/useLocation";
 import { useCallback, useEffect } from "react";
 import { socket } from "@/services/socket";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { Loading } from "@/components/Atoms/Loading";
@@ -79,9 +79,12 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     function startTrackingRoute() {
         startRoute(orderId, {
             onSuccess: (data) => {
-
+                const orderToQueue = {
+                    order_id: orderId,
+                    order_status: 2
+                }
                 if (data.canStartSendingLocation) {
-                    sendInRouteOrder({ orderId })
+                    sendInRouteOrder(orderToQueue)
                     startGetPositions(orderId)
                 }
             },
@@ -92,8 +95,29 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     }
 
     function finishRoute() {
-        stopTracking()
-        sendDeliveredOrder({ orderId })
+
+        Alert.alert(
+            "Encerrar rota",
+            "Deseja encerrar?", [
+            {
+                text: 'Cancelar',
+                onPress: () => { },
+                style: 'cancel'
+            },
+            {
+                text: "OK",
+                onPress: () => {
+
+                    stopTracking()
+                    const orderToQueue = {
+                        order_id: orderId,
+                        order_status: 3
+                    }
+                    sendDeliveredOrder(orderToQueue)
+                    router.push('/(tabs)/deliveries')
+                }
+            }
+        ])
     }
 
     return (

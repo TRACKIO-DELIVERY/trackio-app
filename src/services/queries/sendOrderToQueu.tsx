@@ -2,9 +2,10 @@ import { useMutation } from "@tanstack/react-query"
 import { apiNode } from "../api"
 
 interface OrderQueueParams {
-    orderId: string
-    url?: string
-    deliveryPersonId?: string | undefined
+    order_id: string,
+    order_status: number,
+    url?: string,
+    delivery_person?: string | undefined
 }
 
 async function acceptedOrder(params: OrderQueueParams) {

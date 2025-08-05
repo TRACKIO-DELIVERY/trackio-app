@@ -1,7 +1,6 @@
 # 📦 Track.io — Aplicação Mobile para Entregadores
 
-O **Track.io** é um aplicativo mobile desenvolvido para entregadores, permitindo que eles possam se cadastrar, selecionar encomendas disponíveis e acompanhar suas rotas de entrega em tempo real.
-
+O **Track.io** é um aplicativo mobile desenvolvido para entregadores regionais, permitindo vizualicação da rota dos seus pedidos!
 ---
 
 ## ✨ Funcionalidades
@@ -22,8 +21,8 @@ O **Track.io** é um aplicativo mobile desenvolvido para entregadores, permitind
 - [React Native SVG](https://github.com/software-mansion/react-native-svg)
 - [React Query](https://tanstack.com/query/latest)
 - [Axios](https://axios-http.com/)
-- [React Native Maps](https://github.com/react-native-maps/react-native-maps)
-- [Firebase](https://firebase.google.com/) (para autenticação)
+- [MapBox](https://docs.mapbox.com/)
+
 
 ---
 
@@ -43,8 +42,7 @@ npm install
 
 ```
 
-3. **Inicie o projeto**
-
+3. **Instale e rode**
 ```bash
-npx expo start
+npx expo run
 ```

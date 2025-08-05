@@ -5,7 +5,7 @@ import { useRouter, useSegments } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { getTokensStorage, removeTokensStorage, setTokensStorage } from "@/storage";
-import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
+import { googleLoginParams, useGoogleAuth } from "@/services/queries/useGoogleAuth";
 import { getUserIdFromToken } from "@/utils/jwtDecode";
 
 interface AuthContextType {
@@ -13,7 +13,7 @@ interface AuthContextType {
   setUser: (user: User) => void;
   login: (params: LoginParams) => void;
   register: (params: RegisterParams) => void;
-  googleLogin: (params: string) => void;
+  googleLogin: (params: googleLoginParams) => void;
   signOut: () => void;
   isLoading: boolean;
 }
@@ -77,20 +77,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     signUpMutation(params, {
       onSuccess: (() => {
+        setIsAuth(false)
         setIsLoading(false)
-        router.push('/login')
+        alert("Cadastrado com sucesso!")
       }),
-      onError: ((error) => {
+      onError: ((error: any) => {
         setIsLoading(false)
 
-        console.log(error)
-        alert("Erro no registro")
+        console.log(error.message)
+        alert("Erro: " + error.response?.data?.detail || error.message)
       })
     })
   }
 
   function login(params: LoginParams) {
     setIsLoading(true)
+    console.log('DADOS LOGIN:', params)
     signInMutation(params, {
       onSuccess: (async (data) => {
         await setTokensStorage(data.access, data.refresh)
@@ -104,14 +106,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       onError: ((error) => {
         setIsLoading(false)
         setIsAuth(false)
-
-        console.log(error)
+        console.log('ERRO LOGIN:', error)
         alert("Não foi possível realizar o login")
       })
     })
   }
 
-  async function googleLogin(params: string) {
+  async function googleLogin(params: googleLoginParams) {
     setIsLoading(true)
 
     loginGoogleMutation(params, {
@@ -148,6 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isLoading) return;
     const routeIsPrivate = rootSegment === "(tabs)";
 
+    console.log(isAuth)
     if (!isAuth && routeIsPrivate) {
       router.replace("/login");
     } else if (isAuth && !routeIsPrivate) {

@@ -4,7 +4,7 @@ import { api } from "../api";
 
 
 async function getDeliveryPerson(id: string): Promise<DeliveryPersonDTO> {
-    const { data } = await api.get('/api/deliveryPerson/', { params: { id } })
+    const { data } = await api.get('/api/delivery-people/', { params: { id } })
 
     return data
 }

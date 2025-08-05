@@ -22,20 +22,6 @@ const MOCK_ORDERS: DeliveredOrder[] = [
         deliveredAt: "2025-07-22 14:30",
         address: "Rua das Flores, 123",
     },
-    {
-        id: "2",
-        clientName: "Maria Oliveira",
-        company: "Pet Shop Vida",
-        deliveredAt: "2025-07-21 11:15",
-        address: "Av. Brasil, 456",
-    },
-    {
-        id: "3",
-        clientName: "Lucas Pereira",
-        company: "Mercado Bom Preço",
-        deliveredAt: "2025-07-20 09:45",
-        address: "Rua da Paz, 789",
-    },
 ];
 
 export function Deliveries() {

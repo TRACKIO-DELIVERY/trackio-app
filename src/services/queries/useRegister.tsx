@@ -2,16 +2,23 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "../api";
 
 export interface RegisterParams {
-    name: string,
-    email: string,
-    password: string,
-    bithDate: string,
-    cpf: string,
-    userType: number //3
+    user: {
+        name: string,
+        username?: string,
+        password: string,
+        email: string,
+        bith_date?: string,
+        user_type: number //3
+        cpf?: string,
+
+    }
+    availability: string,
+    vehicle: string,
+    license_plate: string,
 }
 
 async function register(params: RegisterParams) {
-    const { data } = await api.post('/users', params)
+    const { data } = await api.post('/api/delivery-people/', params)
     return data
 }
 export function useRegister() {
