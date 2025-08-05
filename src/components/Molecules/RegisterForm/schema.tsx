@@ -11,6 +11,8 @@ export const RegisterSchema = z.object({
     .min(1, { message: "Preencha o campo!" })
     .email("Insira um email válido"),
   birthDate: z.string().min(1, 'Preencha o campo!'),
+  vehicle: z.string().min(1, 'Preencha o campo!'),
+  plate: z.string().min(1, 'Preencha o campo!'),
   cpf: z.string().min(1, 'Preencha o campo!'),
   password: z
     .string()

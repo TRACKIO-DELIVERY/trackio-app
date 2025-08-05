@@ -38,21 +38,25 @@ export function RegisterForm() {
   });
 
   function handleRegister(data: RegisterFormType) {
-    console.log(data)
     const user: RegisterParams = {
-      name: data.fullname,
-      email: data.email,
-      password: data.password,
-      username: data.username,
-      bith_date: data.birthDate,
-      cpf: data.cpf,
-      user_type: 3
+      user: {
+        name: data.fullname,
+        username: data.username,
+        password: data.password,
+        email: data.email,
+        bith_date: data.birthDate,
+        user_type: 3,
+        cpf: data.cpf,
+      },
+      availability: "true",
+      license_plate: data.plate,
+      vehicle: data.vehicle,
     }
     register(user);
   }
 
   async function goToNextForm() {
-    const isValid = await trigger(['fullname', 'email', 'birthDate', 'cpf'])
+    const isValid = await trigger(['fullname', 'username', 'email', 'birthDate', 'cpf'])
     if (isValid) setNextForm(true)
   }
 
@@ -63,7 +67,7 @@ export function RegisterForm() {
     <View style={styles.form}>
       {
         nextForm && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setNextForm(false)}>
             <Text style={TYPOGRAPHY.bodyText}> Voltar</Text>
           </TouchableOpacity>
         )
@@ -88,6 +92,25 @@ export function RegisterForm() {
                 />
                 <Text style={TYPOGRAPHY.errorText}>
                   {errors && errors.fullname?.message}
+                </Text>
+              </View>
+
+              {/*Username */}
+              <View style={styles.inputView}>
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      icon={LockIcon}
+                      placeholder="Username"
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                <Text style={TYPOGRAPHY.errorText}>
+                  {errors && errors.username?.message}
                 </Text>
               </View>
 
@@ -151,15 +174,15 @@ export function RegisterForm() {
         {
           nextForm && (
             <>
-              {/*Username */}
+              {/*Vehicle */}
               <View style={styles.inputView}>
                 <Controller
                   control={control}
-                  name="username"
+                  name="vehicle"
                   render={({ field: { onChange, value } }) => (
                     <Input
                       icon={LockIcon}
-                      placeholder="Username"
+                      placeholder="Veículo"
                       onChangeText={onChange}
                       value={value}
                     />
@@ -169,6 +192,27 @@ export function RegisterForm() {
                   {errors && errors.username?.message}
                 </Text>
               </View>
+
+
+              {/*Plate */}
+              <View style={styles.inputView}>
+                <Controller
+                  control={control}
+                  name="plate"
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      icon={LockIcon}
+                      placeholder="Placa do seu veículo"
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                <Text style={TYPOGRAPHY.errorText}>
+                  {errors && errors.plate?.message}
+                </Text>
+              </View>
+
               {/*Senha */}
               <View style={styles.inputView}>
                 <Controller
