@@ -3,11 +3,10 @@ import { api } from "../api";
 
 export interface googleLoginParams {
     auth_token: string,
-    user_type: number,
     device_type?: string
 }
 
-async function googleAuth({ auth_token, user_type }: googleLoginParams) {
+async function googleAuth({ auth_token }: googleLoginParams) {
     const { data } = await api.post('/api/auth/social/google/',
         {
             auth_token,

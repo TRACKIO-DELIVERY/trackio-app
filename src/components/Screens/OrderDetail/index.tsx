@@ -11,6 +11,7 @@ import { TYPOGRAPHY } from "@/constants/typography";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { sendDeliveredOrderQueue, sendInRouteOrderQueue } from "@/services/queries/sendOrderToQueu";
+import Map from "@/components/Molecules/Map";
 
 interface OrderDetailProps {
     orderId: string
@@ -23,7 +24,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     const { mutate: sendDeliveredOrder } = sendDeliveredOrderQueue()
 
     const { mutate: startRoute } = useStartTracking()
-    const { location, startGetPositions, stopTracking, isTracking } = useLocation()
+    const { startGetPositions, stopTracking, isTracking } = useLocation()
 
 
     useEffect(() => {
@@ -121,11 +122,6 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <TouchableOpacity style={styles.goBack} onPress={router.back}>
-                <Arrow width={20} height={20} />
-                <Text style={TYPOGRAPHY.bodyText}> Voltar</Text>
-            </TouchableOpacity> */}
-
             <View style={styles.headerCard}>
                 <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
                 <Text style={TYPOGRAPHY.bodyText}>{data?.email || 'cliente'}</Text>
@@ -134,7 +130,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             </View>
 
             <View style={styles.mapArea}>
-                <Text style={styles.mapText}>[ Mapa será renderizado aqui ]</Text>
+                <Map orderId={orderId} />
             </View>
 
             <View style={styles.buttonGroup}>

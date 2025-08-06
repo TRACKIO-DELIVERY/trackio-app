@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchUser(token: string) {
     const userId = getUserIdFromToken(token);
+    console.log('i', userId)
     if (!userId) {
       setIsAuth(false);
       setIsLoading(false);
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const { data } = await api.get(`/api/users/${userId}/`);
+
     setUser({
       user_id: data.id,
       avatar: data.avatar ?? '',
@@ -92,7 +94,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function login(params: LoginParams) {
     setIsLoading(true)
-    console.log('DADOS LOGIN:', params)
     signInMutation(params, {
       onSuccess: (async (data) => {
         await setTokensStorage(data.access, data.refresh)
@@ -117,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     loginGoogleMutation(params, {
       onSuccess: (async (data) => {
+        console.log(data)
 
         await setTokensStorage(data.token, data.refresh)
         setIsAuth(true)
@@ -124,8 +126,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setIsLoading(false)
       }),
-      onError: ((error) => {
-        console.error(error);
+      onError: ((error: any) => {
+        console.error("❌ Erro no loginGoogleMutation:");
+        console.error("Mensagem:", error.message);
+        console.error("Resposta completa:", error.response?.data);
+        console.error("Status:", error.response?.status);
         alert('Falha no login com Google');
       })
     })
