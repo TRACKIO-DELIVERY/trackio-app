@@ -16,6 +16,7 @@ interface LoginResponse {
 }
 async function login(params: LoginParams) {
     const { data } = await api.post('/api/token/', params)
+
     return data
 }
 

@@ -12,7 +12,7 @@ async function googleAuth({ auth_token }: googleLoginParams) {
             auth_token,
             device_type: "mobile"
         })
-    console.log('AAAAAA', data)
+
     return data
 }
 
