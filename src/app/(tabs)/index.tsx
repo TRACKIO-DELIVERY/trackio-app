@@ -1,10 +1,5 @@
-import House from "@/assets/icons/home.svg";
-import { View } from "react-native";
+import { Home } from "@/components/Screens/Home";
 
 export default function Index() {
-  return (
-    <View>
-      <House />
-    </View>
-  );
+  return <Home />
 }
