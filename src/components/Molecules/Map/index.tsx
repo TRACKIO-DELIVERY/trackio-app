@@ -18,8 +18,8 @@ export default function Map({ orderId }: { orderId: string }) {
             setRegion({
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.005,
+                latitudeDelta: 0.0005,
+                longitudeDelta: 0.0005,
             });
         }
     }, [location]);

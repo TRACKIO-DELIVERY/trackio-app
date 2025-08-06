@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchUser(token: string) {
     const userId = getUserIdFromToken(token);
-    console.log('i', userId)
+
     if (!userId) {
       setIsAuth(false);
       setIsLoading(false);
@@ -118,10 +118,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     loginGoogleMutation(params, {
       onSuccess: (async (data) => {
-        console.log(data)
 
-        await setTokensStorage(data.token, data.refresh)
+        await setTokensStorage(data.access, data.refresh)
         setIsAuth(true)
+        fetchUser(data.access)
         router.push('/(tabs)')
 
         setIsLoading(false)
