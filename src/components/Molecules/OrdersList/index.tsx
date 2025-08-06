@@ -9,7 +9,6 @@ import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
 import { sendAcceptedOrderToQueue } from "@/services/queries/sendOrderToQueu";
 import { useAuth } from "@/hooks/useAuth";
 
-
 export function OrdersList() {
     const { user } = useAuth()
 
@@ -47,9 +46,10 @@ export function OrdersList() {
     async function handleAcceptOrder(orderId: string) {
 
         const orderToQueue = {
-            orderId,
-            deliveryPersonId: user?.user_id,
-            url: `http://localhost:3000/api/track/map/${orderId}`,
+            order_id: orderId,
+            order_status: 1,
+            delivery_person: user?.user_id,
+            url: `https://trackio.amisahdev.com.br/track/map/${orderId}`
         }
         try {
 
@@ -75,6 +75,7 @@ export function OrdersList() {
                         <OrderCard
                             status={item.orderStatus}
                             title={`Pedido #${item.id}`}
+                            deliveryAddress={item.fullDeliveryAddress}
                             company={item.establishment}
                             deliveryFee={item.deliveryFee}
                         />

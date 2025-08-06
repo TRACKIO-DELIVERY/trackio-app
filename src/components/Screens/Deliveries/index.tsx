@@ -12,29 +12,17 @@ interface DeliveredOrder {
     company: string;
     deliveredAt: string;
     address: string;
+    deliveryFee: string;
 }
 
 const MOCK_ORDERS: DeliveredOrder[] = [
     {
-        id: "1",
-        clientName: "João Silva",
-        company: "Farmácia Saúde",
-        deliveredAt: "2025-07-22 14:30",
-        address: "Rua das Flores, 123",
-    },
-    {
-        id: "2",
-        clientName: "Maria Oliveira",
-        company: "Pet Shop Vida",
-        deliveredAt: "2025-07-21 11:15",
-        address: "Av. Brasil, 456",
-    },
-    {
         id: "3",
-        clientName: "Lucas Pereira",
-        company: "Mercado Bom Preço",
-        deliveredAt: "2025-07-20 09:45",
-        address: "Rua da Paz, 789",
+        clientName: "João Silva",
+        company: "Atacarejo",
+        deliveredAt: "2025-07-22 14:30",
+        address: "Rua Rota do Sol Dr. Nilton Figueiredo, 64, Chico Cajá, Pau dos Ferros, RN - 59900-000, Brasil",
+        deliveryFee: "62.00"
     },
 ];
 
@@ -64,7 +52,12 @@ export function Deliveries() {
                         <OrderCard
                             status={3}
                             title={`Pedido #${item.id}`}
-                            company={'Empresa'} />
+                            company={item.company}
+                            deliveryFee={item.deliveryFee}
+                            deliveryAddress={item.address}
+
+                        />
+
                     )}
                 />
 

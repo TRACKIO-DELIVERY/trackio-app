@@ -6,11 +6,12 @@ import { useStartTracking } from "@/services/queries/useStartTracking";
 import { useLocation } from "@/hooks/useLocation";
 import { useCallback, useEffect } from "react";
 import { socket } from "@/services/socket";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { sendDeliveredOrderQueue, sendInRouteOrderQueue } from "@/services/queries/sendOrderToQueu";
+import Map from "@/components/Molecules/Map";
 
 interface OrderDetailProps {
     orderId: string
@@ -23,7 +24,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     const { mutate: sendDeliveredOrder } = sendDeliveredOrderQueue()
 
     const { mutate: startRoute } = useStartTracking()
-    const { location, startGetPositions, stopTracking, isTracking } = useLocation()
+    const { startGetPositions, stopTracking, isTracking } = useLocation()
 
 
     useEffect(() => {
@@ -78,9 +79,12 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     function startTrackingRoute() {
         startRoute(orderId, {
             onSuccess: (data) => {
-
+                const orderToQueue = {
+                    order_id: orderId,
+                    order_status: 2
+                }
                 if (data.canStartSendingLocation) {
-                    sendInRouteOrder({ orderId })
+                    sendInRouteOrder(orderToQueue)
                     startGetPositions(orderId)
                 }
             },
@@ -91,17 +95,33 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     }
 
     function finishRoute() {
-        stopTracking()
-        sendDeliveredOrder({ orderId })
+
+        Alert.alert(
+            "Encerrar rota",
+            "Deseja encerrar?", [
+            {
+                text: 'Cancelar',
+                onPress: () => { },
+                style: 'cancel'
+            },
+            {
+                text: "OK",
+                onPress: () => {
+
+                    stopTracking()
+                    const orderToQueue = {
+                        order_id: orderId,
+                        order_status: 3
+                    }
+                    sendDeliveredOrder(orderToQueue)
+                    router.push('/(tabs)/deliveries')
+                }
+            }
+        ])
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* <TouchableOpacity style={styles.goBack} onPress={router.back}>
-                <Arrow width={20} height={20} />
-                <Text style={TYPOGRAPHY.bodyText}> Voltar</Text>
-            </TouchableOpacity> */}
-
             <View style={styles.headerCard}>
                 <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
                 <Text style={TYPOGRAPHY.bodyText}>{data?.email || 'cliente'}</Text>
@@ -110,7 +130,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             </View>
 
             <View style={styles.mapArea}>
-                <Text style={styles.mapText}>[ Mapa será renderizado aqui ]</Text>
+                <Map orderId={orderId} />
             </View>
 
             <View style={styles.buttonGroup}>

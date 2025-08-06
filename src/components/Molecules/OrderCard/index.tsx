@@ -10,14 +10,16 @@ interface OrderCardProps {
   title: string;
   company: string;
   status: number;
-  deliveryFee?: string
+  deliveryFee?: string;
+  deliveryAddress: string;
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   title,
   company,
   status,
-  deliveryFee
+  deliveryFee,
+  deliveryAddress
 }) => {
   const isAvailable = status === 1;
 
@@ -51,6 +53,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           )}
         </View>
 
+        <View>
+          <Text
+            style={styles.address}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >{deliveryAddress}</Text>
+        </View>
         <View
           style={[
             styles.statusBadge,

@@ -5,7 +5,7 @@ import { useRouter, useSegments } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { getTokensStorage, removeTokensStorage, setTokensStorage } from "@/storage";
-import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
+import { googleLoginParams, useGoogleAuth } from "@/services/queries/useGoogleAuth";
 import { getUserIdFromToken } from "@/utils/jwtDecode";
 
 interface AuthContextType {
@@ -13,7 +13,7 @@ interface AuthContextType {
   setUser: (user: User) => void;
   login: (params: LoginParams) => void;
   register: (params: RegisterParams) => void;
-  googleLogin: (params: string) => void;
+  googleLogin: (params: googleLoginParams) => void;
   signOut: () => void;
   isLoading: boolean;
 }
@@ -35,6 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchUser(token: string) {
     const userId = getUserIdFromToken(token);
+    console.log('i', userId)
     if (!userId) {
       setIsAuth(false);
       setIsLoading(false);
@@ -42,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const { data } = await api.get(`/api/users/${userId}/`);
+
     setUser({
       user_id: data.id,
       avatar: data.avatar ?? '',
@@ -79,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       onSuccess: (() => {
         setIsAuth(false)
         setIsLoading(false)
+        alert("Cadastrado com sucesso!")
       }),
       onError: ((error: any) => {
         setIsLoading(false)
@@ -104,18 +107,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       onError: ((error) => {
         setIsLoading(false)
         setIsAuth(false)
-
-        console.log(error)
+        console.log('ERRO LOGIN:', error)
         alert("Não foi possível realizar o login")
       })
     })
   }
 
-  async function googleLogin(params: string) {
+  async function googleLogin(params: googleLoginParams) {
     setIsLoading(true)
 
     loginGoogleMutation(params, {
       onSuccess: (async (data) => {
+        console.log(data)
 
         await setTokensStorage(data.token, data.refresh)
         setIsAuth(true)
@@ -123,8 +126,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setIsLoading(false)
       }),
-      onError: ((error) => {
-        console.error(error);
+      onError: ((error: any) => {
+        console.error("❌ Erro no loginGoogleMutation:");
+        console.error("Mensagem:", error.message);
+        console.error("Resposta completa:", error.response?.data);
+        console.error("Status:", error.response?.status);
         alert('Falha no login com Google');
       })
     })

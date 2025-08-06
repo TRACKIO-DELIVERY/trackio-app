@@ -28,12 +28,17 @@ export function GoogleLoginButton() {
             const response = await GoogleSignin.signIn()
             const tokens = await GoogleSignin.getTokens()
             if (isSuccessResponse(response)) {
-                //googleLogin(tokens.accessToken)
-                console.log(response.data)
-                console.log('TOKEN', tokens.accessToken)
+
+                googleLogin({
+                    auth_token: response.data.idToken!,
+                    device_type: "mobile"
+                })
+            } else {
+                console.warn("Google login failed", response)
             }
         } catch (error) {
-            console.log(error)
+            console.error("Erro no Google Login:", JSON.stringify(error, null, 2));
+            throw error;
         }
     }
     return (
