@@ -5,18 +5,13 @@ import { OrderCard } from "../OrderCard";
 import { AcceptOrderModal } from "../AcceptOrderModal";
 import { useState } from "react";
 import { router } from "expo-router";
-import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
-import { sendAcceptedOrderToQueue } from "@/services/queries/sendOrderToQueu";
 import { useAuth } from "@/hooks/useAuth";
 
 export function OrdersList() {
-    const { user } = useAuth()
 
     const [showAceptOrderModal, setShowAceptOrderModal] = useState(false)
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
 
-    const { mutateAsync: AceptOrder } = useAcceptOrder()
-    const { mutateAsync: sendAcceptedOrder } = sendAcceptedOrderToQueue()
     const { data, isFetching, error, refetch } = useOrders()
 
     if (error) {
@@ -45,19 +40,15 @@ export function OrdersList() {
 
     async function handleAcceptOrder(orderId: string) {
 
-        const orderToQueue = {
-            order_id: orderId,
-            order_status: 1,
-            delivery_person: user?.user_id,
-            url: `https://trackio.amisahdev.com.br/track/map/${orderId}`
-        }
+        //mudar para fazer via http
+        // const orderToQueue = {
+        //     order_id: orderId,
+        //     order_status: 1,
+        //     delivery_person: user?.user_id,
+        //     url: `https://trackio.amisahdev.com.br/track/map/${orderId}`
+        // }
         try {
-
-            await AceptOrder(orderId)
-            await sendAcceptedOrder(orderToQueue)
-
             router.push(`/(tabs)/order/${orderId}`)
-
             setShowAceptOrderModal(false)
 
         } catch (error) {

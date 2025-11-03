@@ -10,7 +10,6 @@ import { router, useFocusEffect } from "expo-router";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { Loading } from "@/components/Atoms/Loading";
-import { sendDeliveredOrderQueue, sendInRouteOrderQueue } from "@/services/queries/sendOrderToQueu";
 import Map from "@/components/Molecules/Map";
 
 interface OrderDetailProps {
@@ -19,9 +18,6 @@ interface OrderDetailProps {
 export function OrderDetail({ orderId }: OrderDetailProps) {
 
     const { data, isFetching, error } = useOrderDetail(orderId)
-
-    const { mutate: sendInRouteOrder } = sendInRouteOrderQueue()
-    const { mutate: sendDeliveredOrder } = sendDeliveredOrderQueue()
 
     const { mutate: startRoute } = useStartTracking()
     const { startGetPositions, stopTracking, isTracking } = useLocation()
@@ -79,12 +75,8 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     function startTrackingRoute() {
         startRoute(orderId, {
             onSuccess: (data) => {
-                const orderToQueue = {
-                    order_id: orderId,
-                    order_status: 2
-                }
+
                 if (data.canStartSendingLocation) {
-                    sendInRouteOrder(orderToQueue)
                     startGetPositions(orderId)
                 }
             },
@@ -107,13 +99,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             {
                 text: "OK",
                 onPress: () => {
-
                     stopTracking()
-                    const orderToQueue = {
-                        order_id: orderId,
-                        order_status: 3
-                    }
-                    sendDeliveredOrder(orderToQueue)
                     router.push('/(tabs)/deliveries')
                 }
             }

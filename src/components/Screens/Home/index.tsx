@@ -10,9 +10,9 @@ import { Loading } from "@/components/Atoms/Loading";
 
 export function Home() {
     const { user, isLoading } = useAuth()
-    if (isLoading) {
-        return <Loading />
-    }
+    // if (isLoading) {
+    //     return <Loading />
+    // }
     return (
         <SafeAreaView style={styles.container}>
             <Header name={user?.name || 'Entregador(a)'} />
