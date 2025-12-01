@@ -17,11 +17,9 @@ import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
-
 
 export { ErrorBoundary } from "expo-router";
 
@@ -52,10 +50,8 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-
 export function RootLayoutNav() {
-
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
