@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       birth_date: "21/09/2003",
       avatar: "",
       email: "ka@gmail.com",
-      role: "customer",
+      role: "cliente",
     };
 
     setIsAuth(true);

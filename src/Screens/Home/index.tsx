@@ -7,6 +7,7 @@ import { TYPOGRAPHY } from "@/constants/typography";
 
 import { useAuth } from "@/hooks/useAuth";
 import { Loading } from "@/components/Atoms/Loading";
+import { ProductsList } from "@/components/Molecules/ProductsList";
 
 export function Home() {
   const { user, isLoading } = useAuth();
@@ -15,15 +16,20 @@ export function Home() {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <Header name={user?.name || "Entregador(a)"} />
+      <Header
+        name={user?.name || "Entregador(a)"}
+        role={user?.role || "cliente"}
+      />
       <View style={styles.orders}>
         <View style={styles.heading}>
-          <Text style={[TYPOGRAPHY.title]}>Pedidos</Text>
+          <Text style={[TYPOGRAPHY.title]}>
+            {user?.role == "cliente" ? "Produtos" : "Pedidos"}
+          </Text>
           <Text style={TYPOGRAPHY.subtitle}>
             Selecione um pedido para aceitar iniciar sua rota!
           </Text>
         </View>
-        <OrdersList />
+        {user?.role == "cliente" ? <ProductsList /> : <OrdersList />}
       </View>
     </SafeAreaView>
   );

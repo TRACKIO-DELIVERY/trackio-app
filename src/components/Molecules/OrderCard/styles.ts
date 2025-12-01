@@ -1,58 +1,78 @@
-import { THEME } from "@/constants/theme";
 import { StyleSheet } from "react-native-unistyles";
 
 export const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    backgroundColor: THEME.grey[400],
-    padding: 12,
-    borderRadius: 12,
-    marginVertical: 6,
+    flexDirection: "row",
+    width: "100%",
+    padding: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 14,
   },
+
+  iconWrapper: {
+    width: 54,
+    height: 54,
+    borderRadius: 14,
+    backgroundColor: "#F5F7FA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+  },
+
   content: {
     flex: 1,
   },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+
   title: {
-    color: THEME.purple[700],
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1A1A1A",
   },
+
   company: {
-    color: '#444',
     fontSize: 14,
+    color: "#555",
+    marginTop: 2,
   },
-  statusBadge: {
-    marginTop: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
-  },
-  available: {
-    backgroundColor: '#B5F8BC',
-  },
-  inRoute: {
-    backgroundColor: '#F8ECBC',
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#333',
-  },
-  delivererWrapper: {
-    minHeight: 18,
-    marginTop: 4,
-  },
-  delivererText: {
-    fontSize: 12,
-    color: '#666',
-  },
+
   address: {
-    fontSize: 12,
-    color: THEME.grey[700]
-  }
+    fontSize: 14,
+    color: "#777",
+    marginTop: 8,
+  },
+
+  deliveryFee: {
+    fontSize: 14,
+    color: "#222",
+    fontWeight: "500",
+  },
+
+  footerRow: {
+    marginTop: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  statusBadge: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 50,
+  },
+
+  status1: { backgroundColor: "#DFF8E1" }, // disponível
+  status2: { backgroundColor: "#FFF4D9" }, // em rota
+  status3: { backgroundColor: "#E5E5E5" }, // finalizado
+
+  statusText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#333",
+  },
 });

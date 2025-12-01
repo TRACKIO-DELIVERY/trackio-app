@@ -11,7 +11,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: THEME.purple[700],
+        tabBarActiveTintColor: THEME.primary[700],
       }}
     >
       <Tabs.Screen
@@ -42,9 +42,9 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="order/[id]"
+        name="product/[id]"
         options={{
-          title: "Order",
+          title: "Product",
           href: null,
           tabBarStyle: { display: "none" },
         }}

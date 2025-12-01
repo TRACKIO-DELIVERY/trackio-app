@@ -1,3 +1,4 @@
+import ProductDetailsScreen from "@/components/Molecules/ProductDetail";
 import { OrderDetail } from "@/Screens/OrderDetail";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { useNavigation } from "@react-navigation/native";
@@ -12,5 +13,5 @@ export default function Screen() {
   //     throw new Error("Unable to find order with this id")
   // }
 
-  return <OrderDetail orderId={id as string} />;
+  return <ProductDetailsScreen productId={id as string} />;
 }
