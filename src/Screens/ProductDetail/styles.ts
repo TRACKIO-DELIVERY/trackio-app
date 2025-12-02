@@ -45,4 +45,21 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  quantityContainer: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
+  },
+  quantityButtons: {
+    backgroundColor: THEME.grey[400],
+    flexDirection: "row",
+    borderRadius: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: 80,
+    padding: 10,
+  },
+  quantityText: {
+    fontSize: 20,
+  },
 });

@@ -13,4 +13,5 @@ export interface ProductDTO {
   price: number;
   category: Category | string;
   image: string;
+  quantity?: number;
 }

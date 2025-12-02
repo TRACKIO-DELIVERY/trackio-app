@@ -10,9 +10,13 @@ import { GoBackButton } from "@/components/Atoms/GoBackButton";
 
 export function CartScreen() {
   const navigation = useNavigation();
-  const { products, removeFromCart } = useCartStore();
+  const products = useCartStore((state) => state.products);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
 
-  const total = products.reduce((acc, p) => acc + p.price, 0);
+  const total = products.reduce(
+    (acc, p) => acc + p.price * (p.quantity || 1),
+    0
+  );
 
   return (
     <View style={styles.container}>
@@ -35,6 +39,7 @@ export function CartScreen() {
               <Text style={styles.productPrice}>
                 R$ {item.price.toFixed(2)}
               </Text>
+              <Text>Quantidade: {item.quantity}</Text>
             </View>
 
             <TouchableOpacity onPress={() => removeFromCart(item.id)}>

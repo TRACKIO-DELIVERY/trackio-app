@@ -3,26 +3,63 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
+type cartProductType = ProductDTO & {
+  quantity: number;
+};
 type cartStoreType = {
-  products: ProductDTO[];
-  addToCart: (newProduct: ProductDTO) => void;
+  products: cartProductType[];
+  addToCart: (newProduct: ProductDTO, quantity: number) => void;
   removeFromCart: (productId: number) => void;
 };
 
 export const useCartStore = create<cartStoreType>()(
   persist(
     (set, get) => ({
-      products: [] as ProductDTO[],
-      addToCart: (newProduct: ProductDTO) =>
-        set(() => ({
-          products: [...get().products, newProduct],
-        })),
+      products: [] as cartProductType[],
+      addToCart: (newProduct: ProductDTO, quantity: number) =>
+        set(() => {
+          const productExists = get().products.find(
+            (item) => item.id === newProduct.id
+          );
+
+          if (productExists) {
+            return {
+              products: get().products.map((item) =>
+                item.id === newProduct.id
+                  ? { ...item, quantity: item.quantity + quantity }
+                  : item
+              ),
+            };
+          }
+
+          return {
+            products: [
+              ...get().products,
+              { ...newProduct, quantity: quantity },
+            ],
+          };
+        }),
       removeFromCart: (productId: number) =>
-        set(() => ({
-          products: get().products.filter(
-            (product) => product.id !== productId
-          ),
-        })),
+        set(() => {
+          const productExists = get().products.find(
+            (item) => item.id === productId
+          );
+          if (!productExists) return { products: get().products };
+
+          if (productExists.quantity > 1) {
+            return {
+              products: get().products.map((item) =>
+                item.id === productExists.id
+                  ? { ...item, quantity: item.quantity - 1 }
+                  : item
+              ),
+            };
+          }
+          // quantity === 1
+          return {
+            products: get().products.filter((item) => item.id != productId),
+          };
+        }),
     }),
     {
       name: "@trackio::cart",

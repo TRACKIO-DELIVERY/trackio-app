@@ -1,4 +1,9 @@
-import React from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -12,17 +17,8 @@ import { styles } from "./styles";
 import { useProductDetail } from "@/services/queries/useProductDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
-import { useNavigation } from "expo-router";
+import { useFocusEffect, useNavigation } from "expo-router";
 import { useCartStore } from "@/storage/cart";
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  companyId: number;
-}
 
 interface Props {
   productId: string;
@@ -30,9 +26,12 @@ interface Props {
 
 export function ProductDetailsScreen({ productId }: Props) {
   const { data, isFetching, error } = useProductDetail(productId);
-  const { addToCart } = useCartStore();
+  const [quantity, setQuantity] = useState(1);
+
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const navigation = useNavigation();
+
   if (isFetching) {
     return <Loading />;
   }
@@ -42,16 +41,27 @@ export function ProductDetailsScreen({ productId }: Props) {
   }
 
   function handleAddProductToCard() {
-    if (data) {
-      addToCart(data);
-      Alert.alert("Produto adicionado");
-      navigation.goBack();
+    if (!data) return;
+    addToCart(data, quantity);
+    setQuantity(1);
+    Alert.alert("Produto adicionado");
+    navigation.goBack();
+  }
+
+  function handleQuantity(op: string) {
+    if (op == "plus") setQuantity((state) => state + 1);
+    else if (op == "minus") {
+      setQuantity((state) => {
+        if (state == 0) return state;
+        return state - 1;
+      });
     }
   }
+
   return (
     <ScrollView style={styles.container}>
       <GoBackButton onPress={() => navigation.goBack()} />
-      {/* Imagem do Produto */}
+
       <Image
         source={{ uri: data?.image }}
         style={styles.image}
@@ -63,11 +73,21 @@ export function ProductDetailsScreen({ productId }: Props) {
 
         <Text style={styles.description}>{data?.description}</Text>
 
+        <View style={styles.quantityContainer}>
+          <View style={styles.quantityButtons}>
+            <TouchableOpacity onPress={() => handleQuantity("plus")}>
+              <Text style={styles.quantityText}> + </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleQuantity("minus")}>
+              <Text style={styles.quantityText}> - </Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.quantityText}>{quantity}</Text>
+        </View>
         <Text style={styles.price}>
           R$ {data?.price?.toFixed(2) || "Sem preço"}
         </Text>
 
-        {/* Botão de compra */}
         <TouchableOpacity
           style={styles.button}
           onPress={handleAddProductToCard}
