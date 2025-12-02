@@ -6,12 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import { useProductDetail } from "@/services/queries/useProductDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { useNavigation } from "expo-router";
+import { useCartStore } from "@/storage/cart";
 
 interface Product {
   id: number;
@@ -26,8 +28,10 @@ interface Props {
   productId: string;
 }
 
-export default function ProductDetailsScreen({ productId }: Props) {
+export function ProductDetailsScreen({ productId }: Props) {
   const { data, isFetching, error } = useProductDetail(productId);
+  const { addToCart } = useCartStore();
+
   const navigation = useNavigation();
   if (isFetching) {
     return <Loading />;
@@ -35,6 +39,14 @@ export default function ProductDetailsScreen({ productId }: Props) {
 
   if (error) {
     return <Text> Produto não pode ser carregado</Text>;
+  }
+
+  function handleAddProductToCard() {
+    if (data) {
+      addToCart(data);
+      Alert.alert("Produto adicionado");
+      navigation.goBack();
+    }
   }
   return (
     <ScrollView style={styles.container}>
@@ -56,7 +68,10 @@ export default function ProductDetailsScreen({ productId }: Props) {
         </Text>
 
         {/* Botão de compra */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleAddProductToCard}
+        >
           <Text style={styles.buttonText}>Adicionar ao Carrinho</Text>
         </TouchableOpacity>
       </View>

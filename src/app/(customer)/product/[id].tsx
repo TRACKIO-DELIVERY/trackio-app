@@ -1,7 +1,4 @@
-import ProductDetailsScreen from "@/components/Molecules/ProductDetail";
-import { OrderDetail } from "@/Screens/OrderDetail";
-import { useOrderDetail } from "@/services/queries/useOrderDetail";
-import { useNavigation } from "@react-navigation/native";
+import { ProductDetailsScreen } from "@/Screens/ProductDetail";
 import { useLocalSearchParams } from "expo-router";
 
 export default function Screen() {
