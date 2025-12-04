@@ -7,6 +7,7 @@ import { useCartStore } from "@/storage/cart";
 import { styles } from "./styles";
 import { THEME } from "@/constants/theme";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
+import { OrderDTO } from "@/dtos/orderDTO";
 
 export function CartScreen() {
   const navigation = useNavigation();
@@ -17,6 +18,13 @@ export function CartScreen() {
     (acc, p) => acc + p.price * (p.quantity || 1),
     0
   );
+
+  function handleCreateOrder() {
+    if (products.length === 0) return;
+    // const newOrder: OrderDTO = {
+
+    // }
+  }
 
   return (
     <View style={styles.container}>

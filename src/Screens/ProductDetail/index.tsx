@@ -48,7 +48,7 @@ export function ProductDetailsScreen({ productId }: Props) {
     navigation.goBack();
   }
 
-  function handleQuantity(op: string) {
+  function handleQuantity(op: "plus" | "minus") {
     if (op == "plus") setQuantity((state) => state + 1);
     else if (op == "minus") {
       setQuantity((state) => {

@@ -9,7 +9,10 @@ export interface OrderDTO {
   orderValue?: string;
   orderStatus: number;
   fullDeliveryAddress: string;
-  fullPickUpAdrress: string
+  fullPickUpAdrress: string;
+  date?: string;
+  total?: number;
+  status?: "preparing" | "on_the_way" | "delivered";
 }
 
 export interface ComplementaryDTO {

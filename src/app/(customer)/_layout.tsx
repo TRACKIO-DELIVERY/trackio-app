@@ -61,6 +61,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="orders"
+        options={{
+          title: "Pedidos",
+          tabBarIcon: ({ color }) => (
+            <Package color={color} width={25} height={25} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Perfil",
