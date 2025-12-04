@@ -1,24 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../api";
-
-export interface googleLoginParams {
-    auth_token: string,
-    device_type?: string
-}
+import { googleLoginParams } from "@/@types/authParams";
 
 async function googleAuth({ auth_token }: googleLoginParams) {
-    const { data } = await api.post('/api/auth/social/google/',
-        {
-            auth_token,
-            device_type: "mobile"
-        })
+  const { data } = await api.post("/api/auth/social/google/", {
+    auth_token,
+    device_type: "mobile",
+  });
 
-    return data
+  return data;
 }
 
 export function useGoogleAuth() {
-    return useMutation({
-        mutationKey: ['auth-google'],
-        mutationFn: googleAuth
-    })
+  return useMutation({
+    mutationKey: ["auth-google"],
+    mutationFn: googleAuth,
+  });
 }

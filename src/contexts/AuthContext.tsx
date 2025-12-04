@@ -1,4 +1,4 @@
-import { User } from "@/@types/user";
+import { User, Customer, DeliveryPerson } from "@/@types/models/user";
 import { LoginParams, useLogin } from "@/services/queries/useLogin";
 import { RegisterParams, useRegister } from "@/services/queries/useRegister";
 import { useRouter, useSegments } from "expo-router";
@@ -17,7 +17,7 @@ import { getUserIdFromToken } from "@/utils/jwtDecode";
 
 interface AuthContextType {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: Customer | DeliveryPerson) => void;
   login: (params: LoginParams) => void;
   register: (params: RegisterParams) => void;
   googleLogin: (params: googleLoginParams) => void;
@@ -29,7 +29,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Customer | DeliveryPerson | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutate: signUpMutation } = useRegister();
@@ -50,23 +50,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     //const { data } = await api.get(`/api/users/${userId}/`);
     const data = {
-      id: "1",
+      user_id: "1",
       name: "karen",
       birth_date: "21/09/2003",
-      avatar: "",
+      image_url: "",
       email: "ka@gmail.com",
       role: "cliente",
+      cpf: "12345678",
+      phone: "23456789",
     };
 
     setIsAuth(true);
 
     setUser({
-      user_id: data.id,
-      avatar: data.avatar ?? "",
+      userId: data.user_id,
+      imageUrl: data.image_url ?? "",
       name: data.name,
-      birth_date: data.birth_date,
+      birthDate: data.birth_date,
       email: data.email,
       role: data.role,
+      cpf: data.cpf,
+      phone: data.phone,
     });
   }
 

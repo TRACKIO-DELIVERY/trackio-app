@@ -1,14 +1,14 @@
-import { ProductDTO } from "@/dtos/productDTO";
+import { Product } from "@/@types/models/product";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
-type cartProductType = ProductDTO & {
+type cartProductType = Product & {
   quantity: number;
 };
 type cartStoreType = {
   products: cartProductType[];
-  addToCart: (newProduct: ProductDTO, quantity: number) => void;
+  addToCart: (newProduct: Product, quantity: number) => void;
   removeFromCart: (productId: number) => void;
 };
 
@@ -16,7 +16,7 @@ export const useCartStore = create<cartStoreType>()(
   persist(
     (set, get) => ({
       products: [] as cartProductType[],
-      addToCart: (newProduct: ProductDTO, quantity: number) =>
+      addToCart: (newProduct: Product, quantity: number) =>
         set(() => {
           const productExists = get().products.find(
             (item) => item.id === newProduct.id

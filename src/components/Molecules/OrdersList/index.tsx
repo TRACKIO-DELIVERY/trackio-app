@@ -64,11 +64,9 @@ export function OrdersList() {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => openModal(String(item.id))}>
             <OrderCard
-              status={item.orderStatus}
+              status={item.status}
               title={`Pedido #${item.id}`}
-              deliveryAddress={item.fullDeliveryAddress}
-              company={item.establishment}
-              deliveryFee={item.deliveryFee}
+              company={item.companyId}
             />
           </TouchableOpacity>
         )}

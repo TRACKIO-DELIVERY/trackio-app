@@ -1,17 +1,19 @@
-import { ProductDTO } from "@/dtos/productDTO";
+import { ProductDTO } from "@/@types/api/productDTO";
+import { Product } from "@/@types/models/product";
 import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
-async function getProducts(): Promise<ProductDTO[]> {
-  const { data } = await api.get("/products/");
+async function getProducts(): Promise<Product[]> {
+  const { data } = await api.get<ProductDTO[]>("/products/");
 
-  const products: ProductDTO[] = data.map((product: any) => ({
+  const products: Product[] = data.map((product: ProductDTO) => ({
     id: product.id,
     name: product.name,
     price: product.price,
     description: product.description,
-    category: product.category,
+    categoryId: product.category_id,
     image: product.image,
+    companyId: product.company_id,
   }));
   return products;
 }

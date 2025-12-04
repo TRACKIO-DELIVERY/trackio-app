@@ -5,18 +5,14 @@ import { styles } from "./styles";
 
 interface OrderCardProps {
   title: string;
-  company: string;
+  company: number;
   status: number;
-  deliveryFee?: string;
-  deliveryAddress: string;
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   title,
   company,
   status,
-  deliveryFee,
-  deliveryAddress,
 }) => {
   function getStatusLabel() {
     switch (status) {
@@ -41,7 +37,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.company}>{company}</Text>
 
-        <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
+        {/* <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
           {deliveryAddress}
         </Text>
 
@@ -52,7 +48,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <View style={[styles.statusBadge, styles[`status${status}`]]}>
             <Text style={styles.statusText}>{getStatusLabel()}</Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   );

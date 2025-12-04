@@ -56,122 +56,137 @@
   "products": [
     {
       "id": 1,
+      "company_id": 1,
       "name": "Hambúrguer Clássico",
       "description": "Pão brioche, carne 180g, queijo cheddar, alface e tomate.",
       "price": 24.9,
-      "category": "Lanches",
+      "category_id": 1,
       "image": "/images/hamburguer_classico.png"
     },
     {
       "id": 2,
+      "company_id": 1,
       "name": "Hambúrguer Duplo Bacon",
       "description": "Dois smash burgers 100g, cheddar duplo e bacon crispy.",
       "price": 32.5,
-      "category": "Lanches",
+      "category_id": 1,
       "image": "/images/hamburguer_bacon.png"
     },
     {
       "id": 3,
+      "company_id": 1,
       "name": "Pizza Calabresa",
       "description": "Calabresa artesanal, cebola roxa e orégano.",
       "price": 48.0,
-      "category": "Pizza",
+      "category_id": 2,
       "image": "/images/pizza_calabresa.png"
     },
     {
       "id": 4,
+      "company_id": 1,
       "name": "Pizza 4 Queijos",
       "description": "Mozzarella, parmesão, gorgonzola e catupiry.",
       "price": 54.0,
-      "category": "Pizza",
+      "category_id": 2,
       "image": "/images/pizza_4queijos.png"
     },
     {
       "id": 5,
+      "company_id": 1,
       "name": "Coca-Cola Lata",
       "description": "Refrigerante 350ml gelado.",
       "price": 6.0,
-      "category": "Bebidas",
+      "category_id": 3,
       "image": "/images/coca_lata.png"
     },
     {
       "id": 6,
+      "company_id": 1,
       "name": "Suco Natural de Laranja",
       "description": "Feito na hora, sem açúcar.",
       "price": 9.5,
-      "category": "Bebidas",
+      "category_id": 3,
       "image": "/images/suco_laranja.png"
     },
     {
       "id": 7,
+      "company_id": 1,
       "name": "Açaí Tradicional",
       "description": "400ml com granola e banana.",
       "price": 18.0,
-      "category": "Sobremesas",
+      "category_id": 4,
       "image": "/images/acai.png"
     },
     {
       "id": 8,
+      "company_id": 1,
       "name": "Brownie com Sorvete",
       "description": "Brownie artesanal com bola de sorvete de creme.",
       "price": 16.0,
-      "category": "Sobremesas",
+      "category_id": 4,
       "image": "/images/brownie.png"
     },
     {
       "id": 9,
+      "company_id": 1,
       "name": "Marmita Fit Frango Grelhado",
       "description": "150g frango, arroz integral, legumes.",
       "price": 22.0,
-      "category": "Marmitas",
+      "category_id": 5,
       "image": "/images/marmita_fit.png"
     },
     {
       "id": 10,
+      "company_id": 1,
       "name": "Marmita Carne Acebolada",
       "description": "Carne, arroz branco e feijão.",
       "price": 25.0,
-      "category": "Marmitas",
+      "category_id": 5,
       "image": "/images/marmita_carne.png"
     },
     {
       "id": 11,
+      "company_id": 1,
       "name": "Pastel de Carne",
       "description": "Casquinha crocante com recheio de carne temperada.",
       "price": 8.0,
-      "category": "Salgados",
+      "category_id": 6,
       "image": "/images/pastel_carne.png"
     },
     {
       "id": 12,
+      "company_id": 1,
       "name": "Pastel de Queijo",
       "description": "Recheado com queijo mussarela.",
       "price": 8.0,
-      "category": "Salgados",
+      "category_id": 6,
       "image": "/images/pastel_queijo.png"
     },
     {
       "id": 13,
+      "company_id": 1,
       "name": "Temaki de Salmão",
       "description": "Temaki grande com salmão fresco.",
       "price": 28.0,
-      "category": "Japonesa",
+      "category_id": 7,
       "image": "/images/temaki_salmao.png"
     },
     {
       "id": 14,
+      "company_id": 1,
       "name": "Yakissoba Tradicional",
       "description": "Legumes salteados com carne e frango.",
       "price": 29.9,
-      "category": "Japonesa",
+      "category_id": 7,
       "image": "/images/yakissoba.png"
     },
     {
       "id": 15,
+      "company_id": 1,
       "name": "Café Espresso",
       "description": "Shot de café espresso forte.",
       "price": 5.0,
-      "category": "Bebidas",
+      "category_id": 3,
       "image": "/images/espresso.png"
     }
   ]

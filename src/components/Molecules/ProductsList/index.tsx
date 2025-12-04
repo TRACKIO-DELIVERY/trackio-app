@@ -46,7 +46,7 @@ export function ProductsList() {
               name={item.name}
               onAdd={() => goToProductDetail(item.id)}
               key={item.id}
-              category={item.category}
+              category={item.categoryId}
             />
           </TouchableOpacity>
         )}

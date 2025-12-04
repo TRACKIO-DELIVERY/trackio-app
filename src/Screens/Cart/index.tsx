@@ -7,7 +7,7 @@ import { useCartStore } from "@/storage/cart";
 import { styles } from "./styles";
 import { THEME } from "@/constants/theme";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
-import { OrderDTO } from "@/dtos/orderDTO";
+import { Order } from "@/@types/models/order";
 
 export function CartScreen() {
   const navigation = useNavigation();
@@ -21,7 +21,7 @@ export function CartScreen() {
 
   function handleCreateOrder() {
     if (products.length === 0) return;
-    // const newOrder: OrderDTO = {
+    // const newOrder: Order = {
 
     // }
   }

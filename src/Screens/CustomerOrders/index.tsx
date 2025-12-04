@@ -3,22 +3,22 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { useNavigation } from "expo-router";
 import { useCustomerOrders } from "@/storage/orders";
-import { OrderDTO } from "@/dtos/orderDTO";
+import { Order } from "@/@types/models/order";
 
 export function CustomerOrders() {
   const orders = useCustomerOrders((state) => state.orders);
 
   const navigation = useNavigation();
 
-  function renderItem({ item }: { item: OrderDTO }) {
+  function renderItem({ item }: { item: Order }) {
     return (
       <TouchableOpacity style={styles.card} onPress={() => {}}>
         <View style={styles.row}>
           <Text style={styles.label}>Pedido #{item.id.toString()}</Text>
-          <Text style={styles.status}>{translateStatus(item.status)}</Text>
+          <Text style={styles.status}>{translateStatus(item)}</Text>
         </View>
 
-        <Text style={styles.date}>{item.date}</Text>
+        <Text style={styles.date}>{item.date.getDate()}</Text>
 
         <View style={styles.row}>
           <Text style={styles.total}>Total:</Text>
@@ -43,8 +43,8 @@ export function CustomerOrders() {
   );
 }
 
-function translateStatus(status: OrderDTO["status"]) {
-  switch (status) {
+function translateStatus(status: Order) {
+  switch (status.status.toString()) {
     case "preparing":
       return "Preparando";
     case "on_the_way":

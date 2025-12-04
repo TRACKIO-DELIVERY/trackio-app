@@ -5,7 +5,7 @@ import { styles } from "./styles";
 interface ProductCardProps {
   name: string;
   price: number;
-  category: string;
+  category: number;
   image: string;
   onAdd: () => void;
 }
