@@ -1,0 +1,193 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "order_status": "pending",
+      "delivery_fee": 7.5,
+      "establishment": {
+        "id": 1,
+        "name": "Pizzaria Napoli",
+        "image_url": "https://images.unsplash.com/photo-1601924582971-b502d97de7b1"
+      },
+      "full_pick_up_address": "Av. Brasil, 1234 - Centro, São Paulo",
+      "full_delivery_address": "Rua das Flores, 45 - Jardim Europa, São Paulo",
+      "email": "cliente1@example.com"
+    },
+    {
+      "id": 2,
+      "order_status": "delivering",
+      "delivery_fee": 5,
+      "establishment": {
+        "id": 2,
+        "name": "Sushi Go",
+        "image_url": "https://images.unsplash.com/photo-1601315480886-d3f0b1f4b8f8"
+      },
+      "full_pick_up_address": "Rua Japão, 88 - Liberdade, São Paulo",
+      "full_delivery_address": "Av. Paulista, 900 - Bela Vista, São Paulo",
+      "email": "cliente2@example.com"
+    },
+    {
+      "id": 3,
+      "order_status": "delivered",
+      "delivery_fee": 10,
+      "establishment": {
+        "id": 3,
+        "name": "Hamburgueria do Zé",
+        "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd"
+      },
+      "full_pick_up_address": "Rua dos Trilhos, 45 - Mooca, São Paulo",
+      "full_delivery_address": "Rua das Acácias, 500 - Tatuapé, São Paulo",
+      "email": "cliente3@example.com"
+    },
+    {
+      "id": 4,
+      "order_status": "cancelled",
+      "delivery_fee": 0,
+      "establishment": {
+        "id": 4,
+        "name": "Doces da Lú",
+        "image_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587"
+      },
+      "full_pick_up_address": "Rua das Margaridas, 300 - Vila Mariana, São Paulo",
+      "full_delivery_address": "Rua Nova, 22 - Vila Prudente, São Paulo",
+      "email": "cliente4@example.com"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "company_id": 1,
+      "name": "Hambúrguer Clássico",
+      "description": "Pão brioche, carne 180g, queijo cheddar, alface e tomate.",
+      "price": 24.9,
+      "category_id": 1,
+      "image": "/images/hamburguer_classico.png"
+    },
+    {
+      "id": 2,
+      "company_id": 1,
+      "name": "Hambúrguer Duplo Bacon",
+      "description": "Dois smash burgers 100g, cheddar duplo e bacon crispy.",
+      "price": 32.5,
+      "category_id": 1,
+      "image": "/images/hamburguer_bacon.png"
+    },
+    {
+      "id": 3,
+      "company_id": 1,
+      "name": "Pizza Calabresa",
+      "description": "Calabresa artesanal, cebola roxa e orégano.",
+      "price": 48.0,
+      "category_id": 2,
+      "image": "/images/pizza_calabresa.png"
+    },
+    {
+      "id": 4,
+      "company_id": 1,
+      "name": "Pizza 4 Queijos",
+      "description": "Mozzarella, parmesão, gorgonzola e catupiry.",
+      "price": 54.0,
+      "category_id": 2,
+      "image": "/images/pizza_4queijos.png"
+    },
+    {
+      "id": 5,
+      "company_id": 1,
+      "name": "Coca-Cola Lata",
+      "description": "Refrigerante 350ml gelado.",
+      "price": 6.0,
+      "category_id": 3,
+      "image": "/images/coca_lata.png"
+    },
+    {
+      "id": 6,
+      "company_id": 1,
+      "name": "Suco Natural de Laranja",
+      "description": "Feito na hora, sem açúcar.",
+      "price": 9.5,
+      "category_id": 3,
+      "image": "/images/suco_laranja.png"
+    },
+    {
+      "id": 7,
+      "company_id": 1,
+      "name": "Açaí Tradicional",
+      "description": "400ml com granola e banana.",
+      "price": 18.0,
+      "category_id": 4,
+      "image": "/images/acai.png"
+    },
+    {
+      "id": 8,
+      "company_id": 1,
+      "name": "Brownie com Sorvete",
+      "description": "Brownie artesanal com bola de sorvete de creme.",
+      "price": 16.0,
+      "category_id": 4,
+      "image": "/images/brownie.png"
+    },
+    {
+      "id": 9,
+      "company_id": 1,
+      "name": "Marmita Fit Frango Grelhado",
+      "description": "150g frango, arroz integral, legumes.",
+      "price": 22.0,
+      "category_id": 5,
+      "image": "/images/marmita_fit.png"
+    },
+    {
+      "id": 10,
+      "company_id": 1,
+      "name": "Marmita Carne Acebolada",
+      "description": "Carne, arroz branco e feijão.",
+      "price": 25.0,
+      "category_id": 5,
+      "image": "/images/marmita_carne.png"
+    },
+    {
+      "id": 11,
+      "company_id": 1,
+      "name": "Pastel de Carne",
+      "description": "Casquinha crocante com recheio de carne temperada.",
+      "price": 8.0,
+      "category_id": 6,
+      "image": "/images/pastel_carne.png"
+    },
+    {
+      "id": 12,
+      "company_id": 1,
+      "name": "Pastel de Queijo",
+      "description": "Recheado com queijo mussarela.",
+      "price": 8.0,
+      "category_id": 6,
+      "image": "/images/pastel_queijo.png"
+    },
+    {
+      "id": 13,
+      "company_id": 1,
+      "name": "Temaki de Salmão",
+      "description": "Temaki grande com salmão fresco.",
+      "price": 28.0,
+      "category_id": 7,
+      "image": "/images/temaki_salmao.png"
+    },
+    {
+      "id": 14,
+      "company_id": 1,
+      "name": "Yakissoba Tradicional",
+      "description": "Legumes salteados com carne e frango.",
+      "price": 29.9,
+      "category_id": 7,
+      "image": "/images/yakissoba.png"
+    },
+    {
+      "id": 15,
+      "company_id": 1,
+      "name": "Café Espresso",
+      "description": "Shot de café espresso forte.",
+      "price": 5.0,
+      "category_id": 3,
+      "image": "/images/espresso.png"
+    }
+  ]
+}

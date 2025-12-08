@@ -1,77 +1,55 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
+import { OrderIcon } from "@/components/Atoms/iconImage";
 import { styles } from "./styles";
-import { OrderIcon } from '@/components/Atoms/iconImage';
-import { TYPOGRAPHY } from '@/constants/typography';
-
-type OrderStatus = 'disponivel' | 'em rota' | 'finalizado';
 
 interface OrderCardProps {
   title: string;
-  company: string;
+  company: number;
   status: number;
-  deliveryFee?: string;
-  deliveryAddress: string;
 }
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   title,
   company,
   status,
-  deliveryFee,
-  deliveryAddress
 }) => {
-  const isAvailable = status === 1;
-
-  function getStatusLabel(status: number) {
+  function getStatusLabel() {
     switch (status) {
       case 1:
-        return 'Disponível';
+        return "Disponível";
       case 2:
-        return 'Em rota';
+        return "Em rota";
       case 3:
-        return 'Finalizado';
+        return "Finalizado";
       default:
-        return 'Desconhecido';
+        return "Desconhecido";
     }
   }
 
   return (
     <View style={styles.card}>
-      <OrderIcon />
+      <View style={styles.iconWrapper}>
+        <OrderIcon />
+      </View>
 
       <View style={styles.content}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.company}>{company}</Text>
 
-        <View style={styles.infoRow}>
-          <View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.company}>{company}</Text>
-          </View>
+        {/* <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
+          {deliveryAddress}
+        </Text>
 
+        <View style={styles.footerRow}>
           {deliveryFee && (
-            <Text style={TYPOGRAPHY.alertText}>Frete: {deliveryFee}</Text>
+            <Text style={styles.deliveryFee}>Frete: {deliveryFee}</Text>
           )}
-        </View>
-
-        <View>
-          <Text
-            style={styles.address}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >{deliveryAddress}</Text>
-        </View>
-        <View
-          style={[
-            styles.statusBadge,
-            isAvailable ? styles.available : styles.inRoute,
-          ]}
-        >
-          <Text style={styles.statusText}>{getStatusLabel(status)}</Text>
-        </View>
+          <View style={[styles.statusBadge, styles[`status${status}`]]}>
+            <Text style={styles.statusText}>{getStatusLabel()}</Text>
+          </View>
+        </View> */}
       </View>
     </View>
-
   );
 };
-
-

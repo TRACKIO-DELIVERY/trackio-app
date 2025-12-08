@@ -1,13 +1,16 @@
-import axios from 'axios'
-import { applyAuthInterceptors } from './interceptors'
+import axios from "axios";
+import { applyAuthInterceptors } from "./interceptors";
 
+// baseURL: process.env.EXPO_PUBLIC_API_URL
+//baseURL: "http://10.112.5.244:3000",
+//baseURL: "http://172.17.0.1:3000",
 export const api = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_API_URL
-})
+  baseURL: "http://172.17.0.1:3000",
+});
 
 export const apiNode = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_NODE_API_URL
-})
+  baseURL: process.env.EXPO_PUBLIC_NODE_API_URL,
+});
 
-applyAuthInterceptors(api)
-applyAuthInterceptors(apiNode)
+//applyAuthInterceptors(api);
+//applyAuthInterceptors(apiNode);

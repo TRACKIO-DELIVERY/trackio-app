@@ -1,8 +1,8 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from "react-native";
 import { styles } from "./styles";
 
-import PackageIcon from '@/assets/icons/package.svg'
-import { THEME } from '@/constants/theme';
+import PackageIcon from "@/assets/icons/package.svg";
+import { THEME } from "@/constants/theme";
 
 export const OrderIcon: React.FC = () => {
   return (
@@ -13,5 +13,3 @@ export const OrderIcon: React.FC = () => {
     </View>
   );
 };
-
-
