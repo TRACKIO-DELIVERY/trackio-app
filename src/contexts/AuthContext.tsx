@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     //const { data } = await api.get(`/api/users/${userId}/`);
     const data = {
-      user_id: "1",
+      user_id: 1,
       name: "karen",
       birth_date: "21/09/2003",
       image_url: "",

@@ -10,6 +10,7 @@ type cartStoreType = {
   products: cartProductType[];
   addToCart: (newProduct: Product, quantity: number) => void;
   removeFromCart: (productId: number) => void;
+  clearCart: () => void;
 };
 
 export const useCartStore = create<cartStoreType>()(
@@ -60,6 +61,7 @@ export const useCartStore = create<cartStoreType>()(
             products: get().products.filter((item) => item.id != productId),
           };
         }),
+      clearCart: () => set({ products: [] }),
     }),
     {
       name: "@trackio::cart",

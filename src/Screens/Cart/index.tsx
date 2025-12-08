@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useCartStore } from "@/storage/cart";
@@ -8,11 +8,17 @@ import { styles } from "./styles";
 import { THEME } from "@/constants/theme";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { Order } from "@/@types/models/order";
+import { useAuth } from "@/hooks/useAuth";
+import { useCustomerOrdersStore } from "@/storage/orders";
+import { useRouter } from "expo-router";
 
 export function CartScreen() {
-  const navigation = useNavigation();
+  const { user } = useAuth();
+  const navigation = useRouter();
   const products = useCartStore((state) => state.products);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const createOrder = useCustomerOrdersStore((state) => state.createOrder);
 
   const total = products.reduce(
     (acc, p) => acc + p.price * (p.quantity || 1),
@@ -21,14 +27,28 @@ export function CartScreen() {
 
   function handleCreateOrder() {
     if (products.length === 0) return;
-    // const newOrder: Order = {
 
-    // }
+    try {
+      const newOrder: Order = {
+        customerId: user?.userId || 1,
+        date: new Date(),
+        deliveryPersonId: 1,
+        id: total + 1,
+        procucts: products,
+        status: 1,
+        total: total,
+      };
+      createOrder(newOrder);
+      clearCart();
+      navigation.push("/(customer)/orders");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <View style={styles.container}>
-      <GoBackButton onPress={navigation.goBack} />
+      <GoBackButton onPress={navigation.back} />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Meu Carrinho</Text>
       </View>
@@ -69,7 +89,9 @@ export function CartScreen() {
         </View>
 
         <TouchableOpacity style={styles.checkoutButton}>
-          <Text style={styles.checkoutText}>Finalizar Pedido</Text>
+          <Text style={styles.checkoutText} onPress={handleCreateOrder}>
+            Finalizar Pedido
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

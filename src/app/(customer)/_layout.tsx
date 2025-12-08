@@ -7,9 +7,11 @@ import Package from "@/assets/icons/package.svg";
 import Person from "@/assets/icons/person.svg";
 import { useCartStore } from "@/storage/cart";
 import { Text, View } from "react-native";
+import { useCustomerOrdersStore } from "@/storage/orders";
 
 export default function TabsLayout() {
   const { products } = useCartStore();
+  const { orders } = useCustomerOrdersStore();
 
   return (
     <Tabs
@@ -65,7 +67,31 @@ export default function TabsLayout() {
         options={{
           title: "Pedidos",
           tabBarIcon: ({ color }) => (
-            <Package color={color} width={25} height={25} />
+            <View>
+              <Package color={color} width={25} height={25} />
+              {orders.length > 0 && (
+                <View
+                  style={{
+                    backgroundColor: THEME.green[600],
+                    width: 20,
+                    height: 20,
+                    position: "absolute",
+                    right: -10,
+                    top: -10,
+                    borderRadius: 999,
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 12,
+                    }}
+                  >
+                    {orders.length}
+                  </Text>
+                </View>
+              )}
+            </View>
           ),
         }}
       />
