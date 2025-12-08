@@ -1,14 +1,8 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Image,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -17,7 +11,7 @@ import { styles } from "./styles";
 import { useProductDetail } from "@/services/queries/useProductDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import { useCartStore } from "@/storage/cart";
 
 interface Props {

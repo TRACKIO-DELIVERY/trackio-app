@@ -5,7 +5,7 @@ import { applyAuthInterceptors } from "./interceptors";
 //baseURL: "http://10.112.5.244:3000",
 //baseURL: "http://172.17.0.1:3000",
 export const api = axios.create({
-  baseURL: "http://10.112.5.244:3000",
+  baseURL: "http://172.17.0.1:3000",
 });
 
 export const apiNode = axios.create({

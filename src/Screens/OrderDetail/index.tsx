@@ -120,10 +120,8 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerCard}>
         <Text style={TYPOGRAPHY.title}>Pedido #{orderId}</Text>
-        <Text style={TYPOGRAPHY.bodyText}>{data?.email || "cliente"}</Text>
-        <Text style={TYPOGRAPHY.bodyText}>
-          {data?.establishment || "empresa"}
-        </Text>
+        <Text style={TYPOGRAPHY.bodyText}>{data?.customerId || "cliente"}</Text>
+        <Text style={TYPOGRAPHY.bodyText}>{data?.companyId || "empresa"}</Text>
         <Text style={TYPOGRAPHY.bodyText}>
           {data?.id || "endereço"} ➔ {data?.id || "endereço final"}
         </Text>

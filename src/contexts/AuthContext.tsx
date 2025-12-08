@@ -1,6 +1,6 @@
 import { User, Customer, DeliveryPerson } from "@/@types/models/user";
-import { LoginParams, useLogin } from "@/services/queries/useLogin";
-import { RegisterParams, useRegister } from "@/services/queries/useRegister";
+import { useLogin } from "@/services/queries/useLogin";
+import { useRegister } from "@/services/queries/useRegister";
 import { useRouter, useSegments } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { api } from "@/services/api";
@@ -9,14 +9,16 @@ import {
   removeTokensStorage,
   setTokensStorage,
 } from "@/storage";
+import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
+import { getUserIdFromToken } from "@/utils/jwtDecode";
 import {
   googleLoginParams,
-  useGoogleAuth,
-} from "@/services/queries/useGoogleAuth";
-import { getUserIdFromToken } from "@/utils/jwtDecode";
+  LoginParams,
+  RegisterParams,
+} from "@/@types/authParams";
 
 interface AuthContextType {
-  user: User | null;
+  user: Customer | DeliveryPerson | null;
   setUser: (user: Customer | DeliveryPerson) => void;
   login: (params: LoginParams) => void;
   register: (params: RegisterParams) => void;
