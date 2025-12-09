@@ -4,6 +4,7 @@ import { THEME } from "@/constants/theme";
 
 import Home from "@/assets/icons/home.svg";
 import Package from "@/assets/icons/package.svg";
+import Bag from "@/assets/icons/bag.svg";
 import Person from "@/assets/icons/person.svg";
 import { useCartStore } from "@/storage/cart";
 import { Text, View } from "react-native";
@@ -35,7 +36,7 @@ export default function TabsLayout() {
           title: "Carrinho",
           tabBarIcon: ({ color }) => (
             <View>
-              <Package color={color} width={25} height={25} />
+              <Bag color={color} width={25} height={25} />
               {products.length > 0 && (
                 <View
                   style={{
@@ -108,6 +109,14 @@ export default function TabsLayout() {
         name="product/[id]"
         options={{
           title: "Product",
+          href: null,
+          tabBarStyle: { display: "none" },
+        }}
+      />
+      <Tabs.Screen
+        name="order/[id]"
+        options={{
+          title: "Orders",
           href: null,
           tabBarStyle: { display: "none" },
         }}
