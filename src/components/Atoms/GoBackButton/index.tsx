@@ -1,20 +1,21 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 interface Props {
-  onPress: () => void;
+  onPress?: () => void;
   color?: string;
   size?: number;
 }
 
 export const GoBackButton: React.FC<Props> = ({
-  onPress,
   color = "#fff",
   size = 26,
 }) => {
+  const navigation = useRouter();
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={navigation.back}>
       <Ionicons name="arrow-back" size={size} color={color} />
     </TouchableOpacity>
   );

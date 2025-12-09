@@ -1,7 +1,7 @@
 import { Adress } from "./address";
 
 export type User = {
-  userId: string;
+  userId: number;
   name: string;
   cpf: string;
   email: string;

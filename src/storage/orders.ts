@@ -6,8 +6,9 @@ import { persist, createJSONStorage } from "zustand/middleware";
 type CustomerOrderType = {
   orders: Order[];
   createOrder: (newOrder: Order) => void;
+  clearOrders: () => void;
 };
-export const useCustomerOrders = create<CustomerOrderType>()(
+export const useCustomerOrdersStore = create<CustomerOrderType>()(
   persist(
     (set, get) => ({
       orders: [] as Order[],
@@ -16,6 +17,7 @@ export const useCustomerOrders = create<CustomerOrderType>()(
           orders: [...get().orders, newOrder],
         }));
       },
+      clearOrders: () => set({ orders: [] }),
     }),
     {
       name: "@trackio::customer-orders",

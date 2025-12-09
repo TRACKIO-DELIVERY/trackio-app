@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 enum orderStatus {
   "preparing",
   "on_the_way",
@@ -6,10 +8,11 @@ enum orderStatus {
 
 export interface Order {
   id: number;
-  companyId: number;
+  companyId?: number; //necessario?
   customerId: number;
   deliveryPersonId: number;
   date: Date;
+  procucts: Product[]; //por enquanto?
   status: orderStatus;
   total: number;
 }

@@ -52,6 +52,7 @@ export function ProductsList() {
         )}
         contentContainerStyle={{
           gap: 8,
+          paddingBottom: 90,
         }}
         refreshControl={
           <RefreshControl refreshing={isFetching} onRefresh={refetch} />
