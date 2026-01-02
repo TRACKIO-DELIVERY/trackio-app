@@ -4,8 +4,8 @@ import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
 async function getOrder(orderId: string): Promise<Order> {
-  const { data } = await api.get<OrderDTO>(`/api/orders/${orderId}`);
-
+  const { data } = await api.get<OrderDTO>(`/orders/${orderId}/`);
+  console.log(data);
   const order: Order = {
     id: data.id,
     companyId: data.company_id,
@@ -14,6 +14,7 @@ async function getOrder(orderId: string): Promise<Order> {
     deliveryPersonId: data.delivery_person_id,
     status: data.status,
     total: data.total,
+    procucts: [],
   };
 
   return order;
@@ -21,7 +22,7 @@ async function getOrder(orderId: string): Promise<Order> {
 
 export function useOrderDetail(orderId: string) {
   return useQuery({
-    queryKey: [`orders-${orderId}`],
+    queryKey: [`order-${orderId}`],
     queryFn: () => getOrder(orderId),
   });
 }

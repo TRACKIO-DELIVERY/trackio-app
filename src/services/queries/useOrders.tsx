@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
 async function getOrders(): Promise<Order[]> {
-  const { data } = await api.get<OrderDTO[]>("/api/orders/");
+  const { data } = await api.get<OrderDTO[]>("/orders/");
 
   const orders: Order[] = data.map((order: OrderDTO) => ({
     id: order.id,
@@ -14,6 +14,7 @@ async function getOrders(): Promise<Order[]> {
     total: order.total,
     customerId: order.customer_id,
     deliveryPersonId: order.delivery_person_id,
+    procucts: [],
   }));
   return orders;
 }

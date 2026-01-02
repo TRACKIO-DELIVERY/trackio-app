@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       birth_date: "21/09/2003",
       image_url: "",
       email: "ka@gmail.com",
-      role: "cliente",
+      role: "entregador",
       cpf: "12345678",
       phone: "23456789",
     };

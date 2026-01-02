@@ -1,55 +1,46 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { OrderIcon } from "@/components/Atoms/iconImage";
+import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
+import { Order } from "@/@types/models/order";
+import { OrderIcon } from "@/components/Atoms/iconImage";
 
-interface OrderCardProps {
-  title: string;
-  company: number;
-  status: number;
+interface Props {
+  order: Order;
+  onPress?: () => void;
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({
-  title,
-  company,
-  status,
-}) => {
+export function OrderCard({ order, onPress }: Props) {
   function getStatusLabel() {
-    switch (status) {
+    switch (order.status) {
+      case 0:
+        return "Disponível";
       case 1:
         return "Disponível";
       case 2:
-        return "Em rota";
-      case 3:
-        return "Finalizado";
+        return "Entregue";
       default:
         return "Desconhecido";
     }
   }
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.iconWrapper}>
         <OrderIcon />
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.company}>{company}</Text>
+        <Text style={styles.title}>Pedido #{order.id}</Text>
+        <Text style={styles.company}>Empresa: {order.companyId}</Text>
 
-        {/* <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
-          {deliveryAddress}
-        </Text>
+        <View style={styles.footer}>
+          <Text style={styles.total}>Entrega: R$ 7.00</Text>
 
-        <View style={styles.footerRow}>
-          {deliveryFee && (
-            <Text style={styles.deliveryFee}>Frete: {deliveryFee}</Text>
-          )}
-          <View style={[styles.statusBadge, styles[`status${status}`]]}>
+          <View style={[styles.statusBadge, styles[`status_${order.status}`]]}>
             <Text style={styles.statusText}>{getStatusLabel()}</Text>
           </View>
-        </View> */}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
-};
+}

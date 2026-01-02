@@ -10,7 +10,7 @@ import {
 import { OrderCard } from "../OrderCard";
 import { AcceptOrderModal } from "../AcceptOrderModal";
 import { useState } from "react";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 
 export function OrdersList() {
@@ -19,6 +19,7 @@ export function OrdersList() {
 
   const { data, isFetching, error, refetch } = useOrders();
 
+  const navigation = useRouter();
   if (error) {
     console.log(error);
     return (
@@ -62,13 +63,13 @@ export function OrdersList() {
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => openModal(String(item.id))}>
-            <OrderCard
-              status={item.status}
-              title={`Pedido #${item.id}`}
-              company={item.companyId}
-            />
-          </TouchableOpacity>
+          <OrderCard
+            order={item}
+            onPress={() => {
+              console.log(item.id);
+              navigation.push(`/(deliver)/order/${item.id}`);
+            }}
+          />
         )}
         contentContainerStyle={{
           gap: 12,
