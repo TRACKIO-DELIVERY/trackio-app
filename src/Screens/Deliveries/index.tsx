@@ -5,63 +5,37 @@ import { styles } from "./styles";
 import { OrderCard } from "@/components/Molecules/OrderCard";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { useAuth } from "@/hooks/useAuth";
-
-interface DeliveredOrder {
-    id: string;
-    clientName: string;
-    company: string;
-    deliveredAt: string;
-    address: string;
-    deliveryFee: string;
-}
-
-const MOCK_ORDERS: DeliveredOrder[] = [
-    {
-        id: "3",
-        clientName: "João Silva",
-        company: "Atacarejo",
-        deliveredAt: "2025-07-22 14:30",
-        address: "Rua Rota do Sol Dr. Nilton Figueiredo, 64, Chico Cajá, Pau dos Ferros, RN - 59900-000, Brasil",
-        deliveryFee: "62.00"
-    },
-];
+import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { Button } from "@/components/Atoms/Button";
 
 export function Deliveries() {
+  const { user } = useAuth();
+  const orders = useDeliveryOrdersStore((state) => state.orders);
+  const cancelOrder = useDeliveryOrdersStore((state) => state.cancelOrder);
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header role="entregador" name={user?.name || "Entregador(a)"} />
+      <View style={styles.orders}>
+        <View style={styles.heading}>
+          <Text style={[TYPOGRAPHY.title]}>Pedidos Aceitos</Text>
+          <Text style={TYPOGRAPHY.subtitle}>
+            Começa a rota dos seus pedidos aqui!
+          </Text>
+        </View>
+        <FlatList
+          data={orders}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{
+            gap: 12,
+          }}
+          renderItem={({ item }) => (
+            <OrderCard order={item} onRemove={() => cancelOrder(item.id)} />
+          )}
+        />
 
-    const { user } = useAuth()
-    return (
-        <SafeAreaView style={styles.container}>
-            <Header name={user?.name || 'Entregador(a)'} />
-            <View style={styles.orders}>
-                <View style={styles.heading}>
-
-                    <Text style={[TYPOGRAPHY.title]}>
-                        Pedidos Entregues
-                    </Text>
-                    <Text style={TYPOGRAPHY.subtitle}>
-                        Veja todos os pedidos que você entregou!
-                    </Text>
-                </View>
-                <FlatList
-                    data={MOCK_ORDERS}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{
-                        gap: 12,
-                    }}
-                    renderItem={({ item }) => (
-                        <OrderCard
-                            status={3}
-                            title={`Pedido #${item.id}`}
-                            company={item.company}
-                            deliveryFee={item.deliveryFee}
-                            deliveryAddress={item.address}
-
-                        />
-
-                    )}
-                />
-
-            </View>
-        </SafeAreaView>
-    );
+        {/*enviar para tela do mapa, enviar os pedidos */}
+        <Button title="Iniciar rota" />
+      </View>
+    </SafeAreaView>
+  );
 }

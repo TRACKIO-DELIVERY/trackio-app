@@ -3,18 +3,33 @@ import { View, Text, Pressable, FlatList } from "react-native";
 import { styles } from "./styles";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { Order } from "@/@types/models/order";
+import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { useRouter } from "expo-router";
 
 interface DeliveryOrderDetailProps {
   order: Order;
-  onAccept?: () => void;
-  onStartRoute?: () => void;
 }
 
 export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
   order,
-  onAccept,
-  onStartRoute,
 }) => {
+  const accepetOrder = useDeliveryOrdersStore((state) => state.accepetOrder);
+  const navigation = useRouter();
+
+  async function handleAcceptOrder() {
+    try {
+      // 1. Enviar http POST para order service
+      // 2. salvar no order storage do entragor
+      accepetOrder(order);
+      // 3. enviar push notification para cliente
+      // 4. redirecionar para listagem de entrgas
+      navigation.push("/(deliver)/deliveries");
+    } catch (error) {
+      console.log(error);
+      throw new Error("Unable to accept order");
+    }
+  }
+
   const renderProduct = ({ item }: any) => (
     <View style={styles.productRow}>
       <Text style={styles.productName}>{item.name}</Text>
@@ -54,7 +69,7 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
       </View>
 
       {order.status === 0 && (
-        <Pressable style={styles.buttonPrimary} onPress={onAccept}>
+        <Pressable style={styles.buttonPrimary} onPress={handleAcceptOrder}>
           <Text style={styles.buttonText}>Aceitar Entrega</Text>
         </Pressable>
       )}

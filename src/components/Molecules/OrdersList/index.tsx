@@ -8,15 +8,9 @@ import {
   View,
 } from "react-native";
 import { OrderCard } from "../OrderCard";
-import { AcceptOrderModal } from "../AcceptOrderModal";
-import { useState } from "react";
-import { router, useRouter } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "expo-router";
 
 export function OrdersList() {
-  const [showAceptOrderModal, setShowAceptOrderModal] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
-
   const { data, isFetching, error, refetch } = useOrders();
 
   const navigation = useRouter();
@@ -32,32 +26,6 @@ export function OrdersList() {
   if (isFetching) {
     return <Loading />;
   }
-  function openModal(orderId: string) {
-    setSelectedOrderId(orderId);
-    setShowAceptOrderModal(true);
-  }
-
-  function closeModal() {
-    setSelectedOrderId(null);
-    setShowAceptOrderModal(false);
-  }
-
-  async function handleAcceptOrder(orderId: string) {
-    //mudar para fazer via http
-    // const orderToQueue = {
-    //     order_id: orderId,
-    //     order_status: 1,
-    //     delivery_person: user?.user_id,
-    //     url: `https://trackio.amisahdev.com.br/track/map/${orderId}`
-    // }
-    try {
-      router.push(`/(deliver)/order/${orderId}`);
-      setShowAceptOrderModal(false);
-    } catch (error) {
-      console.log(error);
-      throw new Error("Unable to accept order");
-    }
-  }
   return (
     <>
       <FlatList
@@ -66,7 +34,6 @@ export function OrdersList() {
           <OrderCard
             order={item}
             onPress={() => {
-              console.log(item.id);
               navigation.push(`/(deliver)/order/${item.id}`);
             }}
           />
@@ -77,16 +44,6 @@ export function OrdersList() {
         refreshControl={
           <RefreshControl refreshing={isFetching} onRefresh={refetch} />
         }
-      />
-
-      <AcceptOrderModal
-        visible={showAceptOrderModal}
-        onCancel={closeModal}
-        onConfirm={() => {
-          if (selectedOrderId) {
-            handleAcceptOrder(selectedOrderId);
-          }
-        }}
       />
     </>
   );

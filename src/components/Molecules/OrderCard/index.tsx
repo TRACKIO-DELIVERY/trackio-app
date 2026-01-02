@@ -4,12 +4,15 @@ import { styles } from "./styles";
 import { Order } from "@/@types/models/order";
 import { OrderIcon } from "@/components/Atoms/iconImage";
 
+import Trash from "@/assets/icons/trash.svg";
+
 interface Props {
   order: Order;
   onPress?: () => void;
+  onRemove?: () => void;
 }
 
-export function OrderCard({ order, onPress }: Props) {
+export function OrderCard({ order, onPress, onRemove }: Props) {
   function getStatusLabel() {
     switch (order.status) {
       case 0:
@@ -30,7 +33,12 @@ export function OrderCard({ order, onPress }: Props) {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>Pedido #{order.id}</Text>
+        <View style={styles.footer}>
+          <Text style={styles.title}>Pedido #{order.id}</Text>
+          {onRemove && (
+            <Trash color="rgba(182, 14, 14, 1)" onPress={onRemove} />
+          )}
+        </View>
         <Text style={styles.company}>Empresa: {order.companyId}</Text>
 
         <View style={styles.footer}>
