@@ -76,6 +76,14 @@ export default function TabsLayout() {
           tabBarStyle: { display: "none" },
         }}
       />
+      <Tabs.Screen
+        name="deliveryMap"
+        options={{
+          title: "deliveryMap",
+          href: null,
+          tabBarStyle: { display: "none" },
+        }}
+      />
     </Tabs>
   );
 }

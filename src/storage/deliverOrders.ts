@@ -9,6 +9,7 @@ type DeliveryOrdersType = {
   orders: Order[];
   accepetOrder: (order: Order) => void;
   cancelOrder: (orderId: number) => void;
+  clearDeliveries: () => void;
 };
 
 export const useDeliveryOrdersStore = create<DeliveryOrdersType>()(
@@ -23,6 +24,11 @@ export const useDeliveryOrdersStore = create<DeliveryOrdersType>()(
       cancelOrder: (orderId: number) => {
         set(() => ({
           orders: get().orders.filter((order) => order.id != orderId),
+        }));
+      },
+      clearDeliveries: () => {
+        set(() => ({
+          orders: [] as Order[],
         }));
       },
     }),
