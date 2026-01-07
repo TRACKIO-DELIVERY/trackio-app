@@ -8,12 +8,15 @@ async function getProducts(): Promise<Product[]> {
 
   const products: Product[] = data.map((product: ProductDTO) => ({
     id: product.id,
-    name: product.name,
+    categoryId: product.categoryId,
+    categoryName: product.categoryName,
     price: product.price,
     description: product.description,
-    categoryId: product.category_id,
-    image: product.image,
-    companyId: product.company_id,
+    imageUrl: product.imageUrl,
+    name: product.name,
+    companyId: product.companyId,
+    companyName: product.companyName,
+    stock: product.stock,
   }));
   return products;
 }

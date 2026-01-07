@@ -8,13 +8,16 @@ async function getOrders(): Promise<Order[]> {
 
   const orders: Order[] = data.map((order: OrderDTO) => ({
     id: order.id,
-    status: order.status,
-    companyId: order.company_id,
-    date: order.date,
-    total: order.total,
-    customerId: order.customer_id,
-    deliveryPersonId: order.delivery_person_id,
-    procucts: [],
+    orderStatus: order.orderStatus,
+    companyId: order.companyId,
+    companyName: order.companyName,
+    customerId: order.customerId,
+    customerName: order.customerName,
+    orderDate: order.orderDate,
+    orderAmount: order.orderAmount,
+    deliveryPersonId: order.deliveryPersonId,
+    items: order.items,
+    orderFlee: order.orderFlee,
   }));
   return orders;
 }

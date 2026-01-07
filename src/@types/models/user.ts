@@ -2,24 +2,21 @@ import { Adress } from "./address";
 
 export type User = {
   userId: number;
-  name: string;
-  cpf: string;
-  email: string;
+  username: string;
   phone: string;
   role: string;
+  cpf: string;
+  email: string;
+  imageUrl: string;
+  dateOfBirth: string;
+  expoPushToken?: string;
 };
 
 export type Customer = User & {
-  birthDate: string;
-  cpf: string;
   address?: Adress;
-  imageUrl: string;
 };
 
 export type DeliveryPerson = User & {
-  birthDate: string;
-  cpf: string;
   address?: Adress;
-  imageUrl: string;
   vehicleType?: string;
 };

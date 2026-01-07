@@ -27,7 +27,9 @@ export function CustomerOrders() {
 
         <View style={styles.row}>
           <Text style={styles.total}>Total:</Text>
-          <Text style={styles.totalValue}>R$ {item.total?.toFixed(2)}</Text>
+          <Text style={styles.totalValue}>
+            R$ {item.orderAmount?.toFixed(2)}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -49,12 +51,12 @@ export function CustomerOrders() {
 }
 
 function translateStatus(status: Order) {
-  switch (status.status.toString()) {
-    case "preparing":
+  switch (status.orderStatus) {
+    case 0:
       return "Preparando";
-    case "on_the_way":
+    case 1:
       return "A caminho";
-    case "delivered":
+    case 2:
       return "Entregue";
     default:
       return "Status";

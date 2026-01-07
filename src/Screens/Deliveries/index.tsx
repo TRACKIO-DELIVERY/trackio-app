@@ -24,7 +24,7 @@ export function Deliveries() {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <Header role="entregador" name={user?.name || "Entregador(a)"} />
+      <Header role="entregador" name={user?.username || "Entregador(a)"} />
       <View style={styles.orders}>
         <View style={styles.heading}>
           <Text style={[TYPOGRAPHY.title]}>Pedidos Aceitos</Text>

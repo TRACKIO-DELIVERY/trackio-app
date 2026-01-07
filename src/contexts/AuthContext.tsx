@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       birth_date: "21/09/2003",
       image_url: "",
       email: "ka@gmail.com",
-      role: "entregador",
+      role: "CUSTOMER",
       cpf: "12345678",
       phone: "23456789",
     };
@@ -67,8 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser({
       userId: data.user_id,
       imageUrl: data.image_url ?? "",
-      name: data.name,
-      birthDate: data.birth_date,
+      username: data.name,
+      dateOfBirth: data.birth_date,
       email: data.email,
       role: data.role,
       cpf: data.cpf,
@@ -182,7 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!isAuth && !inAuthGroup) {
       router.replace("/(auth)/login");
     } else if (isAuth && inAuthGroup) {
-      if (user?.role == "cliente") {
+      if (user?.role == "CUSTOMER") {
         router.replace("/(customer)/(tabs)");
       } else {
         router.replace("/(deliver)/(tabs)");

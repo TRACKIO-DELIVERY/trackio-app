@@ -45,7 +45,7 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
       <Text style={styles.title}>Pedido #{order.id}</Text>
       <Text style={styles.company}>Empresa: {order.companyId}</Text>
       <Text style={styles.date}>
-        {new Date(order.date).toLocaleDateString()}
+        {new Date(order.orderDate).toLocaleDateString()}
       </Text>
 
       <View style={styles.section}>
@@ -57,18 +57,18 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
         <Text style={styles.sectionTitle}>Produtos</Text>
 
         <FlatList
-          data={order.procucts}
+          data={order.items}
           renderItem={renderProduct}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item.productId)}
         />
       </View>
 
       <View style={styles.totalBox}>
         <Text style={styles.totalLabel}>Total</Text>
-        <Text style={styles.totalValue}>R$ {order.total.toFixed(2)}</Text>
+        <Text style={styles.totalValue}>R$ {order.orderAmount.toFixed(2)}</Text>
       </View>
 
-      {order.status === 0 && (
+      {order.orderStatus === 0 && (
         <Pressable style={styles.buttonPrimary} onPress={handleAcceptOrder}>
           <Text style={styles.buttonText}>Aceitar Entrega</Text>
         </Pressable>

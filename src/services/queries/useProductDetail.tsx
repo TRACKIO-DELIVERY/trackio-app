@@ -8,12 +8,15 @@ async function getProduct(orderId: string): Promise<Product> {
 
   const product: Product = {
     id: data.id,
-    categoryId: data.category_id,
+    categoryId: data.categoryId,
+    categoryName: data.categoryName,
     price: data.price,
     description: data.description,
-    image: data.image,
+    imageUrl: data.imageUrl,
     name: data.name,
-    companyId: data.company_id,
+    companyId: data.companyId,
+    companyName: data.companyName,
+    stock: data.stock,
   };
   return product;
 }

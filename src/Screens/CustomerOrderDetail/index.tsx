@@ -33,13 +33,23 @@ export function CustomerOrderDetail({ orderId }: OrderDetailProps) {
 
   const data: Order = {
     customerId: 1,
-    date: new Date(),
+    orderDate: new Date(),
     deliveryPersonId: 1,
     id: 1,
-    procucts: [],
-    status: 1,
-    total: 12,
+    items: [
+      {
+        productId: 1,
+        productName: "lala",
+        quantity: 2,
+        unitPrice: 12.0,
+      },
+    ],
+    orderStatus: 1,
+    orderAmount: 12,
     companyId: 1,
+    companyName: "teste",
+    customerName: "karen",
+    orderFlee: 7.0,
   };
   useEffect(() => {
     if (!socket.connected) {
@@ -146,12 +156,12 @@ export function CustomerOrderDetail({ orderId }: OrderDetailProps) {
 
         <View style={styles.row}>
           <Text style={styles.label}>Entrega: </Text>
-          <Text style={styles.highlightGreen}>R$ 5,00</Text>
+          <Text style={styles.highlightGreen}>{data.orderFlee}</Text>
         </View>
 
         <View style={styles.row}>
           <Text style={styles.label}>Total a pagar: </Text>
-          <Text style={styles.highlightBlue}>R$ 20,00</Text>
+          <Text style={styles.highlightBlue}>R$ {data.orderAmount}</Text>
         </View>
 
         <View style={styles.spacer} />

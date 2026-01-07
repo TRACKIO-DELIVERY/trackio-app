@@ -1,22 +1,26 @@
 enum orderStatus {
-  "preparing",
-  "on_the_way",
-  "delivered",
+  preparing = 0,
+  on_the_way = 1,
+  delivered = 2,
 }
 
 export interface OrderDTO {
   id: number;
-  company_id: number;
-  customer_id: number;
-  delivery_person_id: number;
-  date: Date;
-  status: orderStatus;
-  total: number;
+  companyId: number;
+  companyName: string;
+  customerId: number;
+  customerName: string;
+  deliveryPersonId?: number;
+  orderDate: Date;
+  items: OrderItemDTO[];
+  orderStatus: orderStatus;
+  orderAmount: number;
+  orderFlee: number;
 }
 
 export interface OrderItemDTO {
-  order_id: string;
-  product_id: string;
+  productId: number;
+  productName: string;
   quantity: number;
-  unit_price: number;
+  unitPrice: number;
 }

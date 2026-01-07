@@ -24,7 +24,7 @@ export function Profile() {
           <Avatar />
         )}
 
-        <Text style={styles.name}>{user?.name || "Entregador 1"}</Text>
+        <Text style={styles.name}>{user?.username || "Entregador 1"}</Text>
         <Text style={styles.email}>{user?.email || "email@gmail.com"}</Text>
       </View>
 

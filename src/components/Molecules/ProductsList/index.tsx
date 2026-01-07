@@ -41,10 +41,11 @@ export function ProductsList() {
         renderItem={({ item }) => (
           <TouchableOpacity>
             <ProductCard
-              image={item.image}
+              image={item.imageUrl}
               price={item.price}
               name={item.name}
               onAdd={() => goToProductDetail(item.id)}
+              stock={item.stock}
               key={item.id}
               category={item.categoryId}
             />

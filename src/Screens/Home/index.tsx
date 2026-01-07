@@ -17,19 +17,19 @@ export function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        name={user?.name || "Entregador(a)"}
+        name={user?.username || "Entregador(a)"}
         role={user?.role || "cliente"}
       />
       <View style={styles.orders}>
         <View style={styles.heading}>
           <Text style={[TYPOGRAPHY.title]}>
-            {user?.role == "cliente" ? "Produtos" : "Pedidos"}
+            {user?.role == "CUSTOMER" ? "Produtos" : "Pedidos"}
           </Text>
           <Text style={TYPOGRAPHY.subtitle}>
             Selecione um pedido para aceitar iniciar sua rota!
           </Text>
         </View>
-        {user?.role == "cliente" ? <ProductsList /> : <OrdersList />}
+        {user?.role == "CUSTOMER" ? <ProductsList /> : <OrdersList />}
       </View>
     </SafeAreaView>
   );

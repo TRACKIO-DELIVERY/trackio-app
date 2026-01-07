@@ -14,11 +14,11 @@ interface Props {
 
 export function OrderCard({ order, onPress, onRemove }: Props) {
   function getStatusLabel() {
-    switch (order.status) {
+    switch (order.orderStatus) {
       case 0:
         return "Disponível";
       case 1:
-        return "Disponível";
+        return "Aceita";
       case 2:
         return "Entregue";
       default:
@@ -39,12 +39,14 @@ export function OrderCard({ order, onPress, onRemove }: Props) {
             <Trash color="rgba(182, 14, 14, 1)" onPress={onRemove} />
           )}
         </View>
-        <Text style={styles.company}>Empresa: {order.companyId}</Text>
-
+        <Text style={styles.company}>Empresa: {order.companyName}</Text>
+        <Text style={styles.company}>Cliente: {order.customerName}</Text>
         <View style={styles.footer}>
-          <Text style={styles.total}>Entrega: R$ 7.00</Text>
+          <Text style={styles.total}>Entrega: R$ {order.orderFlee}</Text>
 
-          <View style={[styles.statusBadge, styles[`status_${order.status}`]]}>
+          <View
+            style={[styles.statusBadge, styles[`status_${order.orderStatus}`]]}
+          >
             <Text style={styles.statusText}>{getStatusLabel()}</Text>
           </View>
         </View>

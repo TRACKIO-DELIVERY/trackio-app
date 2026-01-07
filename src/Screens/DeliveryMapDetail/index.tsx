@@ -33,13 +33,23 @@ export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
 
   const data: Order = {
     customerId: 1,
-    date: new Date(),
+    customerName: "karen",
+    orderDate: new Date(),
     deliveryPersonId: 1,
     id: 1,
-    procucts: [],
-    status: 1,
-    total: 12,
+    items: [
+      {
+        productId: 1,
+        productName: "lala",
+        quantity: 3,
+        unitPrice: 12,
+      },
+    ],
+    orderStatus: 1,
+    orderAmount: 12,
     companyId: 1,
+    companyName: "lala",
+    orderFlee: 7,
   };
 
   useEffect(() => {

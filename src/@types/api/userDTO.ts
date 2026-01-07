@@ -1,25 +1,22 @@
 import { AdressDTO } from "./addressDTO";
 
 export type UserDTO = {
-  user_id: string;
-  name: string;
+  userId: number;
+  username: string;
   cpf: string;
   email: string;
   phone: string;
+  expoPushToken?: string;
   role: string;
+  image_url: string;
+  dateOfBirth: string;
 };
 
 export type CustumerDTO = UserDTO & {
-  birth_date: string;
-  cpf: string;
   address: AdressDTO;
-  image_url: string;
 };
 
 export type DeliveryPersonDTO = UserDTO & {
-  birth_date: string;
-  cpf: string;
   address: AdressDTO;
-  image_url: string;
   vehicle_type: string;
 };

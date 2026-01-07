@@ -1,191 +1,123 @@
 {
-  "orders": [
-    {
-      "id": 1,
-      "companyId": 1,
-      "customerId": 101,
-      "deliveryPersonId": 201,
-      "date": "2025-02-11T10:00:00",
-      "procucts": [1, 2],
-      "status": 0,
-      "total": 29.8
-    },
-    {
-      "id": 2,
-      "companyId": 2,
-      "customerId": 102,
-      "deliveryPersonId": 202,
-      "date": "2025-02-11T11:15:00",
-      "procucts": [6],
-      "status": 1,
-      "total": 42.0
-    },
-    {
-      "id": 3,
-      "companyId": 3,
-      "customerId": 103,
-      "deliveryPersonId": 203,
-      "date": "2025-02-11T12:10:00",
-      "procucts": [10, 11],
-      "status": 1,
-      "total": 57.5
-    },
-    {
-      "id": 4,
-      "companyId": 1,
-      "customerId": 104,
-      "deliveryPersonId": 204,
-      "date": "2025-02-10T18:30:00",
-      "procucts": [3],
-      "status": 2,
-      "total": 19.9
-    },
-    {
-      "id": 5,
-      "companyId": 4,
-      "customerId": 105,
-      "deliveryPersonId": 205,
-      "date": "2025-02-10T20:45:00",
-      "procucts": [14, 15],
-      "status": 2,
-      "total": 84.7
-    }
-  ],
   "products": [
     {
       "id": 1,
-      "company_id": 1,
-      "name": "Hambúrguer Clássico",
-      "description": "Pão brioche, carne 180g, queijo cheddar, alface e tomate.",
-      "price": 24.9,
-      "category_id": 1,
-      "image": "/images/hamburguer_classico.png"
+      "name": "X-Burger",
+      "description": "Hambúrguer artesanal com queijo",
+      "stock": 50,
+      "companyId": 1,
+      "companyName": "Burger House",
+      "price": 18.9,
+      "categoryId": 1,
+      "categoryName": "Lanches",
+      "imageUrl": "https://picsum.photos/200/200?1"
     },
     {
       "id": 2,
-      "company_id": 1,
-      "name": "Hambúrguer Duplo Bacon",
-      "description": "Dois smash burgers 100g, cheddar duplo e bacon crispy.",
-      "price": 32.5,
-      "category_id": 1,
-      "image": "/images/hamburguer_bacon.png"
+      "name": "Batata Frita",
+      "description": "Batata frita crocante",
+      "stock": 100,
+      "companyId": 1,
+      "companyName": "Burger House",
+      "price": 9.5,
+      "categoryId": 2,
+      "categoryName": "Acompanhamentos",
+      "imageUrl": "https://picsum.photos/200/200?2"
     },
     {
       "id": 3,
-      "company_id": 1,
       "name": "Pizza Calabresa",
-      "description": "Calabresa artesanal, cebola roxa e orégano.",
-      "price": 48.0,
-      "category_id": 2,
-      "image": "/images/pizza_calabresa.png"
+      "description": "Pizza grande de calabresa",
+      "stock": 30,
+      "companyId": 2,
+      "companyName": "Pizzaria Napoli",
+      "price": 42,
+      "categoryId": 3,
+      "categoryName": "Pizzas",
+      "imageUrl": "https://picsum.photos/200/200?3"
     },
     {
       "id": 4,
-      "company_id": 1,
-      "name": "Pizza 4 Queijos",
-      "description": "Mozzarella, parmesão, gorgonzola e catupiry.",
-      "price": 54.0,
-      "category_id": 2,
-      "image": "/images/pizza_4queijos.png"
+      "name": "Refrigerante Lata",
+      "description": "Refrigerante gelado 350ml",
+      "stock": 200,
+      "companyId": 2,
+      "companyName": "Pizzaria Napoli",
+      "price": 6,
+      "categoryId": 4,
+      "categoryName": "Bebidas",
+      "imageUrl": "https://picsum.photos/200/200?4"
+    }
+  ],
+  "orders": [
+    {
+      "id": 101,
+      "companyId": 1,
+      "customerId": 10,
+      "customerName": "Maria Silva",
+      "deliveryPersonId": null,
+      "orderDate": "2026-01-07T10:30:00.000Z",
+      "items": [
+        {
+          "productId": "1",
+          "productName": "X-Burger",
+          "quantity": 2,
+          "unitPrice": 18.9
+        },
+        {
+          "productId": "2",
+          "productName": "Batata Frita",
+          "quantity": 1,
+          "unitPrice": 9.5
+        }
+      ],
+      "orderStatus": 0,
+      "orderAmount": 47.3,
+      "orderFlee": 5
     },
     {
-      "id": 5,
-      "company_id": 1,
-      "name": "Coca-Cola Lata",
-      "description": "Refrigerante 350ml gelado.",
-      "price": 6.0,
-      "category_id": 3,
-      "image": "/images/coca_lata.png"
+      "id": 102,
+      "companyId": 2,
+      "customerId": 11,
+      "customerName": "João Pereira",
+      "deliveryPersonId": 3,
+      "orderDate": "2026-01-07T11:00:00.000Z",
+      "items": [
+        {
+          "productId": "3",
+          "productName": "Pizza Calabresa",
+          "quantity": 1,
+          "unitPrice": 42
+        },
+        {
+          "productId": "4",
+          "productName": "Refrigerante Lata",
+          "quantity": 2,
+          "unitPrice": 6
+        }
+      ],
+      "orderStatus": 1,
+      "orderAmount": 54,
+      "orderFlee": 8
     },
     {
-      "id": 6,
-      "company_id": 1,
-      "name": "Suco Natural de Laranja",
-      "description": "Feito na hora, sem açúcar.",
-      "price": 9.5,
-      "category_id": 3,
-      "image": "/images/suco_laranja.png"
-    },
-    {
-      "id": 7,
-      "company_id": 1,
-      "name": "Açaí Tradicional",
-      "description": "400ml com granola e banana.",
-      "price": 18.0,
-      "category_id": 4,
-      "image": "/images/acai.png"
-    },
-    {
-      "id": 8,
-      "company_id": 1,
-      "name": "Brownie com Sorvete",
-      "description": "Brownie artesanal com bola de sorvete de creme.",
-      "price": 16.0,
-      "category_id": 4,
-      "image": "/images/brownie.png"
-    },
-    {
-      "id": 9,
-      "company_id": 1,
-      "name": "Marmita Fit Frango Grelhado",
-      "description": "150g frango, arroz integral, legumes.",
-      "price": 22.0,
-      "category_id": 5,
-      "image": "/images/marmita_fit.png"
-    },
-    {
-      "id": 10,
-      "company_id": 1,
-      "name": "Marmita Carne Acebolada",
-      "description": "Carne, arroz branco e feijão.",
-      "price": 25.0,
-      "category_id": 5,
-      "image": "/images/marmita_carne.png"
-    },
-    {
-      "id": 11,
-      "company_id": 1,
-      "name": "Pastel de Carne",
-      "description": "Casquinha crocante com recheio de carne temperada.",
-      "price": 8.0,
-      "category_id": 6,
-      "image": "/images/pastel_carne.png"
-    },
-    {
-      "id": 12,
-      "company_id": 1,
-      "name": "Pastel de Queijo",
-      "description": "Recheado com queijo mussarela.",
-      "price": 8.0,
-      "category_id": 6,
-      "image": "/images/pastel_queijo.png"
-    },
-    {
-      "id": 13,
-      "company_id": 1,
-      "name": "Temaki de Salmão",
-      "description": "Temaki grande com salmão fresco.",
-      "price": 28.0,
-      "category_id": 7,
-      "image": "/images/temaki_salmao.png"
-    },
-    {
-      "id": 14,
-      "company_id": 1,
-      "name": "Yakissoba Tradicional",
-      "description": "Legumes salteados com carne e frango.",
-      "price": 29.9,
-      "category_id": 7,
-      "image": "/images/yakissoba.png"
-    },
-    {
-      "id": 15,
-      "company_id": 1,
-      "name": "Café Espresso",
-      "description": "Shot de café espresso forte.",
-      "price": 5.0,
-      "category_id": 3,
-      "image": "/images/espresso.png"
+      "id": 103,
+      "companyId": 1,
+      "customerId": 12,
+      "customerName": "Lucas Gabriel",
+      "deliveryPersonId": 5,
+      "orderDate": "2026-01-07T09:40:00.000Z",
+      "items": [
+        {
+          "productId": "1",
+          "productName": "X-Burger",
+          "quantity": 1,
+          "unitPrice": 18.9
+        }
+      ],
+      "orderStatus": 2,
+      "orderAmount": 18.9,
+      "orderFlee": 4
     }
   ]
 }

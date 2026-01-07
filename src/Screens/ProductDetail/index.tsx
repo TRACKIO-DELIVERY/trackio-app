@@ -57,7 +57,7 @@ export function ProductDetailsScreen({ productId }: Props) {
       <GoBackButton onPress={() => navigation.goBack()} />
 
       <Image
-        source={{ uri: data?.image }}
+        source={{ uri: data?.imageUrl }}
         style={styles.image}
         resizeMode="cover"
       />
@@ -66,6 +66,7 @@ export function ProductDetailsScreen({ productId }: Props) {
         <Text style={styles.title}>{data?.name}</Text>
 
         <Text style={styles.description}>{data?.description}</Text>
+        <Text style={styles.description}>Em estoque: {data?.stock}</Text>
 
         <View style={styles.quantityContainer}>
           <View style={styles.quantityButtons}>

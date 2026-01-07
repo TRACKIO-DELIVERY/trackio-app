@@ -8,13 +8,16 @@ async function getOrder(orderId: string): Promise<Order> {
   console.log(data);
   const order: Order = {
     id: data.id,
-    companyId: data.company_id,
-    customerId: data.customer_id,
-    date: data.date,
-    deliveryPersonId: data.delivery_person_id,
-    status: data.status,
-    total: data.total,
-    procucts: [],
+    companyId: data.companyId,
+    companyName: data.companyName,
+    customerId: data.customerId,
+    customerName: data.customerName,
+    orderDate: data.orderDate,
+    deliveryPersonId: data.deliveryPersonId,
+    orderStatus: data.orderStatus,
+    orderAmount: data.orderAmount,
+    orderFlee: data.orderFlee,
+    items: data.items,
   };
 
   return order;
