@@ -12,10 +12,14 @@ interface Props {
 export const GoBackButton: React.FC<Props> = ({
   color = "#fff",
   size = 26,
+  onPress,
 }) => {
   const navigation = useRouter();
   return (
-    <TouchableOpacity style={styles.button} onPress={navigation.back}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress || navigation.back}
+    >
       <Ionicons name="arrow-back" size={size} color={color} />
     </TouchableOpacity>
   );

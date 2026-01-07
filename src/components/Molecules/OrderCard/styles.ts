@@ -1,78 +1,71 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    width: "100%",
-    padding: 16,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 14,
+    marginVertical: 6,
+    alignItems: "center",
+    elevation: 3,
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
-    marginBottom: 14,
+    shadowRadius: 4,
   },
 
   iconWrapper: {
-    width: 54,
-    height: 54,
-    borderRadius: 14,
-    backgroundColor: "#F5F7FA",
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: "#EEF6FF",
     alignItems: "center",
     justifyContent: "center",
     marginRight: 14,
   },
 
   content: {
+    marginLeft: 30,
     flex: 1,
   },
 
   title: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#1A1A1A",
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#222",
+    marginBottom: 2,
   },
 
   company: {
-    fontSize: 14,
     color: "#555",
-    marginTop: 2,
+    marginBottom: 6,
   },
 
-  address: {
-    fontSize: 14,
-    color: "#777",
-    marginTop: 8,
-  },
-
-  deliveryFee: {
-    fontSize: 14,
-    color: "#222",
-    fontWeight: "500",
-  },
-
-  footerRow: {
-    marginTop: 12,
+  footer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
 
-  statusBadge: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 50,
+  total: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#2F80ED",
   },
 
-  status1: { backgroundColor: "#DFF8E1" }, // disponível
-  status2: { backgroundColor: "#FFF4D9" }, // em rota
-  status3: { backgroundColor: "#E5E5E5" }, // finalizado
+  statusBadge: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+  },
+
+  status_0: { backgroundColor: "#FFF3CD" }, // preparing
+  status_1: { backgroundColor: "#D6EAF8" }, // on the way
+  status_2: { backgroundColor: "#D5F5E3" }, // delivered
 
   statusText: {
-    fontSize: 13,
     fontWeight: "600",
+    fontSize: 12,
     color: "#333",
   },
 });

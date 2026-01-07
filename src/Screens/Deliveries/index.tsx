@@ -5,63 +5,64 @@ import { styles } from "./styles";
 import { OrderCard } from "@/components/Molecules/OrderCard";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { useAuth } from "@/hooks/useAuth";
-
-interface DeliveredOrder {
-    id: string;
-    clientName: string;
-    company: string;
-    deliveredAt: string;
-    address: string;
-    deliveryFee: string;
-}
-
-const MOCK_ORDERS: DeliveredOrder[] = [
-    {
-        id: "3",
-        clientName: "João Silva",
-        company: "Atacarejo",
-        deliveredAt: "2025-07-22 14:30",
-        address: "Rua Rota do Sol Dr. Nilton Figueiredo, 64, Chico Cajá, Pau dos Ferros, RN - 59900-000, Brasil",
-        deliveryFee: "62.00"
-    },
-];
+import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { Button } from "@/components/Atoms/Button";
+import { useRouter } from "expo-router";
+import { DeliveryMapDetail } from "../DeliveryMapDetail";
+import { useState } from "react";
+import { THEME } from "@/constants/theme";
 
 export function Deliveries() {
+  const { user } = useAuth();
+  const orders = useDeliveryOrdersStore((state) => state.orders);
+  const cancelOrder = useDeliveryOrdersStore((state) => state.cancelOrder);
 
-    const { user } = useAuth()
-    return (
-        <SafeAreaView style={styles.container}>
-            <Header name={user?.name || 'Entregador(a)'} />
-            <View style={styles.orders}>
-                <View style={styles.heading}>
+  const navigation = useRouter();
 
-                    <Text style={[TYPOGRAPHY.title]}>
-                        Pedidos Entregues
-                    </Text>
-                    <Text style={TYPOGRAPHY.subtitle}>
-                        Veja todos os pedidos que você entregou!
-                    </Text>
-                </View>
-                <FlatList
-                    data={MOCK_ORDERS}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{
-                        gap: 12,
-                    }}
-                    renderItem={({ item }) => (
-                        <OrderCard
-                            status={3}
-                            title={`Pedido #${item.id}`}
-                            company={item.company}
-                            deliveryFee={item.deliveryFee}
-                            deliveryAddress={item.address}
-
-                        />
-
-                    )}
-                />
-
+  function handleStartRoute() {
+    navigation.push("/(deliver)/deliveryMap");
+  }
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header role="entregador" name={user?.name || "Entregador(a)"} />
+      <View style={styles.orders}>
+        <View style={styles.heading}>
+          <Text style={[TYPOGRAPHY.title]}>Pedidos Aceitos</Text>
+          <Text style={TYPOGRAPHY.subtitle}>
+            Começa a rota dos seus pedidos aqui!
+          </Text>
+        </View>
+        <FlatList
+          data={orders}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{
+            gap: 12,
+          }}
+          renderItem={({ item }) => (
+            <OrderCard order={item} onRemove={() => cancelOrder(item.id)} />
+          )}
+          ListEmptyComponent={() => (
+            <View
+              style={{
+                flex: 1,
+                marginTop: 50,
+                marginHorizontal: 30,
+                alignItems: "center",
+              }}
+            >
+              <Text style={[TYPOGRAPHY.alertText, { textAlign: "center" }]}>
+                Sem pedidos para entregar no momento. Acesse HOME, para escolher
+                pedidos disponíveis
+              </Text>
             </View>
-        </SafeAreaView>
-    );
+          )}
+        />
+
+        {/*enviar para tela do mapa, enviar os pedidos */}
+        {orders.length > 0 && (
+          <Button title="Iniciar rota" onPress={handleStartRoute} />
+        )}
+      </View>
+    </SafeAreaView>
+  );
 }

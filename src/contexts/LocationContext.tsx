@@ -8,17 +8,16 @@ interface LocationContextType {
   requestPermission: () => Promise<void>;
   startGetPositions: (orderId: string) => Promise<void>;
   stopTracking: () => void;
-  isTracking: boolean
+  isTracking: boolean;
 }
 export const LocationContext = createContext<LocationContextType>(
-  {} as LocationContextType,
+  {} as LocationContextType
 );
 
 export function LocationProvider({ children }: { children: ReactNode }) {
-
-  const [isTracking, setIsTraking] = useState(false)
+  const [isTracking, setIsTraking] = useState(false);
   const [location, setLocation] = useState<Location.LocationObject | null>(
-    null,
+    null
   );
   const [permissionStatus, setPermissionStatus] = useState<string | null>(null);
   const subscriptionRef = useRef<Location.LocationSubscription | null>(null);
@@ -31,7 +30,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   function stopTracking() {
     subscriptionRef.current?.remove();
     subscriptionRef.current = null;
-    setIsTraking(false)
+    setIsTraking(false);
   }
 
   async function startGetPositions(orderId: string) {
@@ -40,7 +39,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     }
 
     stopTracking(); //verifica se já tem outra instancia da ref
-    setIsTraking(true)
+    setIsTraking(true);
     const subscription = await Location.watchPositionAsync(
       {
         accuracy: Location.Accuracy.Highest,
@@ -51,14 +50,13 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         setLocation(newLocation);
         const coords = {
           latitude: newLocation?.coords.latitude,
-          longitude: newLocation?.coords.longitude
-        }
+          longitude: newLocation?.coords.longitude,
+        };
         socket.emit("location_update", {
           orderId,
-          coords
-
-        })
-      },
+          coords,
+        });
+      }
     );
 
     subscriptionRef.current = subscription;
@@ -68,7 +66,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     requestPermission();
     return () => {
       stopTracking(); // Evita GPS ativo se sair da tela sem finalizar
-      setIsTraking(false)
+      setIsTraking(false);
     };
   }, []);
   return (
@@ -79,7 +77,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         requestPermission,
         startGetPositions,
         stopTracking,
-        isTracking
+        isTracking,
       }}
     >
       {children}
