@@ -4,12 +4,16 @@ import { THEME } from "@/constants/theme";
 
 import Home from "@/assets/icons/home.svg";
 import Package from "@/assets/icons/package.svg";
+import Bag from "@/assets/icons/bag.svg";
 import Person from "@/assets/icons/person.svg";
+import { useCartStore } from "@/storage/cart";
 import { Text, View } from "react-native";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { useCustomerOrdersStore } from "@/storage/orders";
 
 export default function TabsLayout() {
-  const orders = useDeliveryOrdersStore((state) => state.orders);
+  const { products } = useCartStore();
+  const { orders } = useCustomerOrdersStore();
+
   return (
     <Tabs
       screenOptions={{
@@ -20,16 +24,49 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Início",
           tabBarIcon: ({ color }) => (
             <Home color={color} width={25} height={25} />
           ),
         }}
       />
       <Tabs.Screen
-        name="deliveries"
+        name="cart"
         options={{
-          title: "Sua entregas",
+          title: "Carrinho",
+          tabBarIcon: ({ color }) => (
+            <View>
+              <Bag color={color} width={25} height={25} />
+              {products.length > 0 && (
+                <View
+                  style={{
+                    backgroundColor: THEME.green[600],
+                    width: 20,
+                    height: 20,
+                    position: "absolute",
+                    right: -10,
+                    top: -10,
+                    borderRadius: 999,
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 12,
+                    }}
+                  >
+                    {products.length}
+                  </Text>
+                </View>
+              )}
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="orders"
+        options={{
+          title: "Pedidos",
           tabBarIcon: ({ color }) => (
             <View>
               <Package color={color} width={25} height={25} />
@@ -66,22 +103,6 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => (
             <Person color={color} width={25} height={25} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="order/[id]"
-        options={{
-          title: "Order",
-          href: null,
-          tabBarStyle: { display: "none" },
-        }}
-      />
-      <Tabs.Screen
-        name="deliveryMap"
-        options={{
-          title: "deliveryMap",
-          href: null,
-          tabBarStyle: { display: "none" },
         }}
       />
     </Tabs>

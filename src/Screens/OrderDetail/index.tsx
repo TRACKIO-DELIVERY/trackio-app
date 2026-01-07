@@ -110,7 +110,7 @@ export function OrderDetail({ orderId }: OrderDetailProps) {
             order_status: 3,
           };
           //sendDeliveredOrder(orderToQueue);
-          router.push("/(deliver)/deliveries");
+          router.push("/(deliver)/(tabs)/deliveries");
         },
       },
     ]);

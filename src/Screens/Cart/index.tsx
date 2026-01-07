@@ -40,7 +40,7 @@ export function CartScreen() {
       };
       createOrder(newOrder);
       clearCart();
-      navigation.push("/(customer)/orders");
+      navigation.push("/(customer)/(tabs)/orders");
     } catch (error) {
       console.log(error);
     }

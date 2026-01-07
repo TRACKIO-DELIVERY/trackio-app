@@ -23,7 +23,7 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
       accepetOrder(order);
       // 3. enviar push notification para cliente
       // 4. redirecionar para listagem de entrgas
-      navigation.push("/(deliver)/deliveries");
+      navigation.push("/(deliver)/(tabs)/deliveries");
     } catch (error) {
       console.log(error);
       throw new Error("Unable to accept order");

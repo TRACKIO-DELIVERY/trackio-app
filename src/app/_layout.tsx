@@ -1,6 +1,6 @@
 import * as SplashScreen from "expo-splash-screen";
 
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 
 import { useFonts } from "expo-font";
 import {
@@ -10,7 +10,7 @@ import {
   Sen_700Bold,
 } from "@expo-google-fonts/sen";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 
@@ -20,6 +20,7 @@ import { LocationProvider } from "@/contexts/LocationContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useAuth } from "@/hooks/useAuth";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -51,14 +52,19 @@ export default function RootLayout() {
 }
 
 export function RootLayoutNav() {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <AuthProvider>
           <LocationProvider>
             <StatusBar translucent style="dark" />
-            <Slot />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(customer)" />
+              <Stack.Screen name="(deliver)" />
+            </Stack>
           </LocationProvider>
         </AuthProvider>
       </SafeAreaProvider>
