@@ -183,9 +183,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       router.replace("/(auth)/login");
     } else if (isAuth && inAuthGroup) {
       if (user?.role == "cliente") {
-        router.replace("/(customer)");
+        router.replace("/(customer)/(tabs)");
       } else {
-        router.replace("/(deliver)");
+        router.replace("/(deliver)/(tabs)");
       }
     }
   }, [isLoading, rootSegment, user, isAuth]);
@@ -201,7 +201,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         googleLogin,
       }}
     >
-      {isLoading ? null : children}
+      {children}
     </AuthContext.Provider>
   );
 }

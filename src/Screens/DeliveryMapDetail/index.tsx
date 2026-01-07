@@ -79,7 +79,7 @@ export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
   );
 
   function goBack() {
-    router.replace("/(deliver)/deliveries");
+    router.replace("/(deliver)/(tabs)/deliveries");
   }
   function finishRoute() {
     Alert.alert("Encerrar rota", "Deseja encerrar?", [
@@ -96,7 +96,7 @@ export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
           socket.disconnect();
           console.log("desconectado");
           clearDeliveries();
-          router.push("/(deliver)/deliveries");
+          router.push("/(deliver)/(tabs)/deliveries");
         },
       },
     ]);
