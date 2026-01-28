@@ -9,8 +9,8 @@ export const THEME = {
   textLight: "#757575",
   textInverted: "#FFFFFF",
 
-  textHeader: "#F1F1FF",
-  textHeader2: "#E0E0FF",
+  textHeader: "#ffffff",
+  textHeader2: "#ffffff",
   overlay: "rgba(0, 0, 0, 0.5)",
   primary: {
     800: "#df2746ff",

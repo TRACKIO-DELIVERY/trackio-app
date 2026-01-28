@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   status: {
     fontSize: 14,
     fontWeight: "600",
-    color: THEME.primary[700],
+    color: THEME.green[600],
   },
 
   date: {

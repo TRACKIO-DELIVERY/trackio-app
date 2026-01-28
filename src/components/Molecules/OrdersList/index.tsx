@@ -12,7 +12,6 @@ import { useRouter } from "expo-router";
 
 export function OrdersList() {
   const { data, isFetching, error, refetch } = useOrders();
-
   const navigation = useRouter();
   if (error) {
     console.log(error);
@@ -39,7 +38,8 @@ export function OrdersList() {
           />
         )}
         contentContainerStyle={{
-          gap: 12,
+          paddingBottom: 90,
+          gap: 16,
         }}
         refreshControl={
           <RefreshControl refreshing={isFetching} onRefresh={refetch} />

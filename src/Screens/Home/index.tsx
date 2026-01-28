@@ -8,12 +8,15 @@ import { TYPOGRAPHY } from "@/constants/typography";
 import { useAuth } from "@/hooks/useAuth";
 import { Loading } from "@/components/Atoms/Loading";
 import { ProductsList } from "@/components/Molecules/ProductsList";
+import { Button } from "@/components/Atoms/Button";
+import { useEffect } from "react";
 
 export function Home() {
   const { user, isLoading } = useAuth();
   if (isLoading) {
     return <Loading />;
   }
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -29,6 +32,7 @@ export function Home() {
             Selecione um pedido para aceitar iniciar sua rota!
           </Text>
         </View>
+
         {user?.role == "CUSTOMER" ? <ProductsList /> : <OrdersList />}
       </View>
     </SafeAreaView>
