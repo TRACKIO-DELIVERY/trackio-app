@@ -12,10 +12,10 @@ export function Loading() {
         zIndex: 999,
       }}
     >
-      <Image
+      {/* <Image
         source={require("@/assets/logo/logo-white.png")}
         style={{ width: 180, height: 180 }}
-      />
+      /> */}
     </View>
   );
 }

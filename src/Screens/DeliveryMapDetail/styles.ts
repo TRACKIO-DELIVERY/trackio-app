@@ -14,8 +14,10 @@ export const styles = StyleSheet.create({
   bottomSheet: {
     position: "absolute",
     bottom: 0,
+    paddingBottom: 70,
     width: "100%",
     paddingVertical: 20,
+    gap: 5,
     paddingHorizontal: 24,
     backgroundColor: "rgba(255,255,255,0.90)",
     borderTopLeftRadius: 26,

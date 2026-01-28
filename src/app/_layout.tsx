@@ -20,7 +20,6 @@ import { LocationProvider } from "@/contexts/LocationContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useAuth } from "@/hooks/useAuth";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -60,11 +59,7 @@ export function RootLayoutNav() {
         <AuthProvider>
           <LocationProvider>
             <StatusBar translucent style="dark" />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(customer)" />
-              <Stack.Screen name="(deliver)" />
-            </Stack>
+            <Slot />
           </LocationProvider>
         </AuthProvider>
       </SafeAreaProvider>

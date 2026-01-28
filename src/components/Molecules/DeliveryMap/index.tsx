@@ -1,4 +1,5 @@
 import { Order } from "@/@types/models/order";
+import { MapMarker } from "@/components/Atoms/MapMarker";
 import { useLocation } from "@/hooks/useLocation";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
@@ -10,19 +11,32 @@ export default function DeliveryMap(orders: { orders: Order[] }) {
   const [region, setRegion] = useState<Region>({
     latitude: -6.1449451423527455,
     longitude: -38.20474092658745,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009,
   });
 
+  const mapRef = React.useRef<MapView>(null);
   useEffect(() => {
     if (location) {
       console.log(location);
       setRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
+        latitudeDelta: 0.002,
+        longitudeDelta: 0.002,
       });
+      const position = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      mapRef.current?.animateToRegion(
+        {
+          ...position,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+        },
+        500,
+      );
     }
   }, [location]);
 
@@ -30,19 +44,12 @@ export default function DeliveryMap(orders: { orders: Order[] }) {
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        region={region}
+        ref={mapRef}
+        initialRegion={region}
         onRegionChangeComplete={setRegion}
         provider={PROVIDER_GOOGLE}
       >
-        {location && (
-          <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-            title="Você está aqui"
-          />
-        )}
+        {location && <MapMarker coordinate={location.coords} />}
       </MapView>
     </View>
   );

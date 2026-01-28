@@ -2,11 +2,13 @@ import { StyleSheet } from "react-native";
 import { THEME } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
-  container: {
+  safe: {
     flex: 1,
     padding: 16,
     paddingTop: 120,
+    backgroundColor: "#fff",
   },
+
   title: {
     fontSize: 22,
     fontWeight: "bold",
@@ -52,33 +54,4 @@ export const styles = StyleSheet.create({
   },
   totalLabel: { fontSize: 18, fontWeight: "bold" },
   totalValue: { fontSize: 18, fontWeight: "bold" },
-
-  buttonPrimary: {
-    marginTop: 20,
-    backgroundColor: THEME.primary[700],
-    padding: 14,
-    borderRadius: 10,
-  },
-  buttonSecondary: {
-    marginTop: 20,
-    backgroundColor: THEME.primary[800],
-    padding: 14,
-    borderRadius: 10,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  finishedBox: {
-    marginTop: 16,
-    padding: 12,
-    backgroundColor: "#e5ffe5",
-    borderRadius: 8,
-  },
-  finishedText: {
-    textAlign: "center",
-    fontSize: 16,
-    color: "#36963a",
-  },
 });

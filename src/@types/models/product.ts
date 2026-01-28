@@ -4,7 +4,7 @@ export interface Product {
   description: string;
   stock: number;
   companyId: number;
-  companyName: number;
+  companyName: string;
   price: number;
   categoryId: number;
   categoryName: string;

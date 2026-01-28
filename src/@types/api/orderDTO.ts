@@ -1,8 +1,4 @@
-enum orderStatus {
-  preparing = 0,
-  on_the_way = 1,
-  delivered = 2,
-}
+export type orderStatus = "IN_PROGRESS" | "ON_ROUTE" | "DELIVERED";
 
 export interface OrderDTO {
   id: number;
@@ -16,6 +12,13 @@ export interface OrderDTO {
   orderStatus: orderStatus;
   orderAmount: number;
   orderFlee: number;
+  payment: {
+    id: 1;
+    orderId: number;
+    paymentMethod: "PIX" | "CARD";
+    amount: number;
+    paymentDate: string;
+  };
 }
 
 export interface OrderItemDTO {
@@ -23,4 +26,18 @@ export interface OrderItemDTO {
   productName: string;
   quantity: number;
   unitPrice: number;
+}
+
+export interface CreateOrderDTO {
+  companyId: number;
+  customerId: number;
+  items: CreateOrdemItemDTO[];
+  payment: {
+    paymentMethod: "PIX" | "CARD";
+  };
+}
+
+export interface CreateOrdemItemDTO {
+  productId: number;
+  quantity: number;
 }

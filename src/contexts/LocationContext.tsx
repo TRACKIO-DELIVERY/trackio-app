@@ -1,23 +1,24 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
 import { socket } from "@/services/socket";
+import { Order } from "@/@types/models/order";
 
 interface LocationContextType {
   location: Location.LocationObject | null;
   permissionStatus: string | null;
   requestPermission: () => Promise<void>;
-  startGetPositions: (orderId: string) => Promise<void>;
+  startGetPositions: (orders: Order[]) => Promise<void>;
   stopTracking: () => void;
   isTracking: boolean;
 }
 export const LocationContext = createContext<LocationContextType>(
-  {} as LocationContextType
+  {} as LocationContextType,
 );
 
 export function LocationProvider({ children }: { children: ReactNode }) {
   const [isTracking, setIsTraking] = useState(false);
   const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
+    null,
   );
   const [permissionStatus, setPermissionStatus] = useState<string | null>(null);
   const subscriptionRef = useRef<Location.LocationSubscription | null>(null);
@@ -33,10 +34,18 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     setIsTraking(false);
   }
 
-  async function startGetPositions(orderId: string) {
-    if (permissionStatus !== "granted") {
-      await requestPermission();
+  async function startGetPositions(orders: Order[]) {
+    // if (permissionStatus !== "granted") {
+    //   await requestPermission();
+    // }
+
+    if (!socket.connected) {
+      socket.connect();
     }
+
+    orders.forEach((order) => {
+      socket.emit("join_order", order.id);
+    });
 
     stopTracking(); //verifica se já tem outra instancia da ref
     setIsTraking(true);
@@ -48,17 +57,18 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       },
       (newLocation) => {
         setLocation(newLocation);
-        const coords = {
-          latitude: newLocation?.coords.latitude,
-          longitude: newLocation?.coords.longitude,
-        };
-        socket.emit("location_update", {
-          orderId,
-          coords,
+        const lat = newLocation?.coords.latitude;
+        const lng = newLocation?.coords.longitude;
+
+        socket.emit("send_location", {
+          orders,
+          lat,
+          lng,
         });
-      }
+      },
     );
 
+    console.log(subscription);
     subscriptionRef.current = subscription;
   }
 

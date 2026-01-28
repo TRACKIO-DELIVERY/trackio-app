@@ -12,7 +12,7 @@ async function getDeliveryPerson(id: string): Promise<DeliveryPerson> {
     dateOfBirth: data.dateOfBirth,
     cpf: data.cpf,
     email: data.email,
-    imageUrl: data.image_url,
+    image_url: data.image_url,
     username: data.username,
     phone: data.phone,
     role: data.role,

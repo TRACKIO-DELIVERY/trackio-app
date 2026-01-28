@@ -6,6 +6,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 type CustomerOrderType = {
   orders: Order[];
   createOrder: (newOrder: Order) => void;
+  cancelOrder: (orderId: number) => void;
   clearOrders: () => void;
 };
 export const useCustomerOrdersStore = create<CustomerOrderType>()(
@@ -17,11 +18,18 @@ export const useCustomerOrdersStore = create<CustomerOrderType>()(
           orders: [...get().orders, newOrder],
         }));
       },
+      cancelOrder: (orderId: number) => {
+        set(() => ({
+          orders: get().orders.filter((order) => {
+            order.id !== orderId;
+          }),
+        }));
+      },
       clearOrders: () => set({ orders: [] }),
     }),
     {
       name: "@trackio::customer-orders",
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+    },
+  ),
 );

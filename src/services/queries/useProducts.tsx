@@ -4,7 +4,7 @@ import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
 async function getProducts(): Promise<Product[]> {
-  const { data } = await api.get<ProductDTO[]>("/products/");
+  const { data } = await api.get<ProductDTO[]>("/product");
 
   const products: Product[] = data.map((product: ProductDTO) => ({
     id: product.id,

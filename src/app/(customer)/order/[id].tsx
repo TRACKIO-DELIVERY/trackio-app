@@ -12,5 +12,5 @@ export default function Screen() {
   //     throw new Error("Unable to find order with this id")
   // }
 
-  return <CustomerOrderDetail orderId={id as string} />;
+  return <CustomerOrderDetail orderId={Number(id)} />;
 }

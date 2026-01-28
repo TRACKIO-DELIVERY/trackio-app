@@ -3,16 +3,16 @@ import { DeliveryOrderDetail } from "@/Screens/DeliveryOrderDetail";
 import { OrderDetail } from "@/Screens/OrderDetail";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { useNavigation } from "@react-navigation/native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 export default function Screen() {
   const { id } = useLocalSearchParams();
-  console.log("aaa", id);
 
   const { data, isLoading, error } = useOrderDetail(id as string);
 
   if (error) {
-    throw new Error("Unable to find order with this id");
+    Alert.alert("Não foi possível acessar os detalhes desse pedido");
   }
 
   if (isLoading) {

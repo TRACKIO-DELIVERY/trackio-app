@@ -1,4 +1,4 @@
-import { User, Customer, DeliveryPerson } from "@/@types/models/user";
+import { User, Customer, DeliveryPerson, Role } from "@/@types/models/user";
 import { useLogin } from "@/services/queries/useLogin";
 import { useRegister } from "@/services/queries/useRegister";
 import { useRouter, useSegments } from "expo-router";
@@ -16,6 +16,8 @@ import {
   LoginParams,
   RegisterParams,
 } from "@/@types/authParams";
+import { socket } from "@/services/socket";
+import { useCustomer } from "@/services/queries/useCustomer";
 
 interface AuthContextType {
   user: Customer | DeliveryPerson | null;
@@ -25,6 +27,7 @@ interface AuthContextType {
   googleLogin: (params: googleLoginParams) => void;
   signOut: () => void;
   isLoading: boolean;
+  testLogin: (customerId: number, role: Role) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -51,29 +54,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // }
 
     //const { data } = await api.get(`/api/users/${userId}/`);
-    const data = {
-      user_id: 1,
-      name: "karen",
-      birth_date: "21/09/2003",
-      image_url: "",
-      email: "ka@gmail.com",
-      role: "CUSTOMER",
-      cpf: "12345678",
-      phone: "23456789",
-    };
 
     setIsAuth(true);
 
-    setUser({
-      userId: data.user_id,
-      imageUrl: data.image_url ?? "",
-      username: data.name,
-      dateOfBirth: data.birth_date,
-      email: data.email,
-      role: data.role,
-      cpf: data.cpf,
-      phone: data.phone,
-    });
+    // setUser({
+    //   userId: data.userId,
+    //   image_url: data.imageUrl ?? "",
+    //   username: data.username,
+    //   dateOfBirth: data.dateOfBirth,
+    //   email: data.email,
+    //   role: data.role,
+    //   cpf: data.cpf,
+    //   phone: data.phone,
+    // });
   }
 
   async function userIsAuthenticated() {
@@ -87,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       setIsAuth(true);
-      fetchUser(tokens?.access);
+      //fetchUser(tokens?.access);
     } catch (error) {
       console.log("Error checking user authenticated", error);
     } finally {
@@ -135,6 +128,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  async function testLogin(customerId: number, role: Role) {
+    switch (role) {
+      case "CUSTOMER": {
+        const { data, status } = await api.get<Customer>(
+          `/customer/${customerId}`,
+        );
+        console.log(status);
+        if (data) {
+          setUser({
+            userId: data.userId,
+            image_url: data.image_url ?? "",
+            username: data.username,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            role: data.role,
+            cpf: data.cpf,
+            phone: data.phone,
+          });
+
+          setIsAuth(true);
+        }
+        break;
+      }
+      case "DELIVERY":
+        {
+          const { data, status } = await api.get<DeliveryPerson>(
+            `/deliveryperson/${customerId}`,
+          );
+          console.log(status);
+          if (data) {
+            setUser({
+              userId: data.userId,
+              image_url: data.image_url ?? "",
+              username: data.username,
+              dateOfBirth: data.dateOfBirth,
+              email: data.email,
+              role: data.role,
+              cpf: data.cpf,
+              phone: data.phone,
+            });
+
+            setIsAuth(true);
+          }
+        }
+        break;
+
+      default:
+        console.warn("Role inválido:", role);
+    }
+  }
+
   async function googleLogin(params: googleLoginParams) {
     setIsLoading(true);
 
@@ -161,7 +205,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setIsAuth(false);
     await removeTokensStorage();
-
     router.replace("/login");
     setIsLoading(false);
   }
@@ -171,24 +214,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // }, []);
 
   //apenas para testes
-  useEffect(() => {
-    fetchUser("teste");
-  }, []);
+  // useEffect(() => {
+  //   fetchUser("teste");
+  // }, []);
   useEffect(() => {
     if (isLoading) return;
 
     const inAuthGroup = rootSegment === "(auth)";
     console.log(isAuth);
+
     if (!isAuth && !inAuthGroup) {
       router.replace("/(auth)/login");
-    } else if (isAuth && inAuthGroup) {
-      if (user?.role == "CUSTOMER") {
-        router.replace("/(customer)/(tabs)");
-      } else {
-        router.replace("/(deliver)/(tabs)");
+    }
+  }, [isLoading, rootSegment, isAuth]);
+
+  useEffect(() => {
+    if (!isAuth) return;
+
+    if (user?.role == "CUSTOMER") {
+      console.log(user?.role);
+      router.replace("/(customer)/(tabs)");
+    } else {
+      console.log(user?.role);
+      router.replace("/(deliver)/(tabs)");
+    }
+  }, [user, isAuth, user?.role]);
+
+  useEffect(() => {
+    if (isAuth && user) {
+      if (!socket.connected) {
+        const { connected } = socket.connect();
+        if (connected) {
+          console.log("🟢 Socket conectado globalmente");
+        } else {
+          console.log("🔴 Socket não conectado ");
+        }
+      }
+    } else {
+      if (socket.connected) {
+        socket.disconnect();
+        console.log("🔴 Socket desconectado");
       }
     }
-  }, [isLoading, rootSegment, user, isAuth]);
+  }, [isAuth, user]);
   return (
     <AuthContext.Provider
       value={{
@@ -199,6 +267,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         register,
         signOut,
         googleLogin,
+        testLogin,
       }}
     >
       {children}

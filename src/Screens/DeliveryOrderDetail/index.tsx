@@ -1,10 +1,21 @@
 import React from "react";
-import { View, Text, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  FlatList,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { styles } from "./styles";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
-import { Order } from "@/@types/models/order";
+import { Order, OrderItem } from "@/@types/models/order";
 import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
 import { useRouter } from "expo-router";
+import { Button } from "@/components/Atoms/Button";
+import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
+import { useAuth } from "@/hooks/useAuth";
+import { Loading } from "@/components/Atoms/Loading";
 
 interface DeliveryOrderDetailProps {
   order: Order;
@@ -13,33 +24,49 @@ interface DeliveryOrderDetailProps {
 export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
   order,
 }) => {
-  const accepetOrder = useDeliveryOrdersStore((state) => state.accepetOrder);
+  const { user } = useAuth();
+
+  const accepetOrderStore = useDeliveryOrdersStore(
+    (state) => state.accepetOrder,
+  );
+  const { mutate } = useAcceptOrder(order.id);
   const navigation = useRouter();
 
   async function handleAcceptOrder() {
     try {
       // 1. Enviar http POST para order service
-      // 2. salvar no order storage do entragor
-      accepetOrder(order);
-      // 3. enviar push notification para cliente
-      // 4. redirecionar para listagem de entrgas
-      navigation.push("/(deliver)/(tabs)/deliveries");
+      mutate(
+        { deliveryId: user?.userId!, orderId: order.id },
+        {
+          onSuccess: () => {
+            // 2. salvar no order storage do entragor
+            accepetOrderStore(order);
+            // 3. enviar push notification para cliente
+            // 4. redirecionar para listagem de entrgas
+            navigation.push("/(deliver)/(tabs)/deliveries");
+          },
+          onError: (err) => {
+            console.log(err);
+            Alert.alert("Não foi possível aceitar esse pedido");
+          },
+        },
+      );
     } catch (error) {
       console.log(error);
       throw new Error("Unable to accept order");
     }
   }
 
-  const renderProduct = ({ item }: any) => (
+  const renderProduct = ({ item }: { item: OrderItem }) => (
     <View style={styles.productRow}>
-      <Text style={styles.productName}>{item.name}</Text>
+      <Text style={styles.productName}>{item.productName}</Text>
       <Text style={styles.productQty}>x{item.quantity}</Text>
-      <Text style={styles.productPrice}>R$ {item.price.toFixed(2)}</Text>
+      <Text style={styles.productPrice}>R$ {item.unitPrice}</Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.safe}>
       <GoBackButton />
 
       <Text style={styles.title}>Pedido #{order.id}</Text>
@@ -65,13 +92,11 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
 
       <View style={styles.totalBox}>
         <Text style={styles.totalLabel}>Total</Text>
-        <Text style={styles.totalValue}>R$ {order.orderAmount.toFixed(2)}</Text>
+        <Text style={styles.totalValue}>R$ {order.orderAmount}</Text>
       </View>
 
-      {order.orderStatus === 0 && (
-        <Pressable style={styles.buttonPrimary} onPress={handleAcceptOrder}>
-          <Text style={styles.buttonText}>Aceitar Entrega</Text>
-        </Pressable>
+      {order.orderStatus === "IN_PROGRESS" && (
+        <Button title="Aceitar entrega" onPress={handleAcceptOrder} />
       )}
     </View>
   );

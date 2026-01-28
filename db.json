@@ -53,6 +53,7 @@
     {
       "id": 101,
       "companyId": 1,
+      "companyName": "Burger House",
       "customerId": 10,
       "customerName": "Maria Silva",
       "deliveryPersonId": null,
@@ -79,6 +80,7 @@
       "id": 102,
       "companyId": 2,
       "customerId": 11,
+      "companyName": "Burger House",
       "customerName": "João Pereira",
       "deliveryPersonId": 3,
       "orderDate": "2026-01-07T11:00:00.000Z",
@@ -103,8 +105,9 @@
     {
       "id": 103,
       "companyId": 1,
+      "companyName": "Pizzaria Napoli",
       "customerId": 12,
-      "customerName": "Lucas Gabriel",
+      "customerName": "Lucas Gabriele",
       "deliveryPersonId": 5,
       "orderDate": "2026-01-07T09:40:00.000Z",
       "items": [

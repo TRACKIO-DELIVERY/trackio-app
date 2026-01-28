@@ -1,13 +1,15 @@
 import { Adress } from "./address";
 
+export type Role = "CUSTOMER" | "DELIVERY";
+
 export type User = {
   userId: number;
   username: string;
   phone: string;
-  role: string;
+  role: Role;
   cpf: string;
   email: string;
-  imageUrl: string;
+  image_url: string;
   dateOfBirth: string;
   expoPushToken?: string;
 };

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@/components/Atoms/Header";
 import { styles } from "./styles";
@@ -11,16 +11,45 @@ import { useRouter } from "expo-router";
 import { DeliveryMapDetail } from "../DeliveryMapDetail";
 import { useState } from "react";
 import { THEME } from "@/constants/theme";
+import { useCancelOrder } from "@/services/queries/useCancelOrder";
 
 export function Deliveries() {
   const { user } = useAuth();
   const orders = useDeliveryOrdersStore((state) => state.orders);
   const cancelOrder = useDeliveryOrdersStore((state) => state.cancelOrder);
-
+  const { mutate } = useCancelOrder();
   const navigation = useRouter();
 
   function handleStartRoute() {
     navigation.push("/(deliver)/deliveryMap");
+  }
+  function handleCancelOrder(orderId: number) {
+    Alert.alert(
+      "Cancelar pedido",
+      `Deseja realmente cancelar o pedido ${orderId}`,
+      [
+        {
+          text: "Sim",
+          onPress: () => {
+            mutate(
+              { orderId: orderId },
+              {
+                onSuccess: () => {
+                  cancelOrder(orderId);
+                },
+                onError: () => {
+                  Alert.alert("Não foi possível cancelar esse pedido");
+                },
+              },
+            );
+          },
+        },
+        {
+          text: "Não",
+          style: "cancel",
+        },
+      ],
+    );
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -39,7 +68,10 @@ export function Deliveries() {
             gap: 12,
           }}
           renderItem={({ item }) => (
-            <OrderCard order={item} onRemove={() => cancelOrder(item.id)} />
+            <OrderCard
+              order={item}
+              onRemove={() => handleCancelOrder(item.id)}
+            />
           )}
           ListEmptyComponent={() => (
             <View

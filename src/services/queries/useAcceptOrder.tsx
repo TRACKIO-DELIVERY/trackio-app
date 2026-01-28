@@ -1,14 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../api";
 
-export function useAcceptOrder(orderId: number, deliveryPerson: number) {
+interface orderParams {
+  orderId: number;
+  deliveryId: number;
+}
+async function acceptOrder(params: orderParams) {
+  const { data } = await api.patch("orders/in_route", params);
+  return data;
+}
+export function useAcceptOrder(orderId: number) {
   return useMutation({
     mutationKey: [`order-delivery-${orderId}`],
-    mutationFn: async () => {
-      await api.post("accept-delivery", {
-        orderId,
-        deliveryPerson,
-      });
-    },
+    mutationFn: acceptOrder,
   });
 }

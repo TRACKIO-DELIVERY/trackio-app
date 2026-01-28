@@ -1,3 +1,4 @@
+import { Role } from "../models/user";
 import { AdressDTO } from "./addressDTO";
 
 export type UserDTO = {
@@ -7,7 +8,7 @@ export type UserDTO = {
   email: string;
   phone: string;
   expoPushToken?: string;
-  role: string;
+  role: Role;
   image_url: string;
   dateOfBirth: string;
 };
