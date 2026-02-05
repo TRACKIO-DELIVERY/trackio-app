@@ -1,6 +1,5 @@
 import { Loading } from "@/components/Atoms/Loading";
 import { DeliveryOrderDetail } from "@/Screens/DeliveryOrderDetail";
-import { OrderDetail } from "@/Screens/OrderDetail";
 import { useOrderDetail } from "@/services/queries/useOrderDetail";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalSearchParams, useRouter } from "expo-router";

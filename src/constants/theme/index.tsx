@@ -13,8 +13,8 @@ export const THEME = {
   textHeader2: "#ffffff",
   overlay: "rgba(0, 0, 0, 0.5)",
   primary: {
-    800: "#df2746ff",
-    700: "#FF516E",
+    800: "#cd1b39",
+    700: "#eb3150",
   },
   grey: {
     900: "#2F2E36",

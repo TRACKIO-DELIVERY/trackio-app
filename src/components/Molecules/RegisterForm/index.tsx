@@ -55,15 +55,15 @@ export function RegisterForm() {
     register(user);
   }
 
+  //aqui fazer chamada pro keycloack
   async function goToNextForm() {
     const isValid = await trigger([
       "fullname",
-      "username",
       "email",
-      "birthDate",
-      "cpf",
+      "password",
+      "confirmPassword",
     ]);
-    if (isValid) setNextForm(true);
+    if (!isValid) return;
   }
 
   function goToLogin() {
@@ -77,6 +77,7 @@ export function RegisterForm() {
         </TouchableOpacity>
       )}
       <View style={styles.inputsContainer}>
+        <Text style={styles.title}>Cadastro entregador</Text>
         {!nextForm && (
           <>
             {/*Nome */}
@@ -95,25 +96,6 @@ export function RegisterForm() {
               />
               <Text style={TYPOGRAPHY.errorText}>
                 {errors && errors.fullname?.message}
-              </Text>
-            </View>
-
-            {/*Username */}
-            <View style={styles.inputView}>
-              <Controller
-                control={control}
-                name="username"
-                render={({ field: { onChange, value } }) => (
-                  <Input
-                    icon={LockIcon}
-                    placeholder="Username"
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-              />
-              <Text style={TYPOGRAPHY.errorText}>
-                {errors && errors.username?.message}
               </Text>
             </View>
 
@@ -136,39 +118,43 @@ export function RegisterForm() {
               </Text>
             </View>
 
-            {/*Data de nascimento */}
+            {/*Senha */}
             <View style={styles.inputView}>
               <Controller
                 control={control}
-                name="birthDate"
+                name="password"
                 render={({ field: { onChange, value } }) => (
-                  <InputDateMasked
-                    icon={CalendarIcon}
-                    placeholder="Data de nascimento"
-                    onChangeFormatted={onChange}
+                  <Input
+                    icon={LockIcon}
+                    placeholder="Senha"
+                    onChangeText={onChange}
+                    isPasswordInput
+                    value={value}
                   />
                 )}
               />
               <Text style={TYPOGRAPHY.errorText}>
-                {errors && errors.birthDate?.message}
+                {errors && errors.password?.message}
               </Text>
             </View>
 
-            {/*CPF */}
+            {/*Confirmar senha */}
             <View style={styles.inputView}>
               <Controller
                 control={control}
-                name="cpf"
+                name="confirmPassword"
                 render={({ field: { onChange, value } }) => (
-                  <InputCPFMasked
-                    icon={CardIcon}
-                    placeholder="CPF"
-                    onChangeFormatted={onChange}
+                  <Input
+                    icon={LockIcon}
+                    placeholder="Confirme sua senha"
+                    onChangeText={onChange}
+                    isPasswordInput
+                    value={value}
                   />
                 )}
               />
               <Text style={TYPOGRAPHY.errorText}>
-                {errors && errors.cpf?.message}
+                {errors && errors.confirmPassword?.message}
               </Text>
             </View>
           </>
@@ -214,43 +200,39 @@ export function RegisterForm() {
               </Text>
             </View>
 
-            {/*Senha */}
+            {/*Data de nascimento */}
             <View style={styles.inputView}>
               <Controller
                 control={control}
-                name="password"
+                name="birthDate"
                 render={({ field: { onChange, value } }) => (
-                  <Input
-                    icon={LockIcon}
-                    placeholder="Senha"
-                    onChangeText={onChange}
-                    isPasswordInput
-                    value={value}
+                  <InputDateMasked
+                    icon={CalendarIcon}
+                    placeholder="Data de nascimento"
+                    onChangeFormatted={onChange}
                   />
                 )}
               />
               <Text style={TYPOGRAPHY.errorText}>
-                {errors && errors.password?.message}
+                {errors && errors.birthDate?.message}
               </Text>
             </View>
 
-            {/*Confirmar senha */}
+            {/*CPF */}
             <View style={styles.inputView}>
               <Controller
                 control={control}
-                name="confirmPassword"
+                name="cpf"
                 render={({ field: { onChange, value } }) => (
-                  <Input
-                    icon={LockIcon}
-                    placeholder="Confirme sua senha"
-                    onChangeText={onChange}
-                    isPasswordInput
-                    value={value}
+                  <InputCPFMasked
+                    icon={CardIcon}
+                    placeholder="CPF"
+                    onChangeFormatted={onChange}
                   />
                 )}
               />
               <Text style={TYPOGRAPHY.errorText}>
-                {errors && errors.confirmPassword?.message}
+                {errors && errors.cpf?.message}
               </Text>
             </View>
           </>

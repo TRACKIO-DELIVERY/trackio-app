@@ -8,7 +8,7 @@ import {
   getTokensStorage,
   removeTokensStorage,
   setTokensStorage,
-} from "@/storage";
+} from "@/storage/authTokens";
 import { useGoogleAuth } from "@/services/queries/useGoogleAuth";
 import { getUserIdFromToken } from "@/utils/jwtDecode";
 import {
@@ -18,11 +18,23 @@ import {
 } from "@/@types/authParams";
 import { socket } from "@/services/socket";
 import { useCustomer } from "@/services/queries/useCustomer";
+import {
+  authorize,
+  refresh,
+  register as keycloackRegister,
+  AppAuthErrorCode,
+} from "react-native-app-auth";
+import { authConfig, CLIENT_ID, discovery } from "@/services/keycloack";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface AuthContextType {
   user: Customer | DeliveryPerson | null;
   setUser: (user: Customer | DeliveryPerson) => void;
   login: (params: LoginParams) => void;
+  loginWithKeyCloack: (params: LoginParams) => Promise<void>;
   register: (params: RegisterParams) => void;
   googleLogin: (params: googleLoginParams) => void;
   signOut: () => void;
@@ -44,6 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const rootSegment = useSegments()[0];
   const router = useRouter();
 
+  const redirectUri = makeRedirectUri({
+    scheme: "trackioapp",
+    path: "login",
+  });
+
+  const [request, response, promptAsync] = useAuthRequest(
+    authConfig,
+    discovery,
+  );
   async function fetchUser(token: string) {
     //const userId = getUserIdFromToken(token);
 
@@ -179,6 +200,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function loginWithKeyCloack(params: LoginParams) {
+    await promptAsync();
+  }
+
   async function googleLogin(params: googleLoginParams) {
     setIsLoading(true);
 
@@ -224,7 +249,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log(isAuth);
 
     if (!isAuth && !inAuthGroup) {
-      router.replace("/(auth)/login");
+      router.replace("/(auth)");
     }
   }, [isLoading, rootSegment, isAuth]);
 
@@ -264,6 +289,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         setUser,
         login,
+        loginWithKeyCloack,
         register,
         signOut,
         googleLogin,

@@ -6,10 +6,13 @@ import Home from "@/assets/icons/home.svg";
 import Package from "@/assets/icons/package.svg";
 import Person from "@/assets/icons/person.svg";
 import { Text, View } from "react-native";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 
 export default function TabsLayout() {
-  const orders = useDeliveryOrdersStore((state) => state.orders);
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const orders = deliveriesStore((state) => state.orders);
+
   return (
     <Tabs
       screenOptions={{

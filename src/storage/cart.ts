@@ -13,59 +13,61 @@ type cartStoreType = {
   clearCart: () => void;
 };
 
-export const useCartStore = create<cartStoreType>()(
-  persist(
-    (set, get) => ({
-      products: [] as cartProductType[],
-      addToCart: (newProduct: Product, quantity: number) =>
-        set(() => {
-          const productExists = get().products.find(
-            (item) => item.id === newProduct.id
-          );
+export function createCartStore(userId: number) {
+  return create<cartStoreType>()(
+    persist(
+      (set, get) => ({
+        products: [] as cartProductType[],
+        addToCart: (newProduct: Product, quantity: number) =>
+          set(() => {
+            const productExists = get().products.find(
+              (item) => item.id === newProduct.id,
+            );
 
-          if (productExists) {
+            if (productExists) {
+              return {
+                products: get().products.map((item) =>
+                  item.id === newProduct.id
+                    ? { ...item, quantity: item.quantity + quantity }
+                    : item,
+                ),
+              };
+            }
+
             return {
-              products: get().products.map((item) =>
-                item.id === newProduct.id
-                  ? { ...item, quantity: item.quantity + quantity }
-                  : item
-              ),
+              products: [
+                ...get().products,
+                { ...newProduct, quantity: quantity },
+              ],
             };
-          }
+          }),
+        removeFromCart: (productId: number) =>
+          set(() => {
+            const productExists = get().products.find(
+              (item) => item.id === productId,
+            );
+            if (!productExists) return { products: get().products };
 
-          return {
-            products: [
-              ...get().products,
-              { ...newProduct, quantity: quantity },
-            ],
-          };
-        }),
-      removeFromCart: (productId: number) =>
-        set(() => {
-          const productExists = get().products.find(
-            (item) => item.id === productId
-          );
-          if (!productExists) return { products: get().products };
-
-          if (productExists.quantity > 1) {
+            if (productExists.quantity > 1) {
+              return {
+                products: get().products.map((item) =>
+                  item.id === productExists.id
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item,
+                ),
+              };
+            }
+            // quantity === 1
             return {
-              products: get().products.map((item) =>
-                item.id === productExists.id
-                  ? { ...item, quantity: item.quantity - 1 }
-                  : item
-              ),
+              products: get().products.filter((item) => item.id != productId),
             };
-          }
-          // quantity === 1
-          return {
-            products: get().products.filter((item) => item.id != productId),
-          };
-        }),
-      clearCart: () => set({ products: [] }),
-    }),
-    {
-      name: "@trackio::cart",
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
-);
+          }),
+        clearCart: () => set({ products: [] }),
+      }),
+      {
+        name: `@trackio::cart-${userId}`,
+        storage: createJSONStorage(() => AsyncStorage),
+      },
+    ),
+  );
+}

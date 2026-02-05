@@ -9,27 +9,29 @@ type CustomerOrderType = {
   cancelOrder: (orderId: number) => void;
   clearOrders: () => void;
 };
-export const useCustomerOrdersStore = create<CustomerOrderType>()(
-  persist(
-    (set, get) => ({
-      orders: [] as Order[],
-      createOrder: (newOrder: Order) => {
-        set(() => ({
-          orders: [...get().orders, newOrder],
-        }));
+export function createCustomerOrdersStore(userId: number) {
+  return create<CustomerOrderType>()(
+    persist(
+      (set, get) => ({
+        orders: [] as Order[],
+        createOrder: (newOrder: Order) => {
+          set(() => ({
+            orders: [...get().orders, newOrder],
+          }));
+        },
+        cancelOrder: (orderId: number) => {
+          set(() => ({
+            orders: get().orders.filter((order) => {
+              order.id !== orderId;
+            }),
+          }));
+        },
+        clearOrders: () => set({ orders: [] }),
+      }),
+      {
+        name: `@trackio::customer-orders-${userId}`,
+        storage: createJSONStorage(() => AsyncStorage),
       },
-      cancelOrder: (orderId: number) => {
-        set(() => ({
-          orders: get().orders.filter((order) => {
-            order.id !== orderId;
-          }),
-        }));
-      },
-      clearOrders: () => set({ orders: [] }),
-    }),
-    {
-      name: "@trackio::customer-orders",
-      storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
-);
+    ),
+  );
+}

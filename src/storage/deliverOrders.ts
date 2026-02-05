@@ -12,29 +12,31 @@ type DeliveryOrdersType = {
   clearDeliveries: () => void;
 };
 
-export const useDeliveryOrdersStore = create<DeliveryOrdersType>()(
-  persist(
-    (set, get) => ({
-      orders: [] as Order[],
-      accepetOrder: (order: Order) => {
-        set(() => ({
-          orders: [...get().orders, order],
-        }));
+export function createDeliveryOrdersStore(userId: number) {
+  return create<DeliveryOrdersType>()(
+    persist(
+      (set, get) => ({
+        orders: [] as Order[],
+        accepetOrder: (order: Order) => {
+          set(() => ({
+            orders: [...get().orders, order],
+          }));
+        },
+        cancelOrder: (orderId: number) => {
+          set(() => ({
+            orders: get().orders.filter((order) => order.id != orderId),
+          }));
+        },
+        clearDeliveries: () => {
+          set(() => ({
+            orders: [] as Order[],
+          }));
+        },
+      }),
+      {
+        name: `@trackio::delivery-orders-${userId}`,
+        storage: createJSONStorage(() => AsyncStorage),
       },
-      cancelOrder: (orderId: number) => {
-        set(() => ({
-          orders: get().orders.filter((order) => order.id != orderId),
-        }));
-      },
-      clearDeliveries: () => {
-        set(() => ({
-          orders: [] as Order[],
-        }));
-      },
-    }),
-    {
-      name: "@trackio::delivery-orders",
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
-);
+    ),
+  );
+}

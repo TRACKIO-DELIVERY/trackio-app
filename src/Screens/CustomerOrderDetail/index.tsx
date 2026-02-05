@@ -14,7 +14,7 @@ import Map from "@/components/Molecules/Map";
 import { Order } from "@/@types/models/order";
 import { Product } from "@/@types/models/product";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
-import { useCustomerOrdersStore } from "@/storage/orders";
+import { useOrdersStore } from "@/hooks/useOrders";
 
 interface OrderDetailProps {
   orderId: number;
@@ -22,7 +22,9 @@ interface OrderDetailProps {
 export function CustomerOrderDetail({ orderId }: OrderDetailProps) {
   const { isTracking } = useLocation();
 
-  const orders = useCustomerOrdersStore((state) => state.orders);
+  const ordersStore = useOrdersStore();
+  if (!ordersStore) return null;
+  const orders = ordersStore((state) => state.orders);
   const order = orders.find((o) => o.id === orderId);
 
   if (!order) {

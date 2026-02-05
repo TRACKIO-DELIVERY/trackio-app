@@ -4,16 +4,14 @@ import { Header } from "@/components/Atoms/Header";
 import { OrdersList } from "@/components/Molecules/OrdersList";
 import { Text, View } from "react-native";
 import { TYPOGRAPHY } from "@/constants/typography";
-
-import { useAuth } from "@/hooks/useAuth";
 import { Loading } from "@/components/Atoms/Loading";
 import { ProductsList } from "@/components/Molecules/ProductsList";
-import { Button } from "@/components/Atoms/Button";
-import { useEffect } from "react";
+
+import { useAuth } from "@/contexts/Auth";
 
 export function Home() {
-  const { user, isLoading } = useAuth();
-  if (isLoading) {
+  const { user, status } = useAuth();
+  if (status === "loading") {
     return <Loading />;
   }
 
@@ -29,7 +27,9 @@ export function Home() {
             {user?.role == "CUSTOMER" ? "Produtos" : "Pedidos"}
           </Text>
           <Text style={TYPOGRAPHY.subtitle}>
-            Selecione um pedido para aceitar iniciar sua rota!
+            {user?.role == "CUSTOMER"
+              ? "Escolha entre os melhores produtos da região!"
+              : " Selecione um pedido para aceitar iniciar sua rota!"}
           </Text>
         </View>
 

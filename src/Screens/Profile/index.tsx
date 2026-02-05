@@ -2,14 +2,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/contexts/Auth";
 import { TYPOGRAPHY } from "@/constants/typography";
 
 export function Profile() {
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
 
   function handleLogout() {
-    signOut();
+    logout();
   }
 
   function Avatar() {
@@ -18,8 +18,8 @@ export function Profile() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileCard}>
-        {user?.imageUrl ? (
-          <Image source={{ uri: user?.imageUrl }} style={styles.avatar} />
+        {user?.image_url ? (
+          <Image source={{ uri: user?.image_url }} style={styles.avatar} />
         ) : (
           <Avatar />
         )}

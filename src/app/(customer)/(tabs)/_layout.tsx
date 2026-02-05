@@ -6,13 +6,19 @@ import Home from "@/assets/icons/home.svg";
 import Package from "@/assets/icons/package.svg";
 import Bag from "@/assets/icons/bag.svg";
 import Person from "@/assets/icons/person.svg";
-import { useCartStore } from "@/storage/cart";
+
 import { Text, View } from "react-native";
-import { useCustomerOrdersStore } from "@/storage/orders";
+
+import { useCartStore } from "@/hooks/useCart";
+import { useOrdersStore } from "@/hooks/useOrders";
 
 export default function TabsLayout() {
-  const { products } = useCartStore();
-  const { orders } = useCustomerOrdersStore();
+  const cart = useCartStore();
+  if (!cart) return null;
+  const products = cart((state) => state.products);
+  const deliveriesStore = useOrdersStore();
+  if (!deliveriesStore) return null;
+  const orders = deliveriesStore((state) => state.orders);
 
   return (
     <Tabs

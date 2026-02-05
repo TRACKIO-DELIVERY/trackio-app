@@ -1,9 +1,13 @@
 import { Order } from "@/@types/models/order";
-import { MapMarker } from "@/components/Atoms/MapMarker";
 import { useLocation } from "@/hooks/useLocation";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import MapView, { Marker, Region, PROVIDER_GOOGLE } from "react-native-maps";
+import { View, StyleSheet, Image } from "react-native";
+import MapView, {
+  Marker,
+  Region,
+  PROVIDER_GOOGLE,
+  MapMarker,
+} from "react-native-maps";
 
 export default function DeliveryMap(orders: { orders: Order[] }) {
   const { location } = useLocation();
@@ -49,7 +53,18 @@ export default function DeliveryMap(orders: { orders: Order[] }) {
         onRegionChangeComplete={setRegion}
         provider={PROVIDER_GOOGLE}
       >
-        {location && <MapMarker coordinate={location.coords} />}
+        {location && (
+          <Marker
+            coordinate={location.coords}
+            style={{ width: 100, height: 100 }}
+          >
+            <Image
+              source={require("@/assets/images/entrega.png")}
+              style={{ width: 30, height: 30 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        )}
       </MapView>
     </View>
   );

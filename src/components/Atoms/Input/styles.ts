@@ -1,11 +1,11 @@
 import { THEME } from "@/constants/theme";
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 6,
+    paddingBottom: 6,
     paddingHorizontal: 12,
     borderRadius: 6,
     backgroundColor: THEME.grey[400],

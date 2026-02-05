@@ -4,19 +4,18 @@ import { Header } from "@/components/Atoms/Header";
 import { styles } from "./styles";
 import { OrderCard } from "@/components/Molecules/OrderCard";
 import { TYPOGRAPHY } from "@/constants/typography";
-import { useAuth } from "@/hooks/useAuth";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { useAuth } from "@/contexts/Auth";
 import { Button } from "@/components/Atoms/Button";
 import { useRouter } from "expo-router";
-import { DeliveryMapDetail } from "../DeliveryMapDetail";
-import { useState } from "react";
-import { THEME } from "@/constants/theme";
 import { useCancelOrder } from "@/services/queries/useCancelOrder";
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 
 export function Deliveries() {
   const { user } = useAuth();
-  const orders = useDeliveryOrdersStore((state) => state.orders);
-  const cancelOrder = useDeliveryOrdersStore((state) => state.cancelOrder);
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const orders = deliveriesStore((state) => state.orders);
+  const cancelOrder = deliveriesStore((state) => state.cancelOrder);
   const { mutate } = useCancelOrder();
   const navigation = useRouter();
 

@@ -1,18 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, FlatList, TouchableOpacity, Alert } from "react-native";
 import { styles } from "./styles";
-import { useNavigation, useRouter } from "expo-router";
-import { useCustomerOrdersStore } from "@/storage/orders";
-import { Order, orderStatus } from "@/@types/models/order";
+import { useRouter } from "expo-router";
+
+import { Order } from "@/@types/models/order";
 import { translateStatus } from "@/utils/orderUtils";
 
 import Trash from "@/assets/icons/trash.svg";
 import { THEME } from "@/constants/theme";
 import { useCancelOrder } from "@/services/queries/useCancelOrder";
+import { useOrdersStore } from "@/hooks/useOrders";
 
 export function CustomerOrders() {
-  const orders = useCustomerOrdersStore((state) => state.orders);
-  const cancelOrder = useCustomerOrdersStore((state) => state.cancelOrder);
+  const ordersStore = useOrdersStore();
+  if (!ordersStore) return null;
+  const orders = ordersStore((state) => state.orders);
+
+  const cancelOrder = ordersStore((state) => state.cancelOrder);
   const { mutate } = useCancelOrder();
   const navigation = useRouter();
 

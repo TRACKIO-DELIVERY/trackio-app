@@ -2,27 +2,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
 import { Alert, BackHandler, Text, View } from "react-native";
 import { Button } from "@/components/Atoms/Button";
-import { useStartTracking } from "@/services/queries/useStartTracking";
 import { useLocation } from "@/hooks/useLocation";
 import { useCallback, useEffect, useState } from "react";
 import { socket } from "@/services/socket";
 import { router, useFocusEffect, useRouter } from "expo-router";
-import { TYPOGRAPHY } from "@/constants/typography";
-import { useOrderDetail } from "@/services/queries/useOrderDetail";
-import { Loading } from "@/components/Atoms/Loading";
-// import {
-//   sendDeliveredOrderQueue,
-//   sendInRouteOrderQueue,
-// } from "@/services/queries/sendOrderToQueu";
-import Map from "@/components/Molecules/Map";
 import { Order } from "@/@types/models/order";
-import { Product } from "@/@types/models/product";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import DeliveryMap from "@/components/Molecules/DeliveryMap";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
 import { ActiveOrderCard } from "./ActiveOrderCard";
 import { NextOrdersList } from "./NextOrderList";
 import { useCompleteOrderDeliver } from "@/services/queries/useCompleteOrderDeliver";
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 
 interface DeliveryMapDetailProps {
   orders: Order[];
@@ -34,12 +24,19 @@ export function DeliveryMapDetail({
 }: DeliveryMapDetailProps) {
   const { startGetPositions, stopTracking, isTracking } = useLocation();
   const [activeOrderId, setActiveOrderId] = useState(activeOrder);
-  const clearDeliveries = useDeliveryOrdersStore(
-    (state) => state.clearDeliveries,
-  );
+
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const clearDeliveries = deliveriesStore((state) => state.clearDeliveries);
   const { mutate } = useCompleteOrderDeliver();
 
   const activeOrderData = orders.find((o) => o.id === activeOrderId);
+
+  if (!activeOrderData && orders.length > 0) {
+    // Tenta pegar o primeiro se o ID ativo sumiu do array
+    setActiveOrderId(orders[0].id);
+  }
+
   const nextOrders = orders.filter((o) => o.id !== activeOrderId);
 
   useEffect(() => {
@@ -85,15 +82,24 @@ export function DeliveryMapDetail({
           text: "Confirmar",
           onPress: () => {
             socket.emit("order_delivered", order.id);
-            mutate({ orderId: activeOrder });
-            const next = nextOrders[0];
-            if (next) {
-              setActiveOrderId(next.id);
-            } else {
-              stopTracking();
-              clearDeliveries();
-              router.replace("/(deliver)/(tabs)/deliveries");
-            }
+            mutate(
+              { orderId: activeOrder },
+              {
+                onSuccess: () => {
+                  const next = nextOrders[0];
+                  if (next) {
+                    setActiveOrderId(next.id);
+                  } else {
+                    stopTracking();
+                    clearDeliveries();
+                    router.push("/");
+                  }
+                },
+                onError: () => {
+                  Alert.alert("Não foi possível encerrar o pedido");
+                },
+              },
+            );
           },
         },
       ],

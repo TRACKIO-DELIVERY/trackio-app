@@ -1,11 +1,10 @@
 import { LatLng } from "@/@types/location";
-import { MapMarker } from "@/components/Atoms/MapMarker";
 import { THEME } from "@/constants/theme";
 import { useLocation } from "@/hooks/useLocation";
 import { socket } from "@/services/socket";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Animated } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import { View, StyleSheet, Animated, Image, Alert } from "react-native";
+import MapView, { Region, Marker, MapMarker } from "react-native-maps";
 
 export default function Map({ orderId }: { orderId: number }) {
   const [cameraRegion, setCameraRegion] = useState<Region>({
@@ -18,9 +17,12 @@ export default function Map({ orderId }: { orderId: number }) {
   const [deliveryPosition, setDeliveryPosition] = useState<LatLng | null>(null);
 
   const mapRef = React.useRef<MapView>(null);
-  const pulse = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
+    console.log("aaa");
+    if (orderId) {
+      console.log("Entrando na sala do pedido:", orderId);
+      socket.emit("join_order", orderId);
+    }
     function handleReceiveLocation(data: { lat: number; lng: number }) {
       console.log("📍 Localização recebida:", data);
       const position = {
@@ -42,8 +44,17 @@ export default function Map({ orderId }: { orderId: number }) {
 
     socket.on("receive_location", handleReceiveLocation);
 
+    function handleOrderFinished() {
+      console.log("🏁 Pedido entregue!");
+      setDeliveryPosition(null);
+      Alert.alert("Pedido Entregue", "Seu pedido foi finalizado com sucesso!");
+    }
+
+    socket.on("order_finished", handleOrderFinished);
     return () => {
+      socket.emit("leave_order", orderId);
       socket.off("receive_location", handleReceiveLocation);
+      socket.off("order_finished", handleOrderFinished);
     };
   }, [orderId]);
 
@@ -55,7 +66,18 @@ export default function Map({ orderId }: { orderId: number }) {
         initialRegion={cameraRegion}
         onRegionChangeComplete={setCameraRegion}
       >
-        {deliveryPosition && <MapMarker coordinate={deliveryPosition} />}
+        {deliveryPosition && (
+          <Marker
+            coordinate={deliveryPosition}
+            style={{ width: 100, height: 100 }}
+          >
+            <Image
+              source={require("@/assets/images/entrega.png")}
+              style={{ width: 30, height: 30 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        )}
       </MapView>
     </View>
   );

@@ -10,12 +10,12 @@ import {
 import { styles } from "./styles";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { Order, OrderItem } from "@/@types/models/order";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
 import { useRouter } from "expo-router";
 import { Button } from "@/components/Atoms/Button";
 import { useAcceptOrder } from "@/services/queries/useAcceptOrder";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/contexts/Auth";
 import { Loading } from "@/components/Atoms/Loading";
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 
 interface DeliveryOrderDetailProps {
   order: Order;
@@ -26,9 +26,9 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
 }) => {
   const { user } = useAuth();
 
-  const accepetOrderStore = useDeliveryOrdersStore(
-    (state) => state.accepetOrder,
-  );
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const accepetOrderStore = deliveriesStore((state) => state.accepetOrder);
   const { mutate } = useAcceptOrder(order.id);
   const navigation = useRouter();
 
@@ -46,7 +46,7 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
             navigation.push("/(deliver)/(tabs)/deliveries");
           },
           onError: (err) => {
-            console.log(err);
+            console.log(err.message);
             Alert.alert("Não foi possível aceitar esse pedido");
           },
         },
@@ -61,7 +61,6 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
     <View style={styles.productRow}>
       <Text style={styles.productName}>{item.productName}</Text>
       <Text style={styles.productQty}>x{item.quantity}</Text>
-      <Text style={styles.productPrice}>R$ {item.unitPrice}</Text>
     </View>
   );
 
@@ -77,7 +76,7 @@ export const DeliveryOrderDetail: React.FC<DeliveryOrderDetailProps> = ({
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Endereço de Entrega</Text>
-        <Text style={styles.address}>Rua Lorem Ipsum, 123 - Centro</Text>
+        <Text style={styles.address}>Rua Gerson, 10 - Chico caja</Text>
       </View>
 
       <View style={styles.section}>

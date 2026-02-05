@@ -12,12 +12,9 @@ import { Input } from "@/components/Atoms/Input";
 import { Button } from "@/components/Atoms/Button";
 import { TYPOGRAPHY } from "@/constants/typography";
 import { router } from "expo-router";
-import { useAuth } from "@/hooks/useAuth";
 import { GoogleLoginButton } from "../GoogleButton";
 
 export function LoginForm() {
-  const { login } = useAuth();
-
   const {
     control,
     handleSubmit,
@@ -26,9 +23,7 @@ export function LoginForm() {
     resolver: zodResolver(LoginSchema),
   });
 
-  async function handleLogin(data: LoginFormType) {
-    await login(data);
-  }
+  async function handleLogin(data: LoginFormType) {}
 
   function goToRegister() {
     router.push("/register");

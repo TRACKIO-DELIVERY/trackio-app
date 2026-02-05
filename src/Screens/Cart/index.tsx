@@ -10,24 +10,30 @@ import {
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { useCartStore } from "@/storage/cart";
 import { styles } from "./styles";
 import { THEME } from "@/constants/theme";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { Order, OrderItem } from "@/@types/models/order";
-import { useAuth } from "@/hooks/useAuth";
-import { useCustomerOrdersStore } from "@/storage/orders";
 import { useRouter } from "expo-router";
 import { useCreateOrder } from "@/services/queries/useCreateOrder";
 import { CreateOrderDTO } from "@/@types/api/orderDTO";
+import { useAuth } from "@/contexts/Auth";
+import { useCartStore } from "@/hooks/useCart";
+import { useOrdersStore } from "@/hooks/useOrders";
 
 export function CartScreen() {
   const { user } = useAuth();
   const navigation = useRouter();
-  const products = useCartStore((state) => state.products);
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const clearCart = useCartStore((state) => state.clearCart);
-  const createOrder = useCustomerOrdersStore((state) => state.createOrder);
+
+  const cart = useCartStore();
+  if (!cart) return null;
+  const products = cart((state) => state.products);
+  const removeFromCart = cart((state) => state.removeFromCart);
+  const clearCart = cart((state) => state.clearCart);
+
+  const ordersStore = useOrdersStore();
+  if (!ordersStore) return null;
+  const createOrder = ordersStore((state) => state.createOrder);
 
   const { mutate, isPending } = useCreateOrder();
 
@@ -119,6 +125,7 @@ export function CartScreen() {
             </TouchableOpacity>
           </View>
         )}
+        ListEmptyComponent={<Text> Nada no carrinho </Text>}
       />
 
       {/* Footer */}

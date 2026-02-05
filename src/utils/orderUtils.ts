@@ -7,6 +7,6 @@ export function translateStatus(status: orderStatus) {
     case "DELIVERED":
       return "Entregue";
     default:
-      return "Preparando";
+      return "Disponível";
   }
 }
