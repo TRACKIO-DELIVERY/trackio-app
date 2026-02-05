@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
+    paddingBottom: 70,
     paddingVertical: 20,
     paddingHorizontal: 24,
     backgroundColor: "rgba(255,255,255,0.90)",

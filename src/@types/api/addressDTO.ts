@@ -1,8 +1,9 @@
 export type AdressDTO = {
-  CEP: string;
+  id: string;
   street: string;
-  neighborhood: string;
-  number: number;
   city: number;
   state: number;
+  neighborhood: string;
+  zipCode: string;
+  number: number;
 };

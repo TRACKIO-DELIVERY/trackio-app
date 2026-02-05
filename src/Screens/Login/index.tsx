@@ -1,29 +1,28 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import { styles } from "./styles";
-import { LoginForm } from "@/components/Molecules/LoginForm";
 
-import { Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, View } from "react-native";
+import { Image, Text, View } from "react-native";
+import { Button } from "@/components/Atoms/Button";
+
+import { useAuth } from "@/contexts/Auth";
+
 export function Login() {
+  const { loginWithKeycloak } = useAuth();
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.logo}>TrackIO</Text>
+      <Text style={styles.subtitle}>
+        Serviço de rastreamento de delivery para clientes e entregadores
+      </Text>
+      <Image
+        source={require("@/assets/logo/logo.png")}
+        style={{ width: 190, height: 190, alignSelf: "center" }}
+      />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <Button title="Entrar" onPress={() => loginWithKeycloak()} />
 
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={styles.scroll}>
-            <Image
-              source={require('@/assets/logo/logo.png')}
-              style={{ width: 130, height: 130, alignSelf: "center" }} />
-
-            <LoginForm />
-
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      <Text style={styles.footer}>
+        Acompanhe e gerencie entregas em tempo real
+      </Text>
+    </View>
   );
 }

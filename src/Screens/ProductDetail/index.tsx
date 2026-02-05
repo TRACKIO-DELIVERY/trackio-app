@@ -12,7 +12,7 @@ import { useProductDetail } from "@/services/queries/useProductDetail";
 import { Loading } from "@/components/Atoms/Loading";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import { useNavigation } from "expo-router";
-import { useCartStore } from "@/storage/cart";
+import { useCartStore } from "@/hooks/useCart";
 
 interface Props {
   productId: string;
@@ -22,7 +22,9 @@ export function ProductDetailsScreen({ productId }: Props) {
   const { data, isFetching, error } = useProductDetail(productId);
   const [quantity, setQuantity] = useState(1);
 
-  const addToCart = useCartStore((state) => state.addToCart);
+  const cart = useCartStore();
+  if (!cart) return null;
+  const addToCart = cart((state) => state.addToCart);
 
   const navigation = useNavigation();
 
@@ -57,7 +59,7 @@ export function ProductDetailsScreen({ productId }: Props) {
       <GoBackButton onPress={() => navigation.goBack()} />
 
       <Image
-        source={{ uri: data?.image }}
+        source={{ uri: data?.imageUrl }}
         style={styles.image}
         resizeMode="cover"
       />
@@ -66,6 +68,7 @@ export function ProductDetailsScreen({ productId }: Props) {
         <Text style={styles.title}>{data?.name}</Text>
 
         <Text style={styles.description}>{data?.description}</Text>
+        <Text style={styles.description}>Em estoque: {data?.stock}</Text>
 
         <View style={styles.quantityContainer}>
           <View style={styles.quantityButtons}>

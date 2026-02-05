@@ -24,7 +24,7 @@ export function Header({ name, role }: HeaderProps) {
           👋
         </Text>
         <Text style={[TYPOGRAPHY.bodyText, { color: THEME.textHeader }]}>
-          {role == "cliente"
+          {role == "CUSTOMER"
             ? "O que vai pedir hoje?"
             : "Pronto para mais uma entrega?"}
         </Text>

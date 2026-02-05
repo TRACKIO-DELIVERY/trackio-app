@@ -14,13 +14,14 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 
-import { AuthProvider } from "@/contexts/AuthContext";
+//import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useAuth } from "@/hooks/useAuth";
+import { AuthProvider } from "@/contexts/Auth";
+import { RouteGuard } from "@/guards/routeGuard";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -58,14 +59,12 @@ export function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <AuthProvider>
-          <LocationProvider>
-            <StatusBar translucent style="dark" />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(customer)" />
-              <Stack.Screen name="(deliver)" />
-            </Stack>
-          </LocationProvider>
+          <RouteGuard>
+            <LocationProvider>
+              <StatusBar translucent style="dark" />
+              <Slot />
+            </LocationProvider>
+          </RouteGuard>
         </AuthProvider>
       </SafeAreaProvider>
     </QueryClientProvider>

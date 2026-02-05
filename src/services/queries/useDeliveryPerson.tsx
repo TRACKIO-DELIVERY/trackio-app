@@ -9,14 +9,14 @@ async function getDeliveryPerson(id: string): Promise<DeliveryPerson> {
   });
 
   const deliveryPerson: DeliveryPerson = {
-    birthDate: data.birth_date,
+    dateOfBirth: data.dateOfBirth,
     cpf: data.cpf,
     email: data.email,
-    imageUrl: data.image_url,
-    name: data.name,
+    image_url: data.image_url,
+    username: data.username,
     phone: data.phone,
     role: data.role,
-    userId: data.user_id,
+    userId: data.userId,
     address: data.address,
     vehicleType: data.vehicle_type,
   };

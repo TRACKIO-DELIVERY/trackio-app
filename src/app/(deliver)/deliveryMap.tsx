@@ -1,8 +1,13 @@
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 import { DeliveryMapDetail } from "@/Screens/DeliveryMapDetail";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
 
 export default function Screen() {
-  const orders = useDeliveryOrdersStore((state) => state.orders);
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const orders = deliveriesStore((state) => state.orders);
 
-  return DeliveryMapDetail({ orderId: "1" });
+  if (!orders || orders.length === 0) {
+    return null;
+  }
+  return <DeliveryMapDetail orders={orders} activeOrder={orders[0].id} />;
 }

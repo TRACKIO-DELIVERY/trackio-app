@@ -2,59 +2,49 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
 import { Alert, BackHandler, Text, View } from "react-native";
 import { Button } from "@/components/Atoms/Button";
-import { useStartTracking } from "@/services/queries/useStartTracking";
 import { useLocation } from "@/hooks/useLocation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { socket } from "@/services/socket";
 import { router, useFocusEffect, useRouter } from "expo-router";
-import { TYPOGRAPHY } from "@/constants/typography";
-import { useOrderDetail } from "@/services/queries/useOrderDetail";
-import { Loading } from "@/components/Atoms/Loading";
-// import {
-//   sendDeliveredOrderQueue,
-//   sendInRouteOrderQueue,
-// } from "@/services/queries/sendOrderToQueu";
-import Map from "@/components/Molecules/Map";
 import { Order } from "@/@types/models/order";
-import { Product } from "@/@types/models/product";
 import { GoBackButton } from "@/components/Atoms/GoBackButton";
 import DeliveryMap from "@/components/Molecules/DeliveryMap";
-import { useDeliveryOrdersStore } from "@/storage/deliverOrders";
+import { ActiveOrderCard } from "./ActiveOrderCard";
+import { NextOrdersList } from "./NextOrderList";
+import { useCompleteOrderDeliver } from "@/services/queries/useCompleteOrderDeliver";
+import { useDeliveriesStore } from "@/hooks/useDeliveries";
 
 interface DeliveryMapDetailProps {
-  orderId: string;
+  orders: Order[];
+  activeOrder: number;
 }
-export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
+export function DeliveryMapDetail({
+  orders,
+  activeOrder,
+}: DeliveryMapDetailProps) {
   const { startGetPositions, stopTracking, isTracking } = useLocation();
-  const clearDeliveries = useDeliveryOrdersStore(
-    (state) => state.clearDeliveries
-  );
-  const navigation = useRouter();
+  const [activeOrderId, setActiveOrderId] = useState(activeOrder);
 
-  const data: Order = {
-    customerId: 1,
-    date: new Date(),
-    deliveryPersonId: 1,
-    id: 1,
-    procucts: [],
-    status: 1,
-    total: 12,
-    companyId: 1,
-  };
+  const deliveriesStore = useDeliveriesStore();
+  if (!deliveriesStore) return null;
+  const clearDeliveries = deliveriesStore((state) => state.clearDeliveries);
+  const { mutate } = useCompleteOrderDeliver();
+
+  const activeOrderData = orders.find((o) => o.id === activeOrderId);
+
+  if (!activeOrderData && orders.length > 0) {
+    // Tenta pegar o primeiro se o ID ativo sumiu do array
+    setActiveOrderId(orders[0].id);
+  }
+
+  const nextOrders = orders.filter((o) => o.id !== activeOrderId);
 
   useEffect(() => {
-    if (!socket.connected) {
-      socket.connect();
-    }
-    console.log("Conectado ao socket");
-
-    socket.emit("join_order", orderId);
-
+    orders.forEach((order) => socket.emit("join_order", order.id));
     return () => {
-      socket.disconnect();
-      console.log("desconectado");
+      orders.forEach((order) => socket.emit("leave_order", order.id));
     };
-  }, []);
+  }, [orders]);
 
   useFocusEffect(
     useCallback(() => {
@@ -62,8 +52,8 @@ export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
         if (isTracking) {
           Alert.alert(
             "Rota em andamento",
-            "Você precisa finalizar a rota antes de sair.",
-            [{ text: "OK", style: "cancel" }]
+            "Finalize ou pause a rota antes de sair.",
+            [{ text: "OK", style: "cancel" }],
           );
           return true;
         }
@@ -72,54 +62,77 @@ export function DeliveryMapDetail({ orderId }: DeliveryMapDetailProps) {
 
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
-        onBackPress
+        onBackPress,
       );
       return () => backHandler.remove();
-    }, [isTracking])
+    }, [isTracking]),
   );
 
   function goBack() {
     router.replace("/(deliver)/(tabs)/deliveries");
   }
-  function finishRoute() {
-    Alert.alert("Encerrar rota", "Deseja encerrar?", [
-      {
-        text: "Cancelar",
-        onPress: () => {},
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => {
-          stopTracking();
-          socket.emit("join_order", orderId);
-          socket.disconnect();
-          console.log("desconectado");
-          clearDeliveries();
-          router.push("/(deliver)/(tabs)/deliveries");
+
+  function handleFinishOrder(order: Order) {
+    Alert.alert(
+      "Finalizar entrega",
+      `Confirmar entrega do pedido #${order.id}?`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Confirmar",
+          onPress: () => {
+            socket.emit("order_delivered", order.id);
+            mutate(
+              { orderId: activeOrder },
+              {
+                onSuccess: () => {
+                  const next = nextOrders[0];
+                  if (next) {
+                    setActiveOrderId(next.id);
+                  } else {
+                    stopTracking();
+                    clearDeliveries();
+                    router.push("/");
+                  }
+                },
+                onError: () => {
+                  Alert.alert("Não foi possível encerrar o pedido");
+                },
+              },
+            );
+          },
         },
-      },
-    ]);
+      ],
+    );
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <GoBackButton onPress={goBack} />
+
       <View style={styles.mapArea}>
-        <DeliveryMap orders={[]} />
+        <DeliveryMap orders={orders} />
       </View>
+
       <View style={styles.bottomSheet}>
-        <Text style={styles.orderTitle}>Pedidos em rota</Text>
+        <Text style={styles.orderTitle}>Pedidos em rota ({orders.length})</Text>
+
+        {activeOrderData && <ActiveOrderCard order={activeOrderData} />}
 
         <Button
-          title={isTracking ? "Pausar" : "Iniciar"}
-          onPress={isTracking ? stopTracking : () => startGetPositions("1")}
-        />
-        <Button
-          title="Finalizar rota"
-          onPress={finishRoute}
+          title={isTracking ? "Pausar rota" : "Iniciar rota"}
           variant="secondary"
+          onPress={isTracking ? stopTracking : () => startGetPositions(orders)}
         />
+
+        <Button
+          title="Finalizar entrega"
+          onPress={() => handleFinishOrder(activeOrderData!)}
+          disabled={!isTracking || !activeOrderData}
+        />
+
+        {nextOrders.length > 0 && <NextOrdersList orders={nextOrders} />}
+
         <View style={styles.spacer} />
       </View>
     </SafeAreaView>

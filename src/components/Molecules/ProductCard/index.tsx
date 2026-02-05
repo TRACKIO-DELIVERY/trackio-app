@@ -5,8 +5,9 @@ import { styles } from "./styles";
 interface ProductCardProps {
   name: string;
   price: number;
-  category: number;
+  category: string;
   image: string;
+  stock: number;
   onAdd: () => void;
 }
 
@@ -15,6 +16,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   price,
   category,
   image,
+  stock,
   onAdd,
 }) => {
   return (
@@ -28,6 +30,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         <Text style={styles.category} numberOfLines={1}>
           {category}
+        </Text>
+
+        <Text style={styles.category} numberOfLines={1}>
+          Em estoque: {stock}
         </Text>
 
         <Text style={styles.price}>R$ {price?.toFixed(2) || "sem preço"}</Text>

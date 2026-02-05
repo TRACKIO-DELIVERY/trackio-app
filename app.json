@@ -23,6 +23,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
+
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.expo.trackio"
     },
     "web": {
@@ -30,7 +32,11 @@
       "output": "static",
       "favicon": "./src/assets/images/favicon.png"
     },
-    "plugins": [["expo-router"], ["@react-native-google-signin/google-signin"]],
+    "plugins": [
+      ["expo-router"],
+      ["@react-native-google-signin/google-signin"],
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true
     },

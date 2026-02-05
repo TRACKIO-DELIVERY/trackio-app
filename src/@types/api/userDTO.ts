@@ -1,25 +1,23 @@
+import { Role } from "../models/user";
 import { AdressDTO } from "./addressDTO";
 
 export type UserDTO = {
-  user_id: string;
-  name: string;
+  userId: number;
+  username: string;
   cpf: string;
   email: string;
   phone: string;
-  role: string;
+  expoPushToken?: string;
+  role: Role;
+  image_url: string;
+  dateOfBirth: string;
 };
 
 export type CustumerDTO = UserDTO & {
-  birth_date: string;
-  cpf: string;
   address: AdressDTO;
-  image_url: string;
 };
 
 export type DeliveryPersonDTO = UserDTO & {
-  birth_date: string;
-  cpf: string;
   address: AdressDTO;
-  image_url: string;
   vehicle_type: string;
 };
