@@ -1,5 +1,5 @@
 import { THEME } from "@/constants/theme";
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   base: {
@@ -12,11 +12,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   primary: {
-    backgroundColor: THEME.purple[700],
+    backgroundColor: THEME.primary[700],
   },
   secondary: {
     backgroundColor: THEME.grey[100],
-    borderColor: THEME.purple[700],
+    borderColor: THEME.primary[700],
     borderWidth: 1.5,
   },
   danger: {
@@ -29,18 +29,18 @@ export const styles = StyleSheet.create({
   },
   textBase: {
     fontSize: 20,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   primaryText: {
     color: THEME.grey[100],
   },
   secondaryText: {
-    color: THEME.purple[700],
+    color: THEME.primary[700],
   },
   googleText: {
     color: THEME.blue[600],
   },
   dangerText: {
     color: THEME.grey[100],
-  }
+  },
 });

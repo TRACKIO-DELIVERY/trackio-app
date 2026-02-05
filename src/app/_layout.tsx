@@ -1,6 +1,6 @@
 import * as SplashScreen from "expo-splash-screen";
 
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 
 import { useFonts } from "expo-font";
 import {
@@ -10,18 +10,18 @@ import {
   Sen_700Bold,
 } from "@expo-google-fonts/sen";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 
-import { AuthProvider } from "@/contexts/AuthContext";
+//import { AuthProvider } from "@/contexts/AuthContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Loading } from "@/components/Atoms/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
-
+import { AuthProvider } from "@/contexts/Auth";
+import { RouteGuard } from "@/guards/routeGuard";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -52,18 +52,19 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-
 export function RootLayoutNav() {
+  const [queryClient] = useState(() => new QueryClient());
 
-  const queryClient = new QueryClient()
   return (
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <AuthProvider>
-          <LocationProvider>
-            <StatusBar translucent style="dark" />
-            <Slot />
-          </LocationProvider>
+          <RouteGuard>
+            <LocationProvider>
+              <StatusBar translucent style="dark" />
+              <Slot />
+            </LocationProvider>
+          </RouteGuard>
         </AuthProvider>
       </SafeAreaProvider>
     </QueryClientProvider>

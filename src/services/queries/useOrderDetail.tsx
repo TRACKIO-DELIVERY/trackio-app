@@ -1,32 +1,33 @@
-import { OrderDTO } from "@/dtos/orderDTO";
+import { OrderDTO } from "@/@types/api/orderDTO";
+import { Order } from "@/@types/models/order";
 import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
+async function getOrder(orderId: string): Promise<Order> {
+  const { data } = await api.get<OrderDTO>(`/orders/${orderId}`);
 
-async function getOrders(orderId: string): Promise<OrderDTO> {
-    const { data } = await api.get(`/api/orders/${orderId}`)
+  const order: Order = {
+    id: data.id,
+    companyId: data.companyId,
+    companyName: data.companyName,
+    customerId: data.customerId,
+    customerName: data.customerName,
+    orderDate: data.orderDate,
+    deliveryPersonId: data.deliveryPersonId,
+    orderStatus: data.orderStatus,
+    orderAmount: data.orderAmount,
+    orderFlee: data.orderFlee,
+    items: data.items,
+    payment: data.payment,
+  };
 
-    // const order: OrderDTO = {
-    //     id: data.id,
-    //     email: data.email,
-    //     deliveryFee: data.delivery_fee,
-    //     establishment: data.establishment,
-    //     complementary: {
-    //         deliveryNeighborhood: data.complementary_order.delivery_neighborhood,
-    //         deliveryStreet: data.complementary_order.delivery_street,
-    //         deliveryState: data.complementary_order.delivery_state,
-    //         deliveryNumber: data.complementary_order.delivery_number,
-    //         deliveryCountry: data.complementary_order.delivery_country,
-    //         deliveryCity: data.complementary_order.delivery_city
-    //     }
-    // }
-
-    return data
+  return order;
 }
 
 export function useOrderDetail(orderId: string) {
-    return useQuery({
-        queryKey: [`orders-${orderId}`],
-        queryFn: () => getOrders(orderId)
-    })
+  console.log("AAAAA0,", orderId);
+  return useQuery({
+    queryKey: [`order-${orderId}`],
+    queryFn: () => getOrder(orderId),
+  });
 }

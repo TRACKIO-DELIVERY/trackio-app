@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 import { THEME } from "../theme";
 
 export const TYPOGRAPHY = StyleSheet.create({
@@ -16,7 +16,7 @@ export const TYPOGRAPHY = StyleSheet.create({
   },
   alertText: {
     fontSize: 13,
-    color: THEME.purple[700],
+    color: THEME.primary[700],
   },
   errorText: {
     fontSize: 13,
@@ -24,7 +24,7 @@ export const TYPOGRAPHY = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: THEME.purple[800],
+    color: THEME.primary[800],
     fontWeight: "bold",
   },
   titleHeader: {

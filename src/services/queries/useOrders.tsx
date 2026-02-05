@@ -1,27 +1,30 @@
-import { OrderDTO } from "@/dtos/orderDTO";
+import { OrderDTO } from "@/@types/api/orderDTO";
+import { Order } from "@/@types/models/order";
 import { api } from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
 
+async function getOrders(): Promise<Order[]> {
+  const { data } = await api.get<OrderDTO[]>("/orders/findall/In_Progress");
 
-async function getOrders(): Promise<OrderDTO[]> {
-    const { data } = await api.get('/api/orders/')
-
-    const orders: OrderDTO[] = data.map((order: any) => ({
-        id: order.id,
-        OrderStatus: order.order_status,
-        deliveryFee: order.delivery_fee,
-        establishment: order.establishment,
-        orderStatus: order.order_status,
-        fullPickUpAdrress: order.full_pick_up_address,
-        fullDeliveryAddress: order.full_delivery_address,
-        email: order.email
-    }))
-    return orders
-
+  const orders: Order[] = data.map((order: OrderDTO) => ({
+    id: order.id,
+    orderStatus: order.orderStatus,
+    companyId: order.companyId,
+    companyName: order.companyName,
+    customerId: order.customerId,
+    customerName: order.customerName,
+    orderDate: order.orderDate,
+    orderAmount: order.orderAmount,
+    deliveryPersonId: order.deliveryPersonId,
+    items: order.items,
+    orderFlee: order.orderFlee,
+    payment: order.payment,
+  }));
+  return orders;
 }
 export function useOrders() {
-    return useQuery({
-        queryKey: ['orders'],
-        queryFn: getOrders
-    })
+  return useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+  });
 }

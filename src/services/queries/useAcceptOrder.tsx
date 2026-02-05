@@ -1,15 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { apiNode } from "../api";
+import { api } from "../api";
 
-
-async function sendAcceptedOrder(orderId: string) {
-    const { data } = await apiNode.post('/track/accepted-order', { orderId })
-    return data
+interface orderParams {
+  orderId: number;
+  deliveryId: number;
 }
-
-export function useAcceptOrder() {
-    return useMutation({
-        mutationKey: ['accepted-order'],
-        mutationFn: sendAcceptedOrder
-    })
+async function acceptOrder(params: orderParams) {
+  const { data } = await api.patch("orders/in_route", params);
+  return data;
+}
+export function useAcceptOrder(orderId: number) {
+  return useMutation({
+    mutationKey: [`order-delivery-${orderId}`],
+    mutationFn: acceptOrder,
+  });
 }

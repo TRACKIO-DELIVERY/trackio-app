@@ -1,56 +1,73 @@
-import { getTokensStorage, removeTokensStorage, setTokensStorage } from "@/storage";
-import axios, { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
+import { refreshAccessToken } from "@/services/api/refresh";
+import {
+  getTokensStorage,
+  removeTokensStorage,
+  setTokensStorage,
+} from "@/storage/authTokens";
+import { router } from "expo-router";
 
-export function applyAuthInterceptors(instance: AxiosInstance) {
-    instance.interceptors.request.use(
-        async (config) => {
-            const tokens = await getTokensStorage()
+let isRefreshing = false;
+let failedQueue: any[] = [];
 
-            if (tokens?.access) {
-                config.headers['Authorization'] = `Bearer ${tokens.access}`
-            } else {
-                delete config.headers['Authorization']
-            }
-            return config
-        },
-        (error) => {
-            return Promise.reject(error)
+function processQueue(error: any, token: string | null = null) {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
+  });
+
+  failedQueue = [];
+}
+
+export function setupApiInterceptors(api: AxiosInstance) {
+  api.interceptors.request.use(async (config: any) => {
+    const tokens = await getTokensStorage();
+    if (tokens?.access) {
+      config.headers.Authorization = `Bearer ${tokens.access}`;
+    }
+    return config;
+  });
+
+  api.interceptors.response.use(
+    (response: any) => response,
+    async (error: any) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 || !originalRequest._retry) {
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({
+              resolve: (token: string) => {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                resolve(api(originalRequest));
+              },
+              reject,
+            });
+          });
         }
-    )
 
-    instance.interceptors.response.use(
-        (response) => response,
-        async (error) => {
-            const originalRequest = error.config
+        originalRequest._retry = true;
+        isRefreshing = true;
 
-            if (error.response.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true
+        try {
+          const data = await refreshAccessToken();
+          const token = data.access_token;
 
-                const tokens = await getTokensStorage()
+          processQueue(null, token);
 
-                if (tokens?.refresh) {
-                    try {
-                        const { data } = await axios.post(
-                            `${process.env.EXPO_PUBLIC_API_URL}/api/token/refresh/`,
-                            { refresh: tokens?.refresh }
-                        )
-
-                        const newAccessToken = data.access
-                        const newRefreshToken = data.refresh ?? tokens?.refresh
-
-                        await setTokensStorage(newAccessToken, newRefreshToken)
-
-                        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-                        return instance(originalRequest)
-                    } catch (refreshError) {
-                        await removeTokensStorage()
-                        console.log('Refresh token inválido.')
-                        return Promise.reject(refreshError)
-                    }
-                }
-            }
-            return Promise.reject(error)
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        } catch (err) {
+          processQueue(err, null);
+          await removeTokensStorage();
+          router.replace("/(auth)/login");
+          return Promise.reject(err);
+        } finally {
+          isRefreshing = false;
         }
-    )
+      }
 
+      return Promise.reject(error);
+    },
+  );
 }

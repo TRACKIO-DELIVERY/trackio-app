@@ -1,77 +1,44 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
-import { OrderIcon } from '@/components/Atoms/iconImage';
-import { TYPOGRAPHY } from '@/constants/typography';
+import { Order } from "@/@types/models/order";
+import { OrderIcon } from "@/components/Atoms/iconImage";
 
-type OrderStatus = 'disponivel' | 'em rota' | 'finalizado';
+import Trash from "@/assets/icons/trash.svg";
+import { translateStatus } from "@/utils/orderUtils";
 
-interface OrderCardProps {
-  title: string;
-  company: string;
-  status: number;
-  deliveryFee?: string;
-  deliveryAddress: string;
+interface Props {
+  order: Order;
+  onPress?: () => void;
+  onRemove?: () => void;
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({
-  title,
-  company,
-  status,
-  deliveryFee,
-  deliveryAddress
-}) => {
-  const isAvailable = status === 1;
-
-  function getStatusLabel(status: number) {
-    switch (status) {
-      case 1:
-        return 'Disponível';
-      case 2:
-        return 'Em rota';
-      case 3:
-        return 'Finalizado';
-      default:
-        return 'Desconhecido';
-    }
-  }
-
+export function OrderCard({ order, onPress, onRemove }: Props) {
   return (
-    <View style={styles.card}>
-      <OrderIcon />
+    <TouchableOpacity style={styles.card} onPress={onPress}>
+      <View style={styles.iconWrapper}>
+        <OrderIcon />
+      </View>
 
       <View style={styles.content}>
-
-        <View style={styles.infoRow}>
-          <View>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.company}>{company}</Text>
-          </View>
-
-          {deliveryFee && (
-            <Text style={TYPOGRAPHY.alertText}>Frete: {deliveryFee}</Text>
+        <View style={styles.footer}>
+          <Text style={styles.title}>Pedido #{order.id}</Text>
+          {onRemove && (
+            <Trash color="rgba(182, 14, 14, 1)" onPress={onRemove} />
           )}
         </View>
+        <Text style={styles.company}>Empresa: {order.companyName}</Text>
+        <Text style={styles.company}>Cliente: {order.customerName}</Text>
+        <View style={styles.footer}>
+          <Text style={styles.total}>Entrega: R$ {order.orderFlee}</Text>
 
-        <View>
-          <Text
-            style={styles.address}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >{deliveryAddress}</Text>
-        </View>
-        <View
-          style={[
-            styles.statusBadge,
-            isAvailable ? styles.available : styles.inRoute,
-          ]}
-        >
-          <Text style={styles.statusText}>{getStatusLabel(status)}</Text>
+          <View style={styles.statusBadge}>
+            <Text style={styles.statusText}>
+              {translateStatus(order.orderStatus)}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
-
+    </TouchableOpacity>
   );
-};
-
-
+}

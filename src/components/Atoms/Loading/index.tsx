@@ -8,12 +8,14 @@ export function Loading() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: THEME.purple[700],
-        zIndex: 999
-      }}>
-      <Image
-        source={require('@/assets/logo/logo-white.png')}
-        style={{ width: 180, height: 180 }} />
+        backgroundColor: THEME.primary[700],
+        zIndex: 999,
+      }}
+    >
+      {/* <Image
+        source={require("@/assets/logo/logo-white.png")}
+        style={{ width: 180, height: 180 }}
+      /> */}
     </View>
   );
 }

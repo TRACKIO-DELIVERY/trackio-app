@@ -1,10 +1,10 @@
 import { THEME } from "@/constants/theme";
-import { StyleSheet } from "react-native-unistyles";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    alignSelf: 'stretch',
-    justifyContent: 'center',
+    alignSelf: "stretch",
+    justifyContent: "center",
     marginRight: 12,
   },
   icon: {
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     height: 84,
     borderRadius: 8,
     backgroundColor: THEME.grey[500],
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
